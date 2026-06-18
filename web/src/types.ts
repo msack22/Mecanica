@@ -17,19 +17,27 @@ export type Tag =
   | 'ahorra plata'
   | 'scanner'
   | 'eléctrico'
-  | 'preventivoativo'
+  | 'potenciación'
 
-export type TopicKind =
+export type TopicWidget =
+  | 'ciclo_4_tiempos'
+  | 'motor_niveles'
+  | 'conexiones_internas'
+  | 'aros_piston_detalle'
+  | 'aros_piston_separacion'
+  | 'ciguenal_arbol_levas'
+  | 'sincronizacion_correa'
+  | 'bloqueo_poleas'
+  | 'colores_humo'
+  | 'sistema_escape'
+  | 'cambio_disco_embrague'
   | 'tren_delantero'
-  | 'amortiguadores_resortes'
-  | 'frenos'
-  | 'homocineticas'
-  | 'retenes'
-  | 'ruidos'
-  | 'direccion'
-  | 'diagnostico_motor'
-  | 'mantenimiento'
-  | 'cableado_obd'
+  | 'diagnostico_ruidos'
+  | 'vista_desde_abajo'
+  | 'cableado_electrico'
+  | 'mono_vs_multipunto'
+  | 'potencia_opciones'
+  | 'lift_camino_tierra'
 
 export type ConceptItem = {
   c: TopicColor
@@ -42,15 +50,23 @@ export type ConceptSection = {
 }
 
 export type Tema = {
-  key: TopicKind
-  icon: string
-  titulo: string
-  shortLabel: string
-  subtitulo: string
-  prioridad: 'Alta' | 'Media'
-  color: string
-  body: string
-  tags: Tag[]
+  key: string
+  title: string
+  subtitle: string
+  widget?: TopicWidget
+  body?: string
+  tip?: string
+  warning?: string
+  tags?: Tag[]
   recorridos?: ConceptSection[]
+  imageUrl?: string // URL of the real-world component image
 }
 
+export type SystemCategory = {
+  key: string
+  label: string
+  icon: string
+  hint: string
+  color: string
+  topics: Tema[]
+}

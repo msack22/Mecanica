@@ -1,0 +1,174 @@
+.container {
+  position: relative;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #0f131f;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  user-select: none;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  max-height: 520px;
+}
+
+.hotspotWrapper {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+}
+
+.pin {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-border-info, #3b82f6);
+  border: 2px solid #ffffff;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.2s ease;
+  position: relative;
+}
+
+.pinActive {
+  transform: translate(0, 0) scale(1.25);
+  background: #e24b4a;
+  box-shadow: 0 0 12px rgba(226, 75, 74, 0.9);
+}
+
+.pulse {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: inherit;
+  opacity: 0.6;
+  animation: pulseAnim 1.8s infinite ease-out;
+  pointer-events: none;
+}
+
+@keyframes pulseAnim {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2.8);
+    opacity: 0;
+  }
+}
+
+.tooltip {
+  position: absolute;
+  background: rgba(17, 22, 34, 0.85);
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  padding: 10px 12px;
+  width: 220px;
+  color: #ffffff;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  z-index: 10;
+  animation: fadeIn 0.15s ease-out;
+  pointer-events: none;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95) translate(-50%, -10px); }
+  to { opacity: 1; transform: scale(1) translate(-50%, 0); }
+}
+
+/* Tooltip placements */
+.top {
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.top .tooltipArrow {
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.bottom {
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.bottom .tooltipArrow {
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.left {
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.left .tooltipArrow {
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.right {
+  left: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.right .tooltipArrow {
+  left: -6px;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.tooltipArrow {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: rgba(17, 22, 34, 0.85);
+}
+
+.tooltipTitle {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #ffffff;
+}
+
+.tooltipDesc {
+  font-size: 11px;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.hint {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  font-size: 9px;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
