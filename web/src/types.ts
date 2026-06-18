@@ -38,6 +38,7 @@ export type TopicWidget =
   | 'mono_vs_multipunto'
   | 'potencia_opciones'
   | 'lift_camino_tierra'
+  | 'circuito_refrigeracion'
 
 export type ConceptItem = {
   c: TopicColor

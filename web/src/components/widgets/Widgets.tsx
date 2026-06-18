@@ -1708,7 +1708,9 @@ function CableadoElectricoWidget({ viewMode }: WidgetProps) {
         alt="Motor Gol EA111 real"
         hotspots={[
           { id: '1', x: 10, y: 35, title: 'Batería 12V', desc: 'Fuente de corriente continua del vehículo.' },
-          { id: '2', x: 43, y: 64, title: 'Cables de bujías de alta tensión', desc: 'Conducen la chispa desde la bobina.' }
+          { id: '2', x: 43, y: 64, title: 'Cables de bujías de alta tensión', desc: 'Conducen la chispa desde la bobina.' },
+          { id: '3', x: 20, y: 68, title: 'Alternador', desc: 'Generador eléctrico. Convierte energía mecánica en eléctrica para cargar la batería.' },
+          { id: '4', x: 28, y: 43, title: 'Fusible / Relé de Batería', desc: 'Fusibles principales colocados en la bornera de la batería para protección.' }
         ]}
       />
     )
@@ -2049,6 +2051,151 @@ function LiftCaminoTierraWidget({ viewMode }: WidgetProps) {
 }
 
 // ==========================================
+// 19. WIDGET: Circuito Refrigeración
+// ==========================================
+function CircuitoRefrigeracionWidget({ viewMode }: WidgetProps) {
+  const [isHot, setIsHot] = useState(false)
+
+  if (viewMode === 'real') {
+    return (
+      <HotspotImage
+        src="/images/motor_completo.png"
+        alt="Circuito de refrigeración del motor"
+        hotspots={[
+          { id: '1', x: 91, y: 56, title: 'Depósito de Expansión', desc: 'Contenedor translúcido para revisar el nivel del líquido refrigerante. Tiene marcas de MIN/MAX.' },
+          { id: '2', x: 70, y: 46, title: 'Manguera superior de agua', desc: 'Manguera gruesa que lleva el líquido caliente desde la culata al radiador frontal.' },
+          { id: '3', x: 75, y: 15, title: 'Radiador y Electroventilador', desc: 'Ubicados en el frente para enfriar el líquido con el aire de marcha y el soplador eléctrico.' },
+          { id: '4', x: 29, y: 64, title: 'Bomba de agua y Termostato (Ocultos)', desc: 'La bomba (movida por la correa de distribución) y el termostato están detrás de las tapas protectoras en el bloque y la culata.' }
+        ]}
+      />
+    )
+  }
+
+  return (
+    <div className={styles.widgetWrap}>
+      <div className={styles.controlRow}>
+        <button className={`${styles.controlBtn} ${!isHot ? styles.controlBtnActive : ''}`} onClick={() => setIsHot(false)}>Motor Frío (Ralentí inicial)</button>
+        <button className={`${styles.controlBtn} ${isHot ? styles.controlBtnActiveGreen : ''}`} onClick={() => setIsHot(true)}>Motor Caliente (+88°C)</button>
+      </div>
+
+      <div className={styles.infoBox}>
+        <div className={styles.infoTitle}>{!isHot ? 'Termostato Cerrado - Calentamiento Rápido' : 'Termostato Abierto - Ciclo de Enfriamiento'}</div>
+        <div className={styles.infoBody}>
+          {!isHot
+            ? 'El agua circula únicamente dentro del bloque motor y la calefacción (bucle de bypass). El termostato bloquea el paso hacia el radiador para que el motor alcance rápido sus ~90°C de temperatura de trabajo.'
+            : 'El termostato se dilata y abre el circuito a los ~88°C. El refrigerante caliente fluye por la manguera superior al radiador, es enfriado por el aire y el electroventilador, y la bomba de agua lo reintroduce frío por abajo.'
+          }
+        </div>
+      </div>
+
+      <svg className={styles.svg} viewBox="0 0 680 340">
+        {/* Fondo y etiquetas */}
+        <rect x="10" y="10" width="660" height="320" rx="10" fill="rgba(255,255,255,0.01)" stroke="rgba(255,255,255,0.03)" />
+        
+        {/* Bloque Motor */}
+        <rect x="420" y="70" width="180" height="200" rx="8" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)" strokeWidth="1.5" />
+        <text x="510" y="160" textAnchor="middle" fontSize="13" fontWeight="600" fill="#ffffff">Bloque Motor</text>
+        <text x="510" y="180" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.4)">EA111 1.6 MSI</text>
+
+        {/* Canales Internos del Motor (Celeste si frío, Rojo/Naranja si caliente) */}
+        <path d="M 450 110 L 570 110 L 570 230 L 450 230 Z" fill="none" stroke={isHot ? '#ef4444' : '#3b82f6'} strokeWidth="5" opacity="0.3" />
+
+        {/* Radiador Frontal */}
+        <rect x="80" y="70" width="120" height="200" rx="8" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)" strokeWidth="1.5" />
+        {/* Celdas del radiador */}
+        <line x1="100" y1="85" x2="100" y2="255" stroke="rgba(255,255,255,0.15)" strokeWidth="2" />
+        <line x1="120" y1="85" x2="120" y2="255" stroke="rgba(255,255,255,0.15)" strokeWidth="2" />
+        <line x1="140" y1="85" x2="140" y2="255" stroke="rgba(255,255,255,0.15)" strokeWidth="2" />
+        <line x1="160" y1="85" x2="160" y2="255" stroke="rgba(255,255,255,0.15)" strokeWidth="2" />
+        <line x1="180" y1="85" x2="180" y2="255" stroke="rgba(255,255,255,0.15)" strokeWidth="2" />
+        <text x="140" y="60" textAnchor="middle" fontSize="11" fill="rgba(255,255,255,0.6)" fontWeight="600">Radiador</text>
+
+        {/* Electroventilador */}
+        <g className={isHot ? styles.spinning : ''} style={{ transformBox: 'fill-box', transformOrigin: 'center' }}>
+          <circle cx="140" cy="170" r="35" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5" />
+          {/* Aspas */}
+          <line x1="140" y1="135" x2="140" y2="205" stroke="rgba(255,255,255,0.4)" strokeWidth="3" />
+          <line x1="105" y1="170" x2="175" y2="170" stroke="rgba(255,255,255,0.4)" strokeWidth="3" />
+          <line x1="115" y1="145" x2="165" y2="195" stroke="rgba(255,255,255,0.4)" strokeWidth="3" />
+          <line x1="115" y1="195" x2="165" y2="145" stroke="rgba(255,255,255,0.4)" strokeWidth="3" />
+          <circle cx="140" cy="170" r="8" fill="rgba(255,255,255,0.6)" />
+        </g>
+
+        {/* Depósito de Expansión */}
+        <rect x="470" y="20" width="80" height="40" rx="6" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" />
+        <text x="510" y="44" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.5)">Depósito</text>
+        {/* Nivel de refrigerante rosa/rosa caliente */}
+        <rect x="471" y="38" width="78" height="21" rx="2" fill="#E24B4A" opacity="0.3" />
+        <line x1="540" y1="35" x2="550" y2="35" stroke="rgba(255,255,255,0.3)" strokeWidth="1" />
+        <text x="560" y="38" fontSize="7" fill="rgba(255,255,255,0.4)">MAX</text>
+
+        {/* Manguera Superior (Caliente) */}
+        <path
+          d="M 420 100 L 200 100"
+          fill="none"
+          stroke={isHot ? '#E24B4A' : '#888780'}
+          strokeWidth="5"
+          strokeDasharray={isHot ? '8 4' : 'none'}
+          className={isHot ? styles.flowing : ''}
+          style={{ transition: 'stroke 0.3s ease' }}
+        />
+        <text x="310" y="90" textAnchor="middle" fontSize="9" fill={isHot ? '#E24B4A' : 'rgba(255,255,255,0.4)'} fontWeight="600">
+          Manguera Superior (Caliente)
+        </text>
+
+        {/* Termostato (Válvula) */}
+        <g>
+          <circle cx="410" cy="100" r="14" fill="#111622" stroke={isHot ? '#1D9E75' : '#E24B4A'} strokeWidth="2" />
+          <text x="410" y="103" textAnchor="middle" fontSize="8" fontWeight="bold" fill={isHot ? '#1D9E75' : '#E24B4A'}>
+            {isHot ? 'ABR' : 'CER'}
+          </text>
+          <text x="410" y="125" textAnchor="middle" fontSize="8" fill="rgba(255,255,255,0.6)">Termostato</text>
+        </g>
+
+        {/* Manguera Inferior (Retorno Frío) */}
+        <path
+          d="M 200 240 L 420 240"
+          fill="none"
+          stroke={isHot ? '#3b82f6' : '#888780'}
+          strokeWidth="5"
+          strokeDasharray={isHot ? '8 4' : 'none'}
+          className={isHot ? styles.flowing : ''}
+          style={{ transition: 'stroke 0.3s ease' }}
+        />
+        <text x="310" y="258" textAnchor="middle" fontSize="9" fill={isHot ? '#3b82f6' : 'rgba(255,255,255,0.4)'} fontWeight="600">
+          Manguera Inferior (Retorno Frío)
+        </text>
+
+        {/* Bomba de Agua */}
+        <g>
+          <circle cx="430" cy="240" r="14" fill="#111622" stroke="#3b82f6" strokeWidth="2" />
+          <path d="M 423 240 L 437 240 M 430 233 L 430 247" stroke="#3b82f6" strokeWidth="1.5" />
+          <circle cx="430" cy="240" r="4" fill="#ffffff" />
+          <text x="430" y="268" textAnchor="middle" fontSize="8" fill="rgba(255,255,255,0.6)">Bomba de Agua</text>
+        </g>
+
+        {/* Canal de Bypass (Retorno corto interno del bloque cuando está frío) */}
+        <path
+          d="M 450 110 C 370 120, 370 220, 450 230"
+          fill="none"
+          stroke={!isHot ? '#3b82f6' : 'rgba(255,255,255,0.1)'}
+          strokeWidth="3.5"
+          strokeDasharray={!isHot ? '6 3' : 'none'}
+          className={!isHot ? styles.flowing : ''}
+          opacity={!isHot ? 0.9 : 0.2}
+          style={{ transition: 'stroke 0.3s ease, opacity 0.3s ease' }}
+        />
+        {!isHot && (
+          <text x="350" y="170" textAnchor="middle" fontSize="8" fill="#3b82f6" fontWeight="bold">
+            Bypass Activo
+          </text>
+        )}
+      </svg>
+    </div>
+  )
+}
+
+// ==========================================
 // CENTRAL DISPATCHER COMPONENT
 // ==========================================
 export function RenderWidget({ widgetKey, viewMode }: { widgetKey: TopicWidget; viewMode: 'diagram' | 'real' }) {
@@ -2057,6 +2204,8 @@ export function RenderWidget({ widgetKey, viewMode }: { widgetKey: TopicWidget; 
       return <Ciclo4TiemposWidget viewMode={viewMode} />
     case 'conexiones_internas':
       return <ConexionesInternasWidget viewMode={viewMode} />
+    case 'circuito_refrigeracion':
+      return <CircuitoRefrigeracionWidget viewMode={viewMode} />
     case 'motor_niveles':
       return <MotorNivelesWidget viewMode={viewMode} />
     case 'aros_piston_detalle':

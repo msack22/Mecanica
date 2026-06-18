@@ -187,10 +187,11 @@ export const mecanicaData: SystemCategory[] = [
         key: 'circuito_refrigeracion',
         title: 'Circuito de Refrigeración',
         subtitle: 'El control térmico del motor',
-        widget: 'sincronizacion_correa', // Usamos placeholder o adaptamos
+        widget: 'circuito_refrigeracion',
         body: 'El líquido refrigerante (agua destilada con anticongelante/anticorrosivo) absorbe el calor excesivo del motor circulando por canales internos y se enfría al pasar por el radiador frontal asistido por el electroventilador.',
         tip: 'El termostato actúa como compuerta: cerrado si el motor está frío para calentar rápido, abierto si está caliente para mandar el líquido al radiador.',
         warning: 'Nunca uses agua común de la canilla. Los minerales oxidan las camisas de agua del bloque de cilindros y rompen la bomba de agua.',
+        imageUrl: '/images/motor_completo.png',
         recorridos: [
           {
             title: 'Piezas del Circuito',

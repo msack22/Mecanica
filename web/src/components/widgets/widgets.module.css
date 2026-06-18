@@ -277,3 +277,24 @@
   font-weight: bold;
   color: #ffffff;
 }
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spinning {
+  animation: spin 3s linear infinite;
+  transform-origin: center;
+}
+
+@keyframes flow {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+.flowing {
+  animation: flow 1.2s linear infinite;
+}
+
