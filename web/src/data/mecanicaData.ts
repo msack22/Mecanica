@@ -16,7 +16,7 @@ export const mecanicaData: SystemCategory[] = [
         body: 'El ciclo de 4 tiempos (Admisión, Compresión, Explosión, Escape) es el principio fundamental de funcionamiento de la gran mayoría de los motores de combustión interna. En cada ciclo, el pistón realiza cuatro recorridos (dos de subida y dos de bajada) y el cigüeñal da dos vueltas completas.',
         tip: 'El inyector solo pulveriza combustible en el paso 1 (Admisión), y la chispa de la bujía solo salta al final del paso 2 para iniciar el paso 3 (Explosión).',
         warning: 'Las válvulas abren y cierran en momentos críticos: admisión abierta en paso 1, escape abierta en paso 4. Si la sincronía falla, el pistón puede chocar con las válvulas.',
-        imageUrl: '/images/motor_cilindro.png',
+        imageUrl: '/images/motor_completo.png',
         recorridos: [
           {
             title: 'Los 4 Tiempos en Detalle',
@@ -37,7 +37,6 @@ export const mecanicaData: SystemCategory[] = [
         body: 'Para convertir la fuerza lineal de la explosión en fuerza rotativa, el pistón se conecta al cigüeñal a través de la biela. Esta unión requiere pasadores de acero y cojinetes lubricados para soportar las altas presiones y revoluciones sin fundirse.',
         tip: 'El bulón conecta el pistón con el extremo superior de la biela, mientras que la muñequilla conecta el extremo inferior de la biela al cigüeñal.',
         warning: 'La falta de lubricación en la muñequilla del cigüeñal provoca el desgaste del cojinete, produciendo el famoso "golpe de biela" y la eventual rotura del motor.',
-        imageUrl: '/images/biela_piston.png',
         recorridos: [
           {
             title: 'Uniones del Bloque',
@@ -77,7 +76,7 @@ export const mecanicaData: SystemCategory[] = [
         body: 'El cigüeñal está abajo en el bloque y gira impulsado por los pistones. El árbol de levas está arriba en la culata y gira para empujar las válvulas. Ambos deben estar perfectamente sincronizados a través de la correa de distribución.',
         tip: 'La regla clave de la mecánica de 4 tiempos: el árbol de levas gira a la MITAD de la velocidad del cigüeñal (Relación 2:1).',
         warning: 'En motores 8v hay un solo árbol de levas. En motores 16v hay dos árboles (uno para válvulas de admisión y otro para escape).',
-        imageUrl: '/images/ciguenal_levas.png',
+        imageUrl: '/images/correa_distribucion.png',
         recorridos: [
           {
             title: 'Ejes en Movimiento',
@@ -117,7 +116,7 @@ export const mecanicaData: SystemCategory[] = [
         body: 'Al retirar la correa de distribución vieja, las poleas quedan libres. Los resortes de las válvulas que están comprimidos ejercen fuerza sobre las levas y pueden hacer girar el árbol de levas inesperadamente, perdiendo la sincronía.',
         tip: 'Se puede improvisar pintando una línea continua con corrector blanco sobre el engranaje y la tapa trasera antes de remover la correa vieja.',
         warning: 'Nunca uses pinzas de fuerza directamente sobre los dientes de los engranajes, ya que los filos dañarán la correa nueva en pocos kilómetros.',
-        imageUrl: '/images/bloqueo_poleas.png',
+        imageUrl: '/images/correa_distribucion.png',
         recorridos: [
           {
             title: 'Procedimiento Seguro',
@@ -195,7 +194,6 @@ export const mecanicaData: SystemCategory[] = [
         body: 'El líquido refrigerante (agua destilada con anticongelante/anticorrosivo) absorbe el calor excesivo del motor circulando por canales internos y se enfría al pasar por el radiador frontal asistido por el electroventilador.',
         tip: 'El termostato actúa como compuerta: cerrado si el motor está frío para calentar rápido, abierto si está caliente para mandar el líquido al radiador.',
         warning: 'Nunca uses agua común de la canilla. Los minerales oxidan las camisas de agua del bloque de cilindros y rompen la bomba de agua.',
-        imageUrl: '/images/radiador_auto.png', // Usaremos esta
         recorridos: [
           {
             title: 'Piezas del Circuito',
@@ -223,7 +221,7 @@ export const mecanicaData: SystemCategory[] = [
         widget: 'mono_vs_multipunto',
         body: 'Los motores antiguos usaban carburador o un único inyector central (monopunto) en la entrada del colector de admisión. Los modernos (como el Gol Trend) utilizan inyección multipunto, con un inyector dedicado por cada cilindro.',
         tip: 'La inyección multipunto es mucho más eficiente porque la computadora (ECU) inyecta la cantidad exacta para cada cilindro de forma individual.',
-        imageUrl: '/images/inyectores_nafta.png',
+        imageUrl: '/images/motor_completo.png',
         recorridos: [
           {
             title: 'Sistemas de Inyección',
@@ -242,7 +240,7 @@ export const mecanicaData: SystemCategory[] = [
         body: 'El motor 1.6 MSI del Gol Trend entrega 110 hp de fábrica. Hay modificaciones de menor a mayor complejidad para mejorar su potencia y torque, optimizando la entrada de aire, salida de gases y la cartografía de la ECU.',
         tip: 'La reprogramación (remap) es la mejor relación costo/potencia sin comprometer componentes internos.',
         warning: 'Instalar un kit de turbo sin forjar bielas y pistones es extremadamente arriesgado y reduce drásticamente la vida útil del motor.',
-        imageUrl: '/images/chip_tuning.png',
+        imageUrl: '/images/motor_completo.png',
         recorridos: [
           {
             title: 'Formas de Potenciar',
@@ -271,7 +269,7 @@ export const mecanicaData: SystemCategory[] = [
         body: 'El sistema eléctrico se divide en tres circuitos principales: arranque, carga y encendido/chispa. Los cables tienen colores estándar para facilitar el diagnóstico, y las fichas de los sensores tienen guías únicas.',
         tip: 'El cable ROJO siempre transporta 12V de alimentación. El cable NEGRO o MARRÓN se conecta a la carrocería (masa/tierra).',
         warning: 'Antes de cambiar un repuesto eléctrico caro, revisá siempre el fusible correspondiente en la fusiblera. ¡Se cambia gratis en segundos!',
-        imageUrl: '/images/caja_fusibles.png',
+        imageUrl: '/images/motor_completo.png',
         recorridos: [
           {
             title: 'Circuitos del Gol',
@@ -329,7 +327,6 @@ export const mecanicaData: SystemCategory[] = [
         body: 'El escape canaliza los gases desde la culata del motor hasta la parte trasera del coche. A lo largo de la tubería, los gases bajan de 800°C a ~80°C y se reduce la contaminación mediante el catalizador.',
         tip: 'La sonda lambda mide la concentración de oxígeno en el escape y le avisa a la ECU para ajustar la mezcla de combustible en tiempo real.',
         warning: 'Un catalizador roto por golpes contra el suelo produce un tintineo metálico interno ("maraqueo") y restringe el flujo de escape ahogando al motor.',
-        imageUrl: '/images/escape_completo.png',
         recorridos: [
           {
             title: 'Componentes del Caño',
@@ -349,7 +346,7 @@ export const mecanicaData: SystemCategory[] = [
         body: 'El color del humo que sale del caño de escape es un excelente indicador del estado interno del motor y de qué fluido se está quemando en los cilindros.',
         tip: 'Un leve humo o vapor blanco al arrancar en frío que desaparece en dos minutos es normal: es condensación de agua en el caño de escape.',
         warning: 'Humo azul constante indica que el motor está consumiendo aceite. Requiere desarme de culata o rectificación del bloque de cilindros.',
-        imageUrl: '/images/humo_escape.png',
+        imageUrl: '/images/piston_sucio.png',
         recorridos: [
           {
             title: 'Diagnóstico por Colores',
@@ -398,7 +395,7 @@ export const mecanicaData: SystemCategory[] = [
         widget: 'diagnostico_ruidos',
         body: 'Los ruidos extraños en la suspensión o frenos suelen tener causas sumamente específicas. Identificar el momento exacto en el que ocurren permite localizar la pieza defectuosa sin desarmar.',
         tip: 'Zumbido constante que sube con la velocidad (como si tuvieras un avión adentro del auto) indica rulemán o rodamiento de rueda gastado.',
-        imageUrl: '/images/ruidos_diagnostico.png',
+        imageUrl: '/images/tren_delantero.png',
         recorridos: [
           {
             title: 'Sonidos Comunes',
@@ -419,7 +416,7 @@ export const mecanicaData: SystemCategory[] = [
         body: 'El Gol de fábrica es bajo y suele tocar el cárter en huellas profundas de tierra. Para transitar caminos rurales, se puede elevar la suspensión modificando amortiguadores y espirales.',
         tip: 'La Opción B (+5cm) es el punto óptimo entre altura de despeje y estabilidad en ruta sin deformar los semiejes.',
         warning: 'Al realizar cualquier lift de suspensión, es OBLIGATORIO alinear las ruedas inmediatamente para evitar un desgaste acelerado de las cubiertas y pérdida de control.',
-        imageUrl: '/images/suspension_elevada.png',
+        imageUrl: '/images/tren_delantero.png',
         recorridos: [
           {
             title: 'Alturas de Elevación',
@@ -438,7 +435,6 @@ export const mecanicaData: SystemCategory[] = [
         widget: 'vista_desde_abajo',
         body: 'Ver el auto levantado en una fosa o elevador revela la disposición completa de los componentes mecánicos, el recorrido del escape y la ubicación de las suspensiones.',
         tip: 'Desde abajo, lo primero que se ve debajo del motor es el protector de cárter (chapón) que protege el cárter de aceite.',
-        imageUrl: '/images/vista_abajo.png',
         recorridos: [
           {
             title: 'Componentes Inferiores',
