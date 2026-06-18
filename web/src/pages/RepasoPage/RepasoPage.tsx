@@ -188,7 +188,10 @@ export function RepasoPage() {
       {/* Cabecera / Barra Superior */}
       <header className={styles.header}>
         <div className={styles.logoArea} onClick={handleGoHome}>
-          <h1 className={styles.mainTitle}>Manual de Mecánica</h1>
+          <div className={styles.logoRow}>
+            <span className={styles.carLogo}>🚗</span>
+            <h1 className={styles.mainTitle}>Manual de Mecánica</h1>
+          </div>
           <div className={styles.subtitle}>Volkswagen Gol Trend 1.6 MSI EA111</div>
         </div>
 
