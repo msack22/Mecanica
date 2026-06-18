@@ -1,0 +1,118 @@
+
+<div style="padding:8px 0">
+<div style="display:flex;gap:6px;justify-content:center;margin-bottom:14px;flex-wrap:wrap" id="hum-btns"></div>
+
+<div id="hum-info" style="padding:14px 18px;background:var(--color-background-secondary);border-radius:10px;border:0.5px solid var(--color-border-info);margin-bottom:14px;min-height:100px">
+  <div style="font-size:14px;font-weight:500;color:var(--color-text-primary);margin-bottom:6px" id="hum-title">Seleccioná un color</div>
+  <div style="font-size:12px;color:var(--color-text-secondary);line-height:1.7" id="hum-body">Cada color de humo te dice algo distinto sobre el estado del motor.</div>
+  <div style="font-size:11px;color:#BA7517;margin-top:8px" id="hum-tip"></div>
+</div>
+
+<svg width="100%" viewBox="0 0 680 320">
+
+  <!-- Caño de escape -->
+  <rect x="30" y="240" width="80" height="30" rx="6" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="1"/>
+  <text x="70" y="260" text-anchor="middle" font-size="10" fill="var(--color-text-secondary)">escape</text>
+  <rect x="110" y="248" width="40" height="14" rx="4" fill="var(--color-text-secondary)" opacity="0.3"/>
+
+  <!-- HUMO BLANCO -->
+  <g id="h-blanco">
+    <ellipse cx="200" cy="200" rx="28" ry="20" fill="white" stroke="var(--color-border-secondary)" stroke-width="0.5" opacity="0.9"/>
+    <ellipse cx="215" cy="170" rx="22" ry="18" fill="white" stroke="var(--color-border-secondary)" stroke-width="0.5" opacity="0.8"/>
+    <ellipse cx="200" cy="142" rx="18" ry="15" fill="white" stroke="var(--color-border-secondary)" stroke-width="0.5" opacity="0.7"/>
+    <ellipse cx="210" cy="118" rx="14" ry="12" fill="white" stroke="var(--color-border-secondary)" stroke-width="0.5" opacity="0.5"/>
+    <text x="200" y="290" text-anchor="middle" font-size="12" font-weight="500" fill="var(--color-text-primary)">Blanco</text>
+    <text x="200" y="308" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">agua / refrigerante</text>
+  </g>
+
+  <!-- HUMO AZUL -->
+  <g id="h-azul">
+    <ellipse cx="360" cy="200" rx="28" ry="20" fill="#85B7EB" opacity="0.6"/>
+    <ellipse cx="375" cy="170" rx="22" ry="18" fill="#85B7EB" opacity="0.5"/>
+    <ellipse cx="360" cy="142" rx="18" ry="15" fill="#85B7EB" opacity="0.4"/>
+    <ellipse cx="370" cy="118" rx="14" ry="12" fill="#85B7EB" opacity="0.3"/>
+    <text x="360" y="290" text-anchor="middle" font-size="12" font-weight="500" fill="var(--color-text-primary)">Azul / grisáceo</text>
+    <text x="360" y="308" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">aceite quemado</text>
+  </g>
+
+  <!-- HUMO NEGRO -->
+  <g id="h-negro">
+    <ellipse cx="520" cy="200" rx="28" ry="20" fill="#444441" opacity="0.8"/>
+    <ellipse cx="535" cy="170" rx="22" ry="18" fill="#444441" opacity="0.7"/>
+    <ellipse cx="520" cy="142" rx="18" ry="15" fill="#444441" opacity="0.6"/>
+    <ellipse cx="530" cy="118" rx="14" ry="12" fill="#444441" opacity="0.5"/>
+    <text x="520" y="290" text-anchor="middle" font-size="12" font-weight="500" fill="var(--color-text-primary)">Negro</text>
+    <text x="520" y="308" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">nafta sin quemar</text>
+  </g>
+
+  <!-- Línea caño → humos -->
+  <line x1="150" y1="255" x2="190" y2="255" stroke="var(--color-text-secondary)" stroke-width="1" opacity="0.3"/>
+  <line x1="190" y1="255" x2="200" y2="220" stroke="var(--color-text-secondary)" stroke-width="0.5" opacity="0.2"/>
+  <line x1="190" y1="255" x2="360" y2="220" stroke="var(--color-text-secondary)" stroke-width="0.5" opacity="0.2"/>
+  <line x1="190" y1="255" x2="520" y2="220" stroke="var(--color-text-secondary)" stroke-width="0.5" opacity="0.2"/>
+
+  <!-- Highlight -->
+  <rect id="hum-hl" x="0" y="0" width="0" height="0" rx="50" fill="none" stroke="var(--color-border-info)" stroke-width="2.5" opacity="0"/>
+</svg>
+</div>
+
+<script>
+(function(){
+  var humos = [
+    {
+      label: '⬜ Humo blanco',
+      rect: [170,100,60,200],
+      title: 'Humo blanco — refrigerante / agua en el cilindro',
+      body: 'El líquido refrigerante está entrando a la cámara de combustión. Causa más común: junta de culata quemada o culata fisurada. El agua se quema y sale como vapor blanco. Nota: en días fríos un poco de vapor blanco al arrancar es NORMAL — desaparece en 2 minutos. Si el humo blanco es constante y tiene olor dulce → problema serio.',
+      tip: '⚠ Confirmar también mirando la varilla de aceite: si está lechoso → refrigerante mezclado con aceite → junta de culata comprometida.'
+    },
+    {
+      label: '🔵 Humo azul',
+      rect: [330,100,60,200],
+      title: 'Humo azul / grisáceo — aceite quemándose',
+      body: 'El aceite está entrando a la cámara de combustión y se quema. Causas: aros del pistón gastados (el aceite sube desde abajo), guías de válvulas gastadas (el aceite baja desde arriba), o retenes de válvulas secos. El motor consume aceite visiblemente — tenés que reponer entre cambios. Este es el humo que indica que el motor necesita rectificación.',
+      tip: '⚠ Si salía humo azul al arrancar y desaparece en caliente → retenes de válvulas. Si sale todo el tiempo → aros gastados.'
+    },
+    {
+      label: '⬛ Humo negro',
+      rect: [490,100,60,200],
+      title: 'Humo negro — mezcla rica (demasiada nafta)',
+      body: 'No es aceite mezclado con nafta — es nafta que no se quema completamente. El motor está recibiendo demasiado combustible o poco aire. Causas comunes: inyector sucio o que gotea, sensor MAF o MAP defectuoso, filtro de aire tapado, sonda lambda muerta. La ECU no está regulando bien la mezcla. El motor suele andar mal, tirar, consumir mucho.',
+      tip: '✓ Muchas veces se soluciona limpiando inyectores, cambiando el filtro de aire o un sensor — sin tocar el motor internamente.'
+    }
+  ];
+
+  function op(id, val) { var e = document.getElementById(id); if(e) e.setAttribute('opacity', val); }
+
+  var btnRow = document.getElementById('hum-btns');
+  humos.forEach(function(h) {
+    var b = document.createElement('button');
+    b.textContent = h.label;
+    b.style.cssText = 'cursor:pointer;padding:6px 16px;font-size:13px;border-radius:6px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-secondary);';
+    b.addEventListener('click', function() {
+      btnRow.querySelectorAll('button').forEach(function(btn) {
+        btn.style.background = 'var(--color-background-secondary)';
+        btn.style.color = 'var(--color-text-secondary)';
+        btn.style.borderColor = 'var(--color-border-secondary)';
+        btn.style.fontWeight = '400';
+      });
+      b.style.background = 'var(--color-background-info)';
+      b.style.color = 'var(--color-text-info)';
+      b.style.borderColor = 'var(--color-border-info)';
+      b.style.fontWeight = '500';
+
+      document.getElementById('hum-title').textContent = h.title;
+      document.getElementById('hum-body').textContent = h.body;
+      document.getElementById('hum-tip').textContent = h.tip;
+
+      var hl = document.getElementById('hum-hl');
+      hl.setAttribute('cx', h.rect[0]+30);
+      hl.setAttribute('cy', h.rect[1]+100);
+      hl.setAttribute('rx', 40);
+      hl.setAttribute('ry', 110);
+      op('hum-hl', 1);
+    });
+    btnRow.appendChild(b);
+  });
+})();
+</script>

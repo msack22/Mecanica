@@ -1,0 +1,176 @@
+
+<div style="padding:8px 0">
+<div style="display:flex;gap:6px;justify-content:center;margin-bottom:14px;flex-wrap:wrap" id="res-btns"></div>
+
+<div id="res-info" style="padding:14px 18px;background:var(--color-background-secondary);border-radius:10px;border:0.5px solid var(--color-border-info);margin-bottom:14px;min-height:100px">
+  <div style="font-size:14px;font-weight:500;color:var(--color-text-primary);margin-bottom:6px" id="res-title">Seleccioná un tema</div>
+  <div style="font-size:12px;color:var(--color-text-secondary);line-height:1.7" id="res-body">Tocá cada sección para repasar lo que viste.</div>
+  <div style="font-size:11px;color:#BA7517;margin-top:8px;line-height:1.6" id="res-tip"></div>
+</div>
+
+<svg width="100%" viewBox="0 0 680 440">
+
+  <!-- Centro: Motor -->
+  <rect x="270" y="175" width="140" height="90" rx="10" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="1.5"/>
+  <text x="340" y="214" text-anchor="middle" font-size="13" font-weight="500" fill="var(--color-text-primary)">Motor</text>
+  <text x="340" y="232" text-anchor="middle" font-size="10" fill="var(--color-text-tertiary)">4 cilindros</text>
+  <text x="340" y="248" text-anchor="middle" font-size="9" fill="var(--color-text-tertiary)">pistones · bielas · cigüeñal</text>
+
+  <!-- 1. Sistema mecánico -->
+  <g id="r-mec" class="node" onclick="selRes('mec')">
+    <rect x="260" y="30" width="160" height="52" rx="8" fill="var(--color-background-secondary)" stroke="#0F6E56" stroke-width="1"/>
+    <text x="340" y="52" text-anchor="middle" font-size="12" font-weight="500" fill="#0F6E56">🔧 Mecánico</text>
+    <text x="340" y="68" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">ciclo 4 tiempos · válvulas · levas</text>
+    <line x1="340" y1="82" x2="340" y2="175" stroke="#0F6E56" stroke-width="1" stroke-dasharray="4 3" opacity="0.4"/>
+  </g>
+
+  <!-- 2. Sistema combustible -->
+  <g id="r-comb" class="node" onclick="selRes('comb')">
+    <rect x="470" y="80" width="180" height="52" rx="8" fill="var(--color-background-secondary)" stroke="#BA7517" stroke-width="1"/>
+    <text x="560" y="102" text-anchor="middle" font-size="12" font-weight="500" fill="#BA7517">⛽ Combustible</text>
+    <text x="560" y="118" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">tanque · bomba · inyectores · ECU</text>
+    <line x1="470" y1="106" x2="410" y2="210" stroke="#BA7517" stroke-width="1" stroke-dasharray="4 3" opacity="0.4"/>
+  </g>
+
+  <!-- 3. Refrigeración -->
+  <g id="r-ref" class="node" onclick="selRes('ref')">
+    <rect x="470" y="190" width="180" height="52" rx="8" fill="var(--color-background-secondary)" stroke="#185FA5" stroke-width="1"/>
+    <text x="560" y="212" text-anchor="middle" font-size="12" font-weight="500" fill="#185FA5">💧 Refrigeración</text>
+    <text x="560" y="228" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">radiador · termostato · bomba agua</text>
+    <line x1="470" y1="216" x2="410" y2="216" stroke="#185FA5" stroke-width="1" stroke-dasharray="4 3" opacity="0.4"/>
+  </g>
+
+  <!-- 4. Lubricación -->
+  <g id="r-lub" class="node" onclick="selRes('lub')">
+    <rect x="470" y="300" width="180" height="52" rx="8" fill="var(--color-background-secondary)" stroke="#854F0B" stroke-width="1"/>
+    <text x="560" y="322" text-anchor="middle" font-size="12" font-weight="500" fill="#854F0B">🛢 Lubricación</text>
+    <text x="560" y="338" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">cárter · bomba aceite · filtro · aros</text>
+    <line x1="470" y1="326" x2="410" y2="250" stroke="#854F0B" stroke-width="1" stroke-dasharray="4 3" opacity="0.4"/>
+  </g>
+
+  <!-- 5. Eléctrico -->
+  <g id="r-ele" class="node" onclick="selRes('ele')">
+    <rect x="30" y="80" width="180" height="52" rx="8" fill="var(--color-background-secondary)" stroke="#534AB7" stroke-width="1"/>
+    <text x="120" y="102" text-anchor="middle" font-size="12" font-weight="500" fill="#534AB7">⚡ Eléctrico</text>
+    <text x="120" y="118" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">batería · bobina · alternador · ECU</text>
+    <line x1="210" y1="106" x2="270" y2="200" stroke="#534AB7" stroke-width="1" stroke-dasharray="4 3" opacity="0.4"/>
+  </g>
+
+  <!-- 6. Transmisión -->
+  <g id="r-trans" class="node" onclick="selRes('trans')">
+    <rect x="30" y="190" width="180" height="52" rx="8" fill="var(--color-background-secondary)" stroke="#3B6D11" stroke-width="1"/>
+    <text x="120" y="212" text-anchor="middle" font-size="12" font-weight="500" fill="#3B6D11">⚙️ Transmisión</text>
+    <text x="120" y="228" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">embrague · caja · semiejes · ruedas</text>
+    <line x1="210" y1="216" x2="270" y2="216" stroke="#3B6D11" stroke-width="1" stroke-dasharray="4 3" opacity="0.4"/>
+  </g>
+
+  <!-- 7. Escape -->
+  <g id="r-esc" class="node" onclick="selRes('esc')">
+    <rect x="30" y="300" width="180" height="52" rx="8" fill="var(--color-background-secondary)" stroke="#5F5E5A" stroke-width="1"/>
+    <text x="120" y="322" text-anchor="middle" font-size="12" font-weight="500" fill="#5F5E5A">💨 Escape</text>
+    <text x="120" y="338" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">colector · catalizador · silenciadores</text>
+    <line x1="210" y1="326" x2="270" y2="250" stroke="#5F5E5A" stroke-width="1" stroke-dasharray="4 3" opacity="0.4"/>
+  </g>
+
+  <!-- 8. Vista desde abajo -->
+  <g id="r-abajo" class="node" onclick="selRes('abajo')">
+    <rect x="260" y="380" width="160" height="52" rx="8" fill="var(--color-background-secondary)" stroke="#888780" stroke-width="1"/>
+    <text x="340" y="402" text-anchor="middle" font-size="12" font-weight="500" fill="#888780">👁 Vista desde abajo</text>
+    <text x="340" y="418" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">cárter · escape · semiejes · frenos</text>
+    <line x1="340" y1="380" x2="340" y2="265" stroke="#888780" stroke-width="1" stroke-dasharray="4 3" opacity="0.4"/>
+  </g>
+
+  <!-- Highlight -->
+  <rect id="res-hl" x="0" y="0" width="0" height="0" rx="10" fill="none" stroke="var(--color-border-info)" stroke-width="2.5" opacity="0"/>
+</svg>
+</div>
+
+<script>
+(function(){
+  var temas = {
+    mec: {
+      btn: 'r-mec', rect: [258,28,164,56],
+      title: '🔧 Sistema Mecánico',
+      body: 'El ciclo de 4 tiempos: admisión → compresión → explosión → escape. Cada cilindro hace esto miles de veces por minuto. Las válvulas abren y cierran controladas por el árbol de levas. Los pistones bajan con la explosión y mueven las bielas que giran el cigüeñal. El árbol de levas lo sincroniza la correa de distribución — se cambia cada 60.000 km. Cigüeñal abajo, árbol de levas arriba, pistones en el medio.',
+      tip: 'Lo que viste: ciclo 4 tiempos · válvulas · 8v vs 16v · aros del pistón · bulón · muñequilla · correa distribución y sus marcas de sincronización · cambio de correa.'
+    },
+    comb: {
+      btn: 'r-comb', rect: [468,78,184,56],
+      title: '⛽ Sistema de Combustible',
+      body: 'La nafta va del tanque a la bomba de nafta (adentro del tanque), sube por la línea de combustible, pasa por el filtro y llega a los inyectores. La ECU controla cuánto y cuándo inyectar según lo que le dice la sonda lambda y otros sensores. Mono-inyector: un punto central. Multipunto: un inyector por cilindro. El Gol Trend 2010/2011 tiene multipunto.',
+      tip: 'Lo que viste: carburador vs mono-inyector vs multipunto · ECU como cerebro · sonda lambda · cómo el acelerador solo manda una señal a la ECU.'
+    },
+    ref: {
+      btn: 'r-ref', rect: [468,188,184,56],
+      title: '💧 Sistema de Refrigeración',
+      body: 'El líquido refrigerante circula entre el motor y el radiador. La bomba de agua lo mueve (movida por la correa de distribución). El termostato decide cuándo abrir el circuito al radiador según la temperatura. El ventilador eléctrico ayuda cuando el auto está parado. Las dos mangueras gruesas conectan motor y radiador. El depósito de expansión es lo más visible desde arriba.',
+      tip: 'Lo que viste: circuito completo · cuántas mangueras tiene cada componente · dónde está la bomba y el termostato (ocultos) · síntomas de falla.'
+    },
+    lub: {
+      btn: 'r-lub', rect: [468,298,184,56],
+      title: '🛢 Sistema de Lubricación',
+      body: 'El aceite vive en el cárter. La bomba lo sube por canales internos del bloque lubricando cigüeñal, bielas, pistones y válvulas. El filtro atrapa partículas. Los 3 aros del pistón controlan el aceite: los 2 de compresión sellan los gases, el rascador raspa el exceso de aceite y lo devuelve al cárter. El aceite también enfría y limpia. Nunca se mezcla con la nafta — los aros hacen esa barrera.',
+      tip: 'Lo que viste: circuito de aceite · los 3 aros y sus funciones · cómo revisar el aceite con la varilla · colores del aceite · por qué el aceite nunca entra al cilindro.'
+    },
+    ele: {
+      btn: 'r-ele', rect: [28,78,184,56],
+      title: '⚡ Sistema Eléctrico',
+      body: 'Tres circuitos: arranque (batería → llave → burro → motor gira), carga (motor gira → alternador → recarga batería) y chispa (batería → ECU → bobina → 25.000V → bujías). Todo protegido por fusibles. Las fichas no pueden ir al lugar equivocado — tienen formas únicas. Rojo = positivo, negro = masa. Si algo no anda: revisá fusible primero.',
+      tip: 'Lo que viste: los 3 circuitos · dónde está cada componente eléctrico · fichas y cómo identificarlas · colores de cables · qué necesita electricidad y qué no.'
+    },
+    trans: {
+      btn: 'r-trans', rect: [28,188,184,56],
+      title: '⚙️ Sistema de Transmisión',
+      body: 'El cigüeñal → volante motor → disco de embrague → caja de cambios → diferencial → semiejes → ruedas. El embrague no cambia marchas — desconecta el motor de la caja para que puedas cambiarlas. El disco es una galleta de fricción entre el volante y el plato de presión. El Gol es tracción delantera. Para cambiar el disco hay que separar la caja del motor desde abajo.',
+      tip: 'Lo que viste: cómo funciona el embrague · disco y plato de presión · herramienta centradora · síntomas de disco gastado · 6 pasos del cambio de disco.'
+    },
+    esc: {
+      btn: 'r-esc', rect: [28,298,184,56],
+      title: '💨 Sistema de Escape',
+      body: 'Colector (4→1 tubo) → catalizador (convierte gases tóxicos a 400°C) → sonda lambda (mide oxígeno, avisa a la ECU) → silenciador intermedio → silenciador final → caño. Los gases entran a 800°C y salen a 80°C. El escape afecta la potencia porque el motor necesita vaciar rápido el cilindro. Escape deportivo: colector 4-1 + caños más anchos = 5-10 hp extra.',
+      tip: 'Lo que viste: cada componente y su función · temperatura a lo largo del escape · la sonda lambda · cómo el escape deportivo afecta la potencia.'
+    },
+    abajo: {
+      btn: 'r-abajo', rect: [258,378,164,56],
+      title: '👁 Vista desde abajo + componentes externos',
+      body: 'Desde abajo ves: cárter (lo más bajo), semiejes, escape central, frenos, amortiguadores, tanque atrás. Pegado al motor: alternador (lateral izq.), bomba de agua (dentro de tapa distribución), bomba de aceite (frente del bloque), burro (trasero inferior), caja de cambios (lateral derecho), termostato (culata lateral), filtro de aceite (lateral bloque), colector admisión (arriba), colector escape (abajo).',
+      tip: 'Lo que viste: mapa completo desde abajo · 10 componentes externos del motor · dos sistemas de correas (distribución + auxiliar) · motor por niveles: tapa → culata → bloque → cárter.'
+    }
+  };
+
+  function op(id, val) { var e = document.getElementById(id); if(e) e.setAttribute('opacity', val); }
+
+  var btnRow = document.getElementById('res-btns');
+  Object.keys(temas).forEach(function(k) {
+    var t = temas[k];
+    var b = document.createElement('button');
+    b.textContent = t.title.split(' ').slice(0,2).join(' ');
+    b.dataset.key = k;
+    b.style.cssText = 'cursor:pointer;padding:5px 10px;font-size:11px;border-radius:6px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-secondary);';
+    b.addEventListener('click', function() {
+      btnRow.querySelectorAll('button').forEach(function(btn) {
+        btn.style.background = 'var(--color-background-secondary)';
+        btn.style.color = 'var(--color-text-secondary)';
+        btn.style.borderColor = 'var(--color-border-secondary)';
+        btn.style.fontWeight = '400';
+      });
+      b.style.background = 'var(--color-background-info)';
+      b.style.color = 'var(--color-text-info)';
+      b.style.borderColor = 'var(--color-border-info)';
+      b.style.fontWeight = '500';
+
+      document.getElementById('res-title').textContent = t.title;
+      document.getElementById('res-body').textContent = t.body;
+      document.getElementById('res-tip').textContent = t.tip;
+
+      var hl = document.getElementById('res-hl');
+      hl.setAttribute('x', t.rect[0]-4);
+      hl.setAttribute('y', t.rect[1]-4);
+      hl.setAttribute('width', t.rect[2]+8);
+      hl.setAttribute('height', t.rect[3]+8);
+      op('res-hl', 1);
+    });
+    btnRow.appendChild(b);
+  });
+})();
+</script>

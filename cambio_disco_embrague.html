@@ -1,0 +1,213 @@
+
+<div style="padding:8px 0">
+<div style="display:flex;gap:6px;justify-content:center;margin-bottom:14px;flex-wrap:wrap" id="emb-btns"></div>
+
+<div id="emb-info" style="padding:12px 16px;background:var(--color-background-secondary);border-radius:8px;border:0.5px solid var(--color-border-info);margin-bottom:12px;min-height:70px">
+  <div style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px" id="emb-title">Seleccioná un paso</div>
+  <div style="font-size:12px;color:var(--color-text-secondary)" id="emb-body">El cambio de disco de embrague es uno de los trabajos más comunes en el Gol. Se hace desde abajo con el auto levantado.</div>
+  <div style="font-size:11px;color:#BA7517;margin-top:6px" id="emb-tip"></div>
+</div>
+
+<svg width="100%" viewBox="0 0 680 380">
+  <!-- Motor (izquierda) -->
+  <rect id="e-motor" x="60" y="120" width="140" height="140" rx="10" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="1"/>
+  <text x="130" y="188" text-anchor="middle" font-size="12" font-weight="500" fill="var(--color-text-primary)">Motor</text>
+  <text x="130" y="206" text-anchor="middle" font-size="10" fill="var(--color-text-secondary)">cigüeñal adentro</text>
+
+  <!-- Volante motor -->
+  <circle id="e-volante" cx="200" cy="190" r="30" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="1.5"/>
+  <text x="200" y="187" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">volante</text>
+  <text x="200" y="199" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">motor</text>
+
+  <!-- Disco de embrague -->
+  <ellipse id="e-disco" cx="248" cy="190" rx="10" ry="28" fill="#534AB7" opacity="0.8"/>
+  <text x="248" y="230" text-anchor="middle" font-size="9" fill="#534AB7">disco</text>
+
+  <!-- Plato de presión -->
+  <rect id="e-plato" cx="265" cy="162" x="258" y="162" width="22" height="56" rx="4" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="1.5"/>
+  <text x="269" y="230" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">plato</text>
+
+  <!-- Caja de cambios (derecha) -->
+  <rect id="e-caja" x="280" y="120" width="160" height="140" rx="10" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="1"/>
+  <text x="360" y="185" text-anchor="middle" font-size="12" font-weight="500" fill="var(--color-text-primary)">Caja de</text>
+  <text x="360" y="201" text-anchor="middle" font-size="12" font-weight="500" fill="var(--color-text-primary)">cambios</text>
+
+  <!-- Pernos unión motor-caja -->
+  <circle id="p1" cx="280" cy="140" r="6" fill="#E24B4A" opacity="0.8"/>
+  <circle id="p2" cx="280" cy="190" r="6" fill="#E24B4A" opacity="0.8"/>
+  <circle id="p3" cx="280" cy="240" r="6" fill="#E24B4A" opacity="0.8"/>
+  <text x="340" y="255" text-anchor="middle" font-size="9" fill="#E24B4A" id="lbl-pernos">● pernos de unión</text>
+
+  <!-- Semiejes -->
+  <rect x="440" y="183" width="80" height="14" rx="4" fill="#BA7517" opacity="0.6"/>
+  <text x="480" y="175" text-anchor="middle" font-size="9" fill="#BA7517">semieje</text>
+  <rect x="440" y="203" width="80" height="14" rx="4" fill="#BA7517" opacity="0.6"/>
+  <text x="480" y="228" text-anchor="middle" font-size="9" fill="#BA7517">semieje</text>
+
+  <!-- Flecha separación caja (oculta por defecto) -->
+  <path id="flecha-sep" d="M 280 190 L 320 190" fill="none" stroke="#E24B4A" stroke-width="2.5" stroke-dasharray="5 3" opacity="0" marker-end="url(#aemb)"/>
+  <defs>
+    <marker id="aemb" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- Caja separada (oculta) -->
+  <rect id="e-caja-sep" x="360" y="120" width="160" height="140" rx="10" fill="var(--color-background-secondary)" stroke="#E24B4A" stroke-width="1.5" opacity="0"/>
+  <text id="txt-caja-sep" x="440" y="195" text-anchor="middle" font-size="11" fill="#E24B4A" opacity="0">caja separada</text>
+
+  <!-- Disco expuesto (oculto) -->
+  <ellipse id="e-disco-exp" cx="310" cy="190" rx="10" ry="28" fill="#534AB7" opacity="0"/>
+  <text id="txt-disco-exp" x="310" y="235" text-anchor="middle" font-size="10" fill="#534AB7" opacity="0">disco expuesto</text>
+
+  <!-- Nuevo disco -->
+  <ellipse id="e-disco-nuevo" cx="310" cy="190" rx="10" ry="28" fill="#1D9E75" opacity="0"/>
+  <text id="txt-disco-nuevo" x="310" y="235" text-anchor="middle" font-size="10" fill="#1D9E75" opacity="0">disco nuevo</text>
+
+  <!-- Herramienta centradora -->
+  <rect id="e-centrador" x="302" y="182" width="16" height="16" rx="8" fill="#BA7517" opacity="0" stroke="#BA7517" stroke-width="1"/>
+  <text id="txt-centrador" x="310" y="260" text-anchor="middle" font-size="10" fill="#BA7517" opacity="0">centrador</text>
+
+  <!-- Síntomas desgaste (abajo) -->
+  <rect id="e-sintomas" x="60" y="300" width="560" height="60" rx="8" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5" opacity="0"/>
+  <text id="s1" x="340" y="322" text-anchor="middle" font-size="11" fill="var(--color-text-secondary)" opacity="0"></text>
+  <text id="s2" x="340" y="340" text-anchor="middle" font-size="11" fill="var(--color-text-secondary)" opacity="0"></text>
+  <text id="s3" x="340" y="356" text-anchor="middle" font-size="11" fill="var(--color-text-secondary)" opacity="0"></text>
+</svg>
+</div>
+
+<script>
+(function(){
+  var pasos = [
+    {
+      label: '① Síntomas',
+      color: '#E24B4A',
+      title: 'Cómo sabés que el disco está gastado',
+      body: 'Olor a quemado al soltar el embrague. El auto patina — el motor sube de revoluciones pero el auto no acelera. El pedal tiene que estar casi suelto para que agarre. Ruido al pisar el embrague.',
+      tip: '⚠ En el Gol AP un disco dura aprox. 80.000-120.000 km según el uso.',
+      svg: function() {
+        op('e-sintomas',1); op('s1',1); op('s2',1); op('s3',1);
+        setTxt('s1','Síntoma 1: patinaje — motor sube pero auto no acelera');
+        setTxt('s2','Síntoma 2: olor a quemado al soltar el pedal');
+        setTxt('s3','Síntoma 3: pedal casi suelto para que agarre');
+        setFill('s1','#E24B4A'); setFill('s2','#E24B4A'); setFill('s3','#E24B4A');
+      }
+    },
+    {
+      label: '② Levantar auto',
+      color: '#534AB7',
+      title: 'Preparación — levantar y asegurar el auto',
+      body: 'Se levanta con gato hidráulico y se pone en caballetes (nunca trabajar solo con el gato). Se drena el aceite de la caja de cambios. Se desconecta el cable de embrague o la línea hidráulica según el modelo.',
+      tip: '⚠ Nunca meterse bajo el auto sostenido solo por el gato — siempre caballetes.',
+      svg: function() { }
+    },
+    {
+      label: '③ Desconectar',
+      color: '#534AB7',
+      title: 'Desconectar semiejes y soporte del motor',
+      body: 'Se sacan los dos semiejes de la caja. Se pone un soporte bajo el motor (no puede quedar colgando). Se sacan los pernos que unen el motor a la caja de cambios — suelen ser 6 a 8 pernos.',
+      tip: 'Los semiejes se sacan con un destornillador grande haciendo palanca en la junta.',
+      svg: function() {
+        op('p1',1); op('p2',1); op('p3',1); op('lbl-pernos',1);
+        setFill('p1','#E24B4A'); setFill('p2','#E24B4A'); setFill('p3','#E24B4A');
+      }
+    },
+    {
+      label: '④ Separar caja',
+      color: '#E24B4A',
+      title: 'Separar la caja del motor',
+      body: 'Se desliza la caja hacia atrás (con cuidado — pesa bastante, 20-30 kg). Se necesita un compañero o un gato para sostenerla. Una vez separada, el disco y el plato de presión quedan expuestos.',
+      tip: '⚠ No forzar — si no sale es porque falta algún perno o hay algo trabado.',
+      svg: function() {
+        op('flecha-sep',1); op('e-caja-sep',1); op('txt-caja-sep',1);
+        op('e-disco-exp',1); op('txt-disco-exp',1);
+        op('e-caja',0.2);
+      }
+    },
+    {
+      label: '⑤ Cambiar disco',
+      color: '#1D9E75',
+      title: 'Sacar el disco viejo y poner el nuevo',
+      body: 'Se sacan los pernos del plato de presión (en estrella, no en círculo). Se saca el disco viejo. Se pone el disco nuevo con la herramienta centradora — esta herramienta es clave para que el eje de la caja entre bien al volver a unir.',
+      tip: '⚠ El disco tiene un lado de frente — mirá la flecha o las letras "GETRIEBE SEITE" (lado caja).',
+      svg: function() {
+        op('e-disco-exp',0); op('txt-disco-exp',0);
+        op('e-disco-nuevo',1); op('txt-disco-nuevo',1);
+        op('e-centrador',1); op('txt-centrador',1);
+        op('e-caja-sep',1); op('txt-caja-sep',1);
+        op('flecha-sep',1); op('e-caja',0.2);
+      }
+    },
+    {
+      label: '⑥ Rearmar',
+      color: '#1D9E75',
+      title: 'Volver a armar todo',
+      body: 'Se vuelve a deslizar la caja sobre el eje. Si el disco está bien centrado, entra solo. Se aprietan los pernos en cruz. Se vuelven a conectar los semiejes, el cable de embrague y se carga aceite en la caja.',
+      tip: 'Consejo: al terminar, ajustar el recorrido del pedal de embrague antes de probar.',
+      svg: function() {
+        op('e-caja',1); op('e-caja-sep',0); op('txt-caja-sep',0);
+        op('flecha-sep',0); op('e-disco-nuevo',0); op('txt-disco-nuevo',0);
+        op('e-centrador',0); op('txt-centrador',0);
+        op('e-disco',1);
+        setFill('p1','#1D9E75'); setFill('p2','#1D9E75'); setFill('p3','#1D9E75');
+        op('p1',1); op('p2',1); op('p3',1);
+      }
+    }
+  ];
+
+  function op(id, val) {
+    var e = document.getElementById(id);
+    if(e) e.setAttribute('opacity', val);
+  }
+  function setTxt(id, val) {
+    var e = document.getElementById(id);
+    if(e) e.textContent = val;
+  }
+  function setFill(id, val) {
+    var e = document.getElementById(id);
+    if(e) e.setAttribute('fill', val);
+  }
+
+  function resetSVG() {
+    ['e-sintomas','s1','s2','s3','flecha-sep','e-caja-sep','txt-caja-sep',
+     'e-disco-exp','txt-disco-exp','e-disco-nuevo','txt-disco-nuevo',
+     'e-centrador','txt-centrador'].forEach(function(id){ op(id,0); });
+    op('e-caja',1);
+    op('e-disco',1);
+    setFill('p1','#E24B4A'); setFill('p2','#E24B4A'); setFill('p3','#E24B4A');
+    op('p1',0.3); op('p2',0.3); op('p3',0.3);
+    op('lbl-pernos',0.3);
+  }
+
+  var btnRow = document.getElementById('emb-btns');
+
+  pasos.forEach(function(p, i) {
+    var b = document.createElement('button');
+    b.textContent = p.label;
+    b.style.cssText = 'cursor:pointer;padding:6px 10px;font-size:12px;border-radius:6px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-secondary);';
+    b.addEventListener('click', function() {
+      btnRow.querySelectorAll('button').forEach(function(btn) {
+        btn.style.background = 'var(--color-background-secondary)';
+        btn.style.color = 'var(--color-text-secondary)';
+        btn.style.borderColor = 'var(--color-border-secondary)';
+        btn.style.fontWeight = '400';
+      });
+      b.style.background = 'var(--color-background-info)';
+      b.style.color = 'var(--color-text-info)';
+      b.style.borderColor = 'var(--color-border-info)';
+      b.style.fontWeight = '500';
+
+      document.getElementById('emb-title').textContent = p.title;
+      document.getElementById('emb-body').textContent = p.body;
+      document.getElementById('emb-tip').textContent = p.tip || '';
+
+      resetSVG();
+      p.svg();
+    });
+    btnRow.appendChild(b);
+  });
+
+  // activar primero
+  btnRow.querySelectorAll('button')[0].click();
+})();
+</script>

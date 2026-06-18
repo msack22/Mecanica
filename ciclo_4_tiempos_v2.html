@@ -1,0 +1,207 @@
+
+<div style="padding: 8px 0">
+<div style="display:flex;gap:8px;justify-content:center;margin-bottom:16px;flex-wrap:wrap" id="btn-row"></div>
+<svg id="cyl-svg" width="100%" viewBox="0 0 680 400">
+  <defs>
+    <marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- Info box -->
+  <rect x="20" y="40" width="190" height="220" rx="10" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+  <text id="inf-title" x="115" y="68" text-anchor="middle" font-size="15" font-weight="500" fill="var(--color-text-primary)">Admisión</text>
+  <text id="inf-1" x="115" y="96"  text-anchor="middle" font-size="12" fill="var(--color-text-secondary)">Válvula admisión se abre.</text>
+  <text id="inf-2" x="115" y="114" text-anchor="middle" font-size="12" fill="var(--color-text-secondary)">Pistón baja y succiona</text>
+  <text id="inf-3" x="115" y="132" text-anchor="middle" font-size="12" fill="var(--color-text-secondary)">aire + nafta al cilindro.</text>
+  <text id="inf-4" x="115" y="164" text-anchor="middle" font-size="12" fill="#1D9E75">✓ Admisión: abierta</text>
+  <text id="inf-5" x="115" y="184" text-anchor="middle" font-size="12" fill="#888780">✗ Escape: cerrada</text>
+  <text id="inf-6" x="115" y="204" text-anchor="middle" font-size="12" fill="#BA7517">↓ Inyector: activo</text>
+
+  <!-- Cylinder walls -->
+  <rect x="280" y="60" width="180" height="240" rx="0" fill="none" stroke="var(--color-text-secondary)" stroke-width="3" opacity="0.25"/>
+
+  <!-- Gas fill -->
+  <rect id="gas" x="283" y="63" width="174" height="170" rx="0" fill="#9FE1CB" opacity="0.4"/>
+
+  <!-- Válvula admisión -->
+  <rect id="vadm" x="283" y="60" width="60" height="10" rx="3" fill="#1D9E75" opacity="0.9"/>
+  <text x="276" y="56" text-anchor="end" font-size="11" fill="var(--color-text-secondary)">admisión</text>
+
+  <!-- Válvula escape -->
+  <rect id="vesc" x="397" y="60" width="60" height="10" rx="3" fill="var(--color-text-secondary)" opacity="0.3"/>
+  <text x="460" y="56" font-size="11" fill="var(--color-text-secondary)">escape</text>
+
+  <!-- Bujía -->
+  <rect x="351" y="44" width="38" height="18" rx="4" fill="var(--color-text-tertiary)" opacity="0.4"/>
+  <text x="370" y="40" text-anchor="middle" font-size="11" fill="var(--color-text-secondary)">bujía</text>
+
+  <!-- Inyector -->
+  <rect x="285" y="64" width="16" height="10" rx="2" fill="#BA7517" opacity="0.8"/>
+  <text x="276" y="76" text-anchor="end" font-size="11" fill="var(--color-text-secondary)">inyector</text>
+
+  <!-- Pistón -->
+  <rect id="pist" x="283" y="228" width="174" height="26" rx="4" fill="var(--color-text-secondary)" opacity="0.6"/>
+
+  <!-- Biela -->
+  <line id="biel" x1="370" y1="254" x2="370" y2="310" stroke="var(--color-text-secondary)" stroke-width="5" stroke-linecap="round" opacity="0.4"/>
+
+  <!-- Cigüeñal -->
+  <circle cx="370" cy="328" r="20" fill="none" stroke="var(--color-text-secondary)" stroke-width="2" opacity="0.35"/>
+  <circle id="cpin" cx="370" cy="310" r="5" fill="var(--color-text-secondary)" opacity="0.5"/>
+  <text x="460" y="332" font-size="11" fill="var(--color-text-secondary)">cigüeñal</text>
+  <text x="460" y="276" font-size="11" fill="var(--color-text-secondary)">biela</text>
+  <text x="460" y="244" font-size="11" fill="var(--color-text-secondary)">pistón</text>
+
+  <!-- Flecha pistón -->
+  <line id="parrow" x1="248" y1="190" x2="248" y2="225" stroke="#1D9E75" stroke-width="2" marker-end="url(#arr2)"/>
+
+  <!-- Partículas explosión -->
+  <g id="sparks" opacity="0">
+    <circle cx="330" cy="130" r="5" fill="#EF9F27"/>
+    <circle cx="380" cy="110" r="4" fill="#E24B4A"/>
+    <circle cx="410" cy="140" r="6" fill="#EF9F27"/>
+    <circle cx="350" cy="155" r="3" fill="#E24B4A"/>
+  </g>
+
+  <!-- Flecha entrada aire -->
+  <line id="inarrow" x1="313" y1="44" x2="313" y2="58" stroke="#1D9E75" stroke-width="2" marker-end="url(#arr2)" opacity="1"/>
+  <!-- Flecha salida gases -->
+  <line id="outarrow" x1="427" y1="58" x2="427" y2="44" stroke="#888780" stroke-width="2" marker-end="url(#arr2)" opacity="0"/>
+</svg>
+</div>
+
+<script>
+(function() {
+  var steps = [
+    {
+      title: "1 · Admisión",
+      l1: "Válvula admisión se abre.",
+      l2: "Pistón baja y succiona",
+      l3: "aire + nafta al cilindro.",
+      l4c: "#1D9E75", l4: "✓ Admisión: abierta",
+      l5c: "#888780", l5: "✗ Escape: cerrada",
+      l6c: "#BA7517", l6: "↓ Inyector: activo",
+      pistonY: 228, gasH: 170, gasColor: "#9FE1CB", gasOp: 0.4,
+      vadmOp: 0.9, vadmColor: "#1D9E75",
+      vescOp: 0.3, vescColor: "var(--color-text-secondary)",
+      sparks: 0, inarrow: 1, outarrow: 0,
+      arrowY1: 190, arrowY2: 225, arrowEnd: "url(#arr2)", arrowStart: "none",
+      biela1: 254, biela2: 310, cpinY: 310
+    },
+    {
+      title: "2 · Compresión",
+      l1: "Ambas válvulas cerradas.",
+      l2: "Pistón sube y comprime",
+      l3: "la mezcla aire + nafta.",
+      l4c: "#888780", l4: "✗ Admisión: cerrada",
+      l5c: "#888780", l5: "✗ Escape: cerrada",
+      l6c: "#888780", l6: "— Inyector: cerrado",
+      pistonY: 148, gasH: 90, gasColor: "#9FE1CB", gasOp: 0.7,
+      vadmOp: 0.3, vadmColor: "var(--color-text-secondary)",
+      vescOp: 0.3, vescColor: "var(--color-text-secondary)",
+      sparks: 0, inarrow: 0, outarrow: 0,
+      arrowY1: 198, arrowY2: 163, arrowEnd: "none", arrowStart: "url(#arr2)",
+      biela1: 174, biela2: 230, cpinY: 346
+    },
+    {
+      title: "3 · Explosión",
+      l1: "La bujía genera chispa.",
+      l2: "La mezcla explota y",
+      l3: "empuja el pistón abajo.",
+      l4c: "#888780", l4: "✗ Admisión: cerrada",
+      l5c: "#888780", l5: "✗ Escape: cerrada",
+      l6c: "#888780", l6: "— Inyector: cerrado",
+      pistonY: 228, gasH: 170, gasColor: "#EF9F27", gasOp: 0.5,
+      vadmOp: 0.3, vadmColor: "var(--color-text-secondary)",
+      vescOp: 0.3, vescColor: "var(--color-text-secondary)",
+      sparks: 1, inarrow: 0, outarrow: 0,
+      arrowY1: 190, arrowY2: 225, arrowEnd: "url(#arr2)", arrowStart: "none",
+      biela1: 254, biela2: 310, cpinY: 310
+    },
+    {
+      title: "4 · Escape",
+      l1: "Válvula escape se abre.",
+      l2: "Pistón sube y expulsa",
+      l3: "los gases quemados.",
+      l4c: "#888780", l4: "✗ Admisión: cerrada",
+      l5c: "#1D9E75", l5: "✓ Escape: abierta",
+      l6c: "#888780", l6: "— Inyector: cerrado",
+      pistonY: 148, gasH: 90, gasColor: "#B4B2A9", gasOp: 0.35,
+      vadmOp: 0.3, vadmColor: "var(--color-text-secondary)",
+      vescOp: 0.9, vescColor: "#1D9E75",
+      sparks: 0, inarrow: 0, outarrow: 1,
+      arrowY1: 198, arrowY2: 163, arrowEnd: "none", arrowStart: "url(#arr2)",
+      biela1: 174, biela2: 230, cpinY: 346
+    }
+  ];
+
+  var current = 0;
+
+  var btnRow = document.getElementById('btn-row');
+  steps.forEach(function(s, i) {
+    var b = document.createElement('button');
+    b.textContent = s.title;
+    b.style.cssText = 'cursor:pointer;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-secondary);border-radius:6px;padding:6px 16px;font-size:13px;';
+    b.addEventListener('click', function() { render(i); });
+    btnRow.appendChild(b);
+  });
+
+  function render(i) {
+    current = i;
+    var s = steps[i];
+
+    btnRow.querySelectorAll('button').forEach(function(b, j) {
+      if (j === i) {
+        b.style.background = 'var(--color-background-info)';
+        b.style.color = 'var(--color-text-info)';
+        b.style.borderColor = 'var(--color-border-info)';
+        b.style.fontWeight = '500';
+      } else {
+        b.style.background = 'var(--color-background-secondary)';
+        b.style.color = 'var(--color-text-secondary)';
+        b.style.borderColor = 'var(--color-border-secondary)';
+        b.style.fontWeight = '400';
+      }
+    });
+
+    document.getElementById('inf-title').textContent = s.title;
+    document.getElementById('inf-1').textContent = s.l1;
+    document.getElementById('inf-2').textContent = s.l2;
+    document.getElementById('inf-3').textContent = s.l3;
+    var el4 = document.getElementById('inf-4');
+    el4.textContent = s.l4; el4.setAttribute('fill', s.l4c);
+    var el5 = document.getElementById('inf-5');
+    el5.textContent = s.l5; el5.setAttribute('fill', s.l5c);
+    var el6 = document.getElementById('inf-6');
+    el6.textContent = s.l6; el6.setAttribute('fill', s.l6c);
+
+    document.getElementById('gas').setAttribute('y', 63);
+    document.getElementById('gas').setAttribute('height', s.gasH);
+    document.getElementById('gas').setAttribute('fill', s.gasColor);
+    document.getElementById('gas').setAttribute('opacity', s.gasOp);
+
+    document.getElementById('pist').setAttribute('y', s.pistonY);
+    document.getElementById('biel').setAttribute('y1', s.biela1);
+    document.getElementById('biel').setAttribute('y2', s.biela2);
+    document.getElementById('cpin').setAttribute('cy', s.cpinY);
+
+    document.getElementById('vadm').setAttribute('opacity', s.vadmOp);
+    document.getElementById('vadm').setAttribute('fill', s.vadmColor);
+    document.getElementById('vesc').setAttribute('opacity', s.vescOp);
+    document.getElementById('vesc').setAttribute('fill', s.vescColor);
+
+    document.getElementById('sparks').setAttribute('opacity', s.sparks);
+    document.getElementById('inarrow').setAttribute('opacity', s.inarrow);
+    document.getElementById('outarrow').setAttribute('opacity', s.outarrow);
+
+    var pa = document.getElementById('parrow');
+    pa.setAttribute('y1', s.arrowY1);
+    pa.setAttribute('y2', s.arrowY2);
+    pa.setAttribute('marker-end', s.arrowEnd);
+    pa.setAttribute('marker-start', s.arrowStart);
+  }
+
+  render(0);
+})();
+</script>

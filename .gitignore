@@ -1,0 +1,26 @@
+html# dependencies
+node_modules/
+
+# macOS
+.DS_Store
+
+# logs
+*.log
+
+# env / secrets
+.env
+.env.*
+
+# editor
+.vscode/
+.idea/
+
+# build output (if you ever add one)
+dist/
+build/
+
+# backups
+*~
+*.swp
+*.bak
+

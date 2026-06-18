@@ -1,0 +1,4 @@
+.wrap{padding:10px;background:transparent;}
+.svg{display:block;border-radius:12px;background:transparent;}
+.legend{margin-top:8px;font-size:11px;color:var(--color-text-tertiary);line-height:1.5;}
+

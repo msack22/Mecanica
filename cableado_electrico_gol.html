@@ -1,0 +1,248 @@
+
+<div style="padding:8px 0">
+<div style="display:flex;gap:6px;justify-content:center;margin-bottom:14px;flex-wrap:wrap" id="cab-btns"></div>
+
+<div id="cab-info" style="padding:12px 16px;background:var(--color-background-secondary);border-radius:8px;border:0.5px solid var(--color-border-info);margin-bottom:12px;min-height:80px">
+  <div style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px" id="cab-title">Seleccioná un tema</div>
+  <div style="font-size:12px;color:var(--color-text-secondary)" id="cab-body">El cableado del Gol tiene una lógica muy clara. Tocá cada tema para entenderlo.</div>
+  <div style="font-size:11px;color:#BA7517;margin-top:6px" id="cab-tip"></div>
+</div>
+
+<svg width="100%" viewBox="0 0 680 400">
+  <defs>
+    <marker id="acab" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- ===== CONTENIDO FIJO: layout del auto ===== -->
+
+  <!-- Batería -->
+  <rect x="30" y="30" width="90" height="50" rx="6" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="1"/>
+  <text x="75" y="52" text-anchor="middle" font-size="10" font-weight="500" fill="var(--color-text-primary)">Batería</text>
+  <text x="75" y="67" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">12V fuente</text>
+
+  <!-- Caja de fusibles -->
+  <rect x="160" y="30" width="110" height="50" rx="6" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="1"/>
+  <text x="215" y="52" text-anchor="middle" font-size="10" font-weight="500" fill="var(--color-text-primary)">Caja de fusibles</text>
+  <text x="215" y="67" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">tablero + motor</text>
+
+  <!-- ECU -->
+  <rect x="320" y="30" width="90" height="50" rx="6" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="1"/>
+  <text x="365" y="52" text-anchor="middle" font-size="10" font-weight="500" fill="var(--color-text-primary)">ECU</text>
+  <text x="365" y="67" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">cerebro</text>
+
+  <!-- Masa / tierra -->
+  <rect x="460" y="30" width="90" height="50" rx="6" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="1"/>
+  <text x="505" y="52" text-anchor="middle" font-size="10" font-weight="500" fill="var(--color-text-primary)">Masa (tierra)</text>
+  <text x="505" y="67" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">cable negro/azul</text>
+
+  <!-- Componentes que consumen electricidad -->
+  <!-- Fila 1 -->
+  <rect x="30" y="150" width="80" height="40" rx="5" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <text x="70" y="168" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">Inyectores</text>
+  <text x="70" y="181" text-anchor="middle" font-size="8" fill="var(--color-text-tertiary)">4 fichas</text>
+
+  <rect x="125" y="150" width="80" height="40" rx="5" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <text x="165" y="168" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">Bobina</text>
+  <text x="165" y="181" text-anchor="middle" font-size="8" fill="var(--color-text-tertiary)">1 ficha grande</text>
+
+  <rect x="220" y="150" width="80" height="40" rx="5" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <text x="260" y="168" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">Sonda lambda</text>
+  <text x="260" y="181" text-anchor="middle" font-size="8" fill="var(--color-text-tertiary)">1 ficha 4 pines</text>
+
+  <rect x="315" y="150" width="80" height="40" rx="5" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <text x="355" y="168" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">Ventilador</text>
+  <text x="355" y="181" text-anchor="middle" font-size="8" fill="var(--color-text-tertiary)">1 ficha 2 pines</text>
+
+  <rect x="410" y="150" width="80" height="40" rx="5" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <text x="450" y="168" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">Alternador</text>
+  <text x="450" y="181" text-anchor="middle" font-size="8" fill="var(--color-text-tertiary)">1 ficha + cable</text>
+
+  <rect x="505" y="150" width="80" height="40" rx="5" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <text x="545" y="168" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">Sensores</text>
+  <text x="545" y="181" text-anchor="middle" font-size="8" fill="var(--color-text-tertiary)">temp/MAP/TPS</text>
+
+  <!-- Fila 2 -->
+  <rect x="30" y="230" width="80" height="40" rx="5" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <text x="70" y="248" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">Bomba nafta</text>
+  <text x="70" y="261" text-anchor="middle" font-size="8" fill="var(--color-text-tertiary)">en el tanque</text>
+
+  <rect x="125" y="230" width="80" height="40" rx="5" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <text x="165" y="248" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">Luces</text>
+  <text x="165" y="261" text-anchor="middle" font-size="8" fill="var(--color-text-tertiary)">faros/stop/giro</text>
+
+  <rect x="220" y="230" width="80" height="40" rx="5" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <text x="260" y="248" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">Bocina</text>
+  <text x="260" y="261" text-anchor="middle" font-size="8" fill="var(--color-text-tertiary)">1 ficha 2 pines</text>
+
+  <rect x="315" y="230" width="80" height="40" rx="5" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <text x="355" y="248" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">Burro arranque</text>
+  <text x="355" y="261" text-anchor="middle" font-size="8" fill="var(--color-text-tertiary)">cable grueso</text>
+
+  <rect x="410" y="230" width="80" height="40" rx="5" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <text x="450" y="248" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">Radio/tablero</text>
+  <text x="450" y="261" text-anchor="middle" font-size="8" fill="var(--color-text-tertiary)">varios</text>
+
+  <rect x="505" y="230" width="80" height="40" rx="5" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <text x="545" y="248" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">Aire acond.</text>
+  <text x="545" y="261" text-anchor="middle" font-size="8" fill="var(--color-text-tertiary)">si tiene</text>
+
+  <!-- HIGHLIGHT BOX -->
+  <rect id="cab-hl" x="0" y="0" width="0" height="0" rx="8" fill="none" stroke="var(--color-border-info)" stroke-width="2.5" opacity="0"/>
+
+  <!-- CABLES visibles (ocultos por defecto) -->
+  <!-- Batería → fusibles -->
+  <path id="c-bat-fus" d="M 120 55 L 160 55" fill="none" stroke="#E24B4A" stroke-width="3" stroke-linecap="round" marker-end="url(#acab)" opacity="0"/>
+  <!-- Fusibles → todo -->
+  <path id="c-fus-todo" d="M 215 80 L 215 150" fill="none" stroke="#E24B4A" stroke-width="2" stroke-linecap="round" marker-end="url(#acab)" opacity="0"/>
+  <!-- ECU → sensores -->
+  <path id="c-ecu-sen" d="M 365 80 L 365 150" fill="none" stroke="#534AB7" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 3" marker-end="url(#acab)" opacity="0"/>
+  <!-- Masa general -->
+  <path id="c-masa" d="M 505 80 L 505 150" fill="none" stroke="#2C2C2A" stroke-width="2" stroke-linecap="round" marker-end="url(#acab)" opacity="0"/>
+
+  <!-- FICHAS ejemplo (ocultas) -->
+  <g id="g-fichas" opacity="0">
+    <!-- Ficha inyector ejemplo -->
+    <rect x="55" y="130" width="30" height="18" rx="4" fill="#534AB7" opacity="0.85"/>
+    <text x="70" y="143" text-anchor="middle" font-size="8" fill="#fff">ficha</text>
+    <line x1="70" y1="148" x2="70" y2="152" stroke="#534AB7" stroke-width="2"/>
+    <!-- Pines -->
+    <rect x="59" y="119" width="5" height="11" rx="1" fill="var(--color-text-secondary)" opacity="0.6"/>
+    <rect x="66" y="119" width="5" height="11" rx="1" fill="var(--color-text-secondary)" opacity="0.6"/>
+    <rect x="73" y="119" width="5" height="11" rx="1" fill="var(--color-text-secondary)" opacity="0.6"/>
+    <text x="70" y="115" text-anchor="middle" font-size="7" fill="var(--color-text-tertiary)">pines</text>
+  </g>
+
+  <!-- FUSIBLES ejemplo (ocultos) -->
+  <g id="g-fusibles" opacity="0">
+    <rect x="165" y="38" width="95" height="35" rx="4" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+    <!-- Fusibles individuales -->
+    <rect x="170" y="42" width="14" height="22" rx="3" fill="#1D9E75" opacity="0.8"/>
+    <rect x="188" y="42" width="14" height="22" rx="3" fill="#1D9E75" opacity="0.8"/>
+    <rect x="206" y="42" width="14" height="22" rx="3" fill="#BA7517" opacity="0.8"/>
+    <rect x="224" y="42" width="14" height="22" rx="3" fill="#E24B4A" opacity="0.8"/>
+    <rect x="242" y="42" width="14" height="22" rx="3" fill="#1D9E75" opacity="0.8"/>
+    <text x="177" y="57" text-anchor="middle" font-size="7" fill="#fff">15A</text>
+    <text x="195" y="57" text-anchor="middle" font-size="7" fill="#fff">10A</text>
+    <text x="213" y="57" text-anchor="middle" font-size="7" fill="#fff">20A</text>
+    <text x="231" y="57" text-anchor="middle" font-size="7" fill="#fff">30A</text>
+    <text x="249" y="57" text-anchor="middle" font-size="7" fill="#fff">15A</text>
+  </g>
+
+  <!-- COLORES cables (ocultos) -->
+  <g id="g-colores" opacity="0">
+    <rect x="30" y="310" width="600" height="70" rx="8" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+    <text x="330" y="332" text-anchor="middle" font-size="12" font-weight="500" fill="var(--color-text-primary)">Código de colores del cableado</text>
+    <!-- Rojo -->
+    <rect x="40" y="342" width="20" height="10" rx="2" fill="#E24B4A"/>
+    <text x="66" y="351" font-size="10" fill="var(--color-text-secondary)">Rojo = positivo (12V directo de batería)</text>
+    <!-- Negro/azul -->
+    <rect x="40" y="358" width="20" height="10" rx="2" fill="#2C2C2A"/>
+    <text x="66" y="367" font-size="10" fill="var(--color-text-secondary)">Negro/Marrón = masa (tierra, negativo)</text>
+    <!-- Varios colores -->
+    <rect x="340" y="342" width="8" height="10" rx="1" fill="#534AB7"/>
+    <rect x="350" y="342" width="8" height="10" rx="1" fill="#1D9E75"/>
+    <rect x="360" y="342" width="8" height="10" rx="1" fill="#BA7517"/>
+    <text x="375" y="351" font-size="10" fill="var(--color-text-secondary)">Otros colores = señales/circuitos específicos</text>
+    <rect x="340" y="358" width="20" height="10" rx="2" fill="#888780"/>
+    <text x="366" y="367" font-size="10" fill="var(--color-text-secondary)">Gris = sensores / señal ECU</text>
+  </g>
+
+  <!-- FICHA SUELTA (oculto) -->
+  <g id="g-suelta" opacity="0">
+    <rect x="30" y="300" width="620" height="85" rx="8" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+    <text x="340" y="322" text-anchor="middle" font-size="12" font-weight="500" fill="var(--color-text-primary)">Protocolo para ficha suelta</text>
+    <text x="340" y="342" text-anchor="middle" font-size="11" fill="var(--color-text-secondary)">① Mirá cuántos pines tiene la ficha → te dice el tipo de componente</text>
+    <text x="340" y="358" text-anchor="middle" font-size="11" fill="var(--color-text-secondary)">② Seguí el cable hacia atrás → lleva al componente que alimenta</text>
+    <text x="340" y="374" text-anchor="middle" font-size="11" fill="var(--color-text-secondary)">③ Buscá el macho de la ficha en el componente más cercano → ahí va</text>
+  </g>
+</svg>
+</div>
+
+<script>
+(function(){
+  var temas = [
+    {
+      label: 'Las 3 reglas',
+      title: 'Las 3 reglas del cableado',
+      body: 'Todo circuito eléctrico en el Gol sigue 3 reglas: 1) La corriente sale de la batería (+), 2) Pasa por un fusible que la protege, 3) Llega al componente y vuelve por la masa (cable negro al chasis). Sin estas 3 cosas, nada funciona.',
+      tip: 'Si algo no anda: verificá batería, fusible y masa — en ese orden.',
+      show: [], cables: ['c-bat-fus','c-fus-todo']
+    },
+    {
+      label: 'Fusibles',
+      title: 'Los fusibles — el sistema de protección',
+      body: 'Cada circuito tiene un fusible que lo protege. Si pasa demasiada corriente (cortocircuito), el fusible se quema antes de que se queme el cable. En el Gol hay dos cajas: una en el motor y otra en el tablero del habitáculo. Cada fusible tiene una numeración y el diagrama en la tapa te dice qué protege cada uno.',
+      tip: '⚠ Si algo dejó de funcionar de golpe → revisá el fusible antes de cualquier otra cosa. Es gratis y se cambia en 10 segundos.',
+      show: ['g-fusibles'], cables: []
+    },
+    {
+      label: 'Fichas y conectores',
+      title: 'Fichas y conectores — cómo identificarlos',
+      body: 'Cada componente tiene su ficha y solo encaja de una manera — tienen formas distintas para que no se pueda conectar al lugar equivocado. Los inyectores tienen fichas de 2 pines, la sonda lambda de 4 pines, la bobina tiene una grande. Si ves una ficha suelta, la forma y el número de pines te dicen qué es.',
+      tip: 'Las fichas nunca van al revés — tienen una lengüeta de traba. Si no entra fácil, es el lugar equivocado.',
+      show: ['g-fichas'], cables: []
+    },
+    {
+      label: 'Colores de cables',
+      title: 'Código de colores — el lenguaje del cableado',
+      body: 'Los cables tienen colores estandarizados. Rojo siempre es positivo (12V). Negro o marrón siempre es masa (tierra). Otros colores son circuitos específicos según el fabricante. El Gol tiene un diagrama eléctrico que dice exactamente qué color va a qué componente — se consigue online para cada modelo y año.',
+      tip: 'Tip clave: si ves un cable negro suelto cerca del chasis, es casi siempre un cable de masa perdido.',
+      show: ['g-colores'], cables: []
+    },
+    {
+      label: 'Ficha suelta',
+      title: '¿Qué hacer con una ficha suelta?',
+      body: 'Tres pasos: primero contá los pines de la ficha — eso te dice el tipo de componente. Segundo, seguí el cable hacia atrás — siempre lleva al componente que alimenta. Tercero, buscá el conector macho en el componente más cercano — ahí va.',
+      tip: '⚠ Nunca conectes una ficha a presión si no estás seguro — podés cortocircuitar algo. Primero identificá, después conectá.',
+      show: ['g-suelta'], cables: ['c-ecu-sen']
+    },
+    {
+      label: 'Qué necesita electricidad',
+      title: 'Componentes eléctricos del Gol — todos',
+      body: 'Motor: inyectores, bobina, sensores (temperatura, MAP, TPS, cigüeñal), sonda lambda, ventilador eléctrico, alternador, bomba de nafta, burro de arranque. Carrocería: luces, bocina, radio, tablero, aire acondicionado. Todo controlado por la ECU y protegido por fusibles.',
+      tip: 'Lo que NO necesita electricidad: el motor mecánico en sí (pistones, bielas, cigüeñal, válvulas) — esos se mueven solos una vez que arrancó.',
+      show: [], cables: ['c-fus-todo','c-ecu-sen','c-masa']
+    }
+  ];
+
+  function op(id, val) { var e = document.getElementById(id); if(e) e.setAttribute('opacity', val); }
+
+  var allCables = ['c-bat-fus','c-fus-todo','c-ecu-sen','c-masa'];
+  var allShows = ['g-fusibles','g-fichas','g-colores','g-suelta'];
+
+  var btnRow = document.getElementById('cab-btns');
+  temas.forEach(function(t) {
+    var b = document.createElement('button');
+    b.textContent = t.label;
+    b.style.cssText = 'cursor:pointer;padding:6px 10px;font-size:12px;border-radius:6px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-secondary);';
+    b.addEventListener('click', function() {
+      btnRow.querySelectorAll('button').forEach(function(btn) {
+        btn.style.background = 'var(--color-background-secondary)';
+        btn.style.color = 'var(--color-text-secondary)';
+        btn.style.borderColor = 'var(--color-border-secondary)';
+        btn.style.fontWeight = '400';
+      });
+      b.style.background = 'var(--color-background-info)';
+      b.style.color = 'var(--color-text-info)';
+      b.style.borderColor = 'var(--color-border-info)';
+      b.style.fontWeight = '500';
+
+      document.getElementById('cab-title').textContent = t.title;
+      document.getElementById('cab-body').textContent = t.body;
+      document.getElementById('cab-tip').textContent = t.tip;
+
+      allCables.forEach(function(id){ op(id, 0); });
+      allShows.forEach(function(id){ op(id, 0); });
+      op('cab-hl', 0);
+
+      t.cables.forEach(function(id){ op(id, 0.9); });
+      t.show.forEach(function(id){ op(id, 1); });
+    });
+    btnRow.appendChild(b);
+  });
+
+  btnRow.querySelectorAll('button')[0].click();
+})();
+</script>

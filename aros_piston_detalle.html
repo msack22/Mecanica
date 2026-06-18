@@ -1,0 +1,148 @@
+
+<div style="padding:8px 0">
+<div style="display:flex;gap:8px;justify-content:center;margin-bottom:14px;flex-wrap:wrap" id="aro-btns"></div>
+
+<div id="aro-info" style="padding:12px 16px;background:var(--color-background-secondary);border-radius:8px;border:0.5px solid var(--color-border-info);margin-bottom:12px;min-height:70px">
+  <div style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px" id="aro-title">Seleccioná un aro</div>
+  <div style="font-size:12px;color:var(--color-text-secondary)" id="aro-body">El pistón tiene 3 aros. Cada uno hace algo distinto. Tocá cada uno para verlo.</div>
+  <div style="font-size:11px;color:#BA7517;margin-top:6px" id="aro-tip"></div>
+</div>
+
+<svg width="100%" viewBox="0 0 680 380">
+
+  <!-- Paredes cilindro -->
+  <rect x="240" y="20" width="16" height="320" fill="var(--color-text-secondary)" opacity="0.15"/>
+  <rect x="424" y="20" width="16" height="320" fill="var(--color-text-secondary)" opacity="0.15"/>
+
+  <!-- Película de aceite en pared -->
+  <rect id="pelicula" x="256" y="20" width="6" height="320" fill="#BA7517" opacity="0.2"/>
+  <rect id="pelicula2" x="418" y="20" width="6" height="320" fill="#BA7517" opacity="0.2"/>
+
+  <!-- Cuerpo del pistón -->
+  <rect x="262" y="80" width="156" height="200" rx="4" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="1"/>
+  <text x="340" y="188" text-anchor="middle" font-size="12" fill="var(--color-text-secondary)">pistón</text>
+
+  <!-- ARO 1 — compresión superior -->
+  <rect id="r-aro1-iz" x="252" y="88" width="16" height="12" rx="2" fill="#534AB7" opacity="0.9"/>
+  <rect id="r-aro1-de" x="412" y="88" width="16" height="12" rx="2" fill="#534AB7" opacity="0.9"/>
+  <text id="lbl-aro1" x="500" y="97" font-size="11" font-weight="500" fill="#534AB7">Aro 1 — compresión</text>
+
+  <!-- ARO 2 — compresión inferior -->
+  <rect id="r-aro2-iz" x="252" y="112" width="16" height="12" rx="2" fill="#534AB7" opacity="0.7"/>
+  <rect id="r-aro2-de" x="412" y="112" width="16" height="12" rx="2" fill="#534AB7" opacity="0.7"/>
+  <text id="lbl-aro2" x="500" y="121" font-size="11" font-weight="500" fill="#534AB7">Aro 2 — compresión</text>
+
+  <!-- ARO 3 — rascador -->
+  <rect id="r-aro3-iz" x="252" y="148" width="16" height="14" rx="2" fill="#BA7517" opacity="0.9"/>
+  <rect id="r-aro3-de" x="412" y="148" width="16" height="14" rx="2" fill="#BA7517" opacity="0.9"/>
+  <text id="lbl-aro3" x="500" y="158" font-size="11" font-weight="500" fill="#BA7517">Aro 3 — rascador</text>
+
+  <!-- Zona combustión (arriba) -->
+  <rect x="262" y="20" width="156" height="68" fill="#1D9E75" opacity="0.08"/>
+  <text x="340" y="55" text-anchor="middle" font-size="10" fill="#1D9E75">zona combustión</text>
+  <text x="340" y="70" text-anchor="middle" font-size="9" fill="#1D9E75">SIN aceite</text>
+
+  <!-- Zona aceite (abajo) -->
+  <rect x="262" y="280" width="156" height="60" fill="#BA7517" opacity="0.08"/>
+  <text x="340" y="308" text-anchor="middle" font-size="10" fill="#BA7517">zona aceite</text>
+  <text x="340" y="323" text-anchor="middle" font-size="9" fill="#BA7517">lubrica la pared</text>
+
+  <!-- Highlight aro seleccionado -->
+  <rect id="hl-aro-iz" x="0" y="0" width="0" height="0" rx="3" fill="none" stroke="var(--color-border-info)" stroke-width="2" opacity="0"/>
+  <rect id="hl-aro-de" x="0" y="0" width="0" height="0" rx="3" fill="none" stroke="var(--color-border-info)" stroke-width="2" opacity="0"/>
+
+  <!-- Desgaste visual (oculto) -->
+  <g id="g-desgaste" opacity="0">
+    <text x="340" y="350" text-anchor="middle" font-size="11" fill="#E24B4A">aro gastado = pierde sello = aceite sube = humo azul</text>
+  </g>
+
+  <!-- Flecha aceite subiendo (oculto) -->
+  <path id="fl-aceite-sube" d="M 262 280 L 262 160" fill="none" stroke="#BA7517" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#aarp)" opacity="0"/>
+  <defs>
+    <marker id="aarp" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- Nota película -->
+  <text x="218" y="180" text-anchor="middle" font-size="9" fill="#BA7517" opacity="0.6" transform="rotate(-90,218,180)">película de aceite</text>
+</svg>
+</div>
+
+<script>
+(function(){
+  var aros = [
+    {
+      label: 'Aro 1 — compresión',
+      color: '#534AB7',
+      iy: 86, ih: 14,
+      title: 'Aro 1 — primer aro de compresión',
+      body: 'El más cercano a la explosión. Su trabajo es sellar los gases de combustión para que no bajen al cárter. Está en contacto con los gases a 800°C pero la película de aceite en la pared lo lubrica y enfría al pasar.',
+      tip: 'Roza constantemente pero con aceite — como patinar sobre hielo, no sobre cemento.'
+    },
+    {
+      label: 'Aro 2 — compresión',
+      color: '#534AB7',
+      iy: 110, ih: 14,
+      title: 'Aro 2 — segundo aro de compresión',
+      body: 'Refuerza el sellado del aro 1. Si algo de gas escapa del primer aro, este lo detiene. También ayuda a controlar la cantidad de aceite que sube hacia la zona de combustión — actúa como barrera secundaria.',
+      tip: 'Los dos aros de compresión juntos forman una doble barrera contra los gases.'
+    },
+    {
+      label: 'Aro 3 — rascador',
+      color: '#BA7517',
+      iy: 146, ih: 16,
+      title: 'Aro 3 — rascador de aceite',
+      body: 'Este es el que controla el aceite. Cuando el pistón baja, el aro rascador limpia el exceso de aceite de la pared y lo manda de vuelta al cárter a través de agujeros en el pistón. Deja solo una película finísima — suficiente para lubricar pero sin que llegue a la zona de combustión.',
+      tip: '⚠ Si este aro se gasta, el aceite no se rasca bien y sube arriba → humo azul por el escape.'
+    },
+    {
+      label: 'Por qué no se rompe',
+      color: '#1D9E75',
+      iy: 88, ih: 74,
+      title: '¿Por qué no se desgasta rápido?',
+      body: 'El secreto es que nunca rozan en seco. El aro 3 deja una película de aceite de solo 2-5 micrones en la pared (más fino que un cabello humano). Los aros 1 y 2 deslizan sobre esa película. Es como surfear sobre aceite, no frotar metal contra metal.',
+      tip: 'Por eso el aceite limpio es tan importante — aceite sucio o bajo → los aros rozan en seco → motor fundido.'
+    }
+  ];
+
+  function op(id, val) { var e = document.getElementById(id); if(e) e.setAttribute('opacity', val); }
+
+  var btnRow = document.getElementById('aro-btns');
+  aros.forEach(function(a, i) {
+    var b = document.createElement('button');
+    b.textContent = a.label;
+    b.style.cssText = 'cursor:pointer;padding:6px 12px;font-size:12px;border-radius:6px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-secondary);';
+    b.addEventListener('click', function() {
+      btnRow.querySelectorAll('button').forEach(function(btn) {
+        btn.style.background = 'var(--color-background-secondary)';
+        btn.style.color = 'var(--color-text-secondary)';
+        btn.style.borderColor = 'var(--color-border-secondary)';
+        btn.style.fontWeight = '400';
+      });
+      b.style.background = 'var(--color-background-info)';
+      b.style.color = 'var(--color-text-info)';
+      b.style.borderColor = 'var(--color-border-info)';
+      b.style.fontWeight = '500';
+
+      document.getElementById('aro-title').textContent = a.title;
+      document.getElementById('aro-body').textContent = a.body;
+      document.getElementById('aro-tip').textContent = a.tip;
+
+      // highlight
+      var hliz = document.getElementById('hl-aro-iz');
+      var hlde = document.getElementById('hl-aro-de');
+      hliz.setAttribute('x', 250); hliz.setAttribute('y', a.iy);
+      hliz.setAttribute('width', 20); hliz.setAttribute('height', a.ih);
+      hliz.setAttribute('stroke', a.color); op('hl-aro-iz', 1);
+      hlde.setAttribute('x', 410); hlde.setAttribute('y', a.iy);
+      hlde.setAttribute('width', 20); hlde.setAttribute('height', a.ih);
+      hlde.setAttribute('stroke', a.color); op('hl-aro-de', 1);
+
+      op('g-desgaste', i === 2 ? 1 : 0);
+      op('fl-aceite-sube', i === 2 ? 1 : 0);
+    });
+    btnRow.appendChild(b);
+  });
+})();
+</script>

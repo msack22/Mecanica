@@ -1,0 +1,164 @@
+
+<div style="padding:8px 0">
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px" id="guia-grid"></div>
+
+<div id="guia-info" style="padding:14px 18px;background:var(--color-background-secondary);border-radius:10px;border:0.5px solid var(--color-border-info);min-height:110px">
+  <div style="font-size:14px;font-weight:500;color:var(--color-text-primary);margin-bottom:6px" id="guia-title">Tocá cualquier tema</div>
+  <div style="font-size:12px;color:var(--color-text-secondary);line-height:1.7" id="guia-body">Esta es tu hoja de ruta para las próximas sesiones.</div>
+  <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap" id="guia-tags"></div>
+</div>
+
+</div>
+
+<script>
+(function(){
+  var temas = [
+    {
+      icon: '🔩',
+      titulo: 'Tren delantero completo',
+      subtitulo: 'Todo lo que sostiene la rueda',
+      color: '#534AB7',
+      prioridad: 'Alta',
+      body: 'Los "fierros atados a la rueda" que mencionás. Incluye: mangueta (porta-rueda), rótulas (superior e inferior), buje de rueda y rodamiento, brazos de suspensión, bieletas estabilizadoras y silent blocks. Cada uno tiene un rol y un síntoma de falla distinto. Este es uno de los temas más útiles para inspeccionar un auto usado.',
+      tags: ['se repara', 'se cambia', 'ruidos', 'inspección visual']
+    },
+    {
+      icon: '📍',
+      titulo: 'Amortiguadores y resortes',
+      subtitulo: 'Suspensión completa',
+      color: '#185FA5',
+      prioridad: 'Alta',
+      body: 'Cómo funcionan el amortiguador y el resorte juntos, qué pasa cuando el amortiguador falla (rebote, derrape), cómo detectarlo (test del empuje), los diferentes tipos (telescópico, McPherson) y cuándo se cambian. También los silent blocks y bieletas que son las piezas de goma que se gastan primero.',
+      tags: ['se cambia', 'diagnóstico fácil', 'ruidos']
+    },
+    {
+      icon: '🛑',
+      titulo: 'Sistema de frenos completo',
+      subtitulo: 'Discos, pastillas, tambores, líquido',
+      color: '#A32D2D',
+      prioridad: 'Alta',
+      body: 'Cómo funciona el circuito hidráulico de frenos, diferencia entre discos y tambores, cuándo cambiar pastillas vs discos, cómo saber si los frenos están bien (pedal duro, pedal blando, vibración, ruido metálico). El líquido de frenos y por qué se cambia cada 2 años aunque no se use.',
+      tags: ['se repara', 'se cambia', 'seguridad crítica']
+    },
+    {
+      icon: '🔄',
+      titulo: 'Juntas homocinéticas',
+      subtitulo: 'Extremos de los semiejes',
+      color: '#BA7517',
+      prioridad: 'Media',
+      body: 'Las "bolitas" que están en los extremos de los semiejes. Permiten que la rueda gire y se mueva con la suspensión al mismo tiempo. Se cubren con un fuelle de goma (bota) — cuando la bota se rompe, la grasa sale y la junta se seca y rompe. Detectarlas es fácil: ruido de "crack crack" al doblar.',
+      tags: ['ruidos', 'diagnóstico fácil', 'se cambia']
+    },
+    {
+      icon: '💧',
+      titulo: 'Retenes y juntas',
+      subtitulo: 'Todo lo que sella y evita pérdidas',
+      color: '#0F6E56',
+      prioridad: 'Media',
+      body: 'Retén de cigüeñal delantero y trasero, retén de la caja de cambios, junta de culata, retenes de válvulas. Cuándo cambiarlos, cómo detectar una pérdida (manchas en el piso, nivel que baja), y qué pasa si los ignorás. La mayoría son baratos pero laboriosos de cambiar.',
+      tags: ['pérdidas', 'diagnóstico visual', 'se cambia']
+    },
+    {
+      icon: '🔊',
+      titulo: 'Diagnóstico por ruidos',
+      subtitulo: 'Qué dice cada ruido',
+      color: '#854F0B',
+      prioridad: 'Alta',
+      body: 'Guía práctica de ruidos: golpe en badenes (silent block/rótula), crack al doblar (homocinética), squeak metálico al frenar (pastillas), tick tick en frío (colector escape o válvulas), zumbido que sube con velocidad (rodamiento), golpe seco al acelerar (cruceta o diferencial). Cada ruido tiene una causa específica.',
+      tags: ['diagnóstico', 'muy práctico', 'inspección']
+    },
+    {
+      icon: '⚡',
+      titulo: 'Dirección completa',
+      subtitulo: 'Hidráulica vs eléctrica',
+      color: '#3B6D11',
+      prioridad: 'Media',
+      body: 'Cómo funciona la dirección hidráulica (bomba, cremallera, líquido) y la eléctrica (motor eléctrico en la columna). Qué hacer si el volante vibra, si hay juego excesivo, si la dirección tira para un lado. La cremallera es una pieza cara — cómo detectar que está fallando antes de que sea urgente.',
+      tags: ['se repara', 'diagnóstico', 'ruidos']
+    },
+    {
+      icon: '🌡',
+      titulo: 'Diagnóstico general del motor',
+      subtitulo: 'Test de compresión y más',
+      color: '#534AB7',
+      prioridad: 'Alta',
+      body: 'Cómo hacer un test de compresión paso a paso, qué significan los valores, el test de estanqueidad, cómo leer los códigos de error OBD-II con un scanner, y cómo hacer una inspección completa antes de comprar un auto usado. La checklist completa del Gol Trend.',
+      tags: ['muy práctico', 'compra de auto', 'diagnóstico']
+    },
+    {
+      icon: '🔧',
+      titulo: 'Mantenimiento preventivo',
+      subtitulo: 'Qué cambiar y cada cuánto',
+      color: '#888780',
+      prioridad: 'Alta',
+      body: 'Plan de mantenimiento completo del Gol Trend 1.6 MSI: aceite cada 10.000 km, correa distribución a los 60.000, bujías, filtros (aire, nafta, habitáculo), líquido de frenos cada 2 años, refrigerante, líquido de caja. Qué podés hacer vos solo vs qué necesita taller.',
+      tags: ['muy práctico', 'ahorra plata', 'preventivo']
+    },
+    {
+      icon: '🪝',
+      titulo: 'Cableado avanzado y OBD',
+      subtitulo: 'Scanner, códigos de error',
+      color: '#534AB7',
+      prioridad: 'Media',
+      body: 'Cómo conectar un scanner OBD-II (se consigue barato), qué son los códigos P0XXX, cómo leerlos e interpretarlos. Qué sensores fallan más en el Gol Trend (MAF, MAP, lambda, temperatura). Cómo hacer un diagnóstico eléctrico básico con multímetro.',
+      tags: ['diagnóstico', 'scanner', 'eléctrico']
+    }
+  ];
+
+  var tagColors = {
+    'se repara': '#1D9E75',
+    'se cambia': '#BA7517',
+    'ruidos': '#534AB7',
+    'diagnóstico': '#185FA5',
+    'diagnóstico fácil': '#185FA5',
+    'inspección visual': '#3B6D11',
+    'inspección': '#3B6D11',
+    'muy práctico': '#E24B4A',
+    'compra de auto': '#E24B4A',
+    'seguridad crítica': '#E24B4A',
+    'pérdidas': '#854F0B',
+    'diagnóstico visual': '#185FA5',
+    'preventivoativo': '#888780',
+    'preventivo': '#888780',
+    'ahorra plata': '#1D9E75',
+    'scanner': '#534AB7',
+    'eléctrico': '#534AB7'
+  };
+
+  var grid = document.getElementById('guia-grid');
+
+  temas.forEach(function(t, i) {
+    var card = document.createElement('div');
+    card.style.cssText = 'cursor:pointer;padding:10px 12px;border-radius:8px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);transition:border-color .15s;';
+    card.innerHTML = '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">' +
+      '<span style="font-size:18px">' + t.icon + '</span>' +
+      '<div>' +
+        '<div style="font-size:12px;font-weight:500;color:var(--color-text-primary)">' + t.titulo + '</div>' +
+        '<div style="font-size:10px;color:var(--color-text-secondary)">' + t.subtitulo + '</div>' +
+      '</div>' +
+      '<span style="margin-left:auto;font-size:9px;padding:2px 8px;border-radius:4px;background:' + (t.prioridad === 'Alta' ? '#FAECE7' : '#F1EFE8') + ';color:' + (t.prioridad === 'Alta' ? '#993C1D' : '#5F5E5A') + '">' + t.prioridad + '</span>' +
+    '</div>';
+
+    card.addEventListener('click', function() {
+      grid.querySelectorAll('div[data-sel]').forEach(function(c) {
+        c.style.borderColor = 'var(--color-border-secondary)';
+        c.removeAttribute('data-sel');
+      });
+      card.style.borderColor = t.color;
+      card.setAttribute('data-sel', '1');
+
+      document.getElementById('guia-title').textContent = t.icon + ' ' + t.titulo;
+      document.getElementById('guia-body').textContent = t.body;
+
+      var tagsEl = document.getElementById('guia-tags');
+      tagsEl.innerHTML = t.tags.map(function(tag) {
+        var c = tagColors[tag] || '#888780';
+        return '<span style="font-size:10px;padding:2px 8px;border-radius:4px;background:' + c + '22;color:' + c + ';border:0.5px solid ' + c + '44">' + tag + '</span>';
+      }).join('');
+    });
+
+    grid.appendChild(card);
+  });
+})();
+</script>

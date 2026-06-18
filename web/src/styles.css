@@ -1,0 +1,31 @@
+:root {
+  --color-background-secondary: #f3f4f6;
+  --color-background-tertiary: #ebedf2;
+  --color-background-info: #e6f7ff;
+  --color-border-secondary: #d7dbe2;
+  --color-border-tertiary: rgba(0,0,0,0.06);
+  --color-border-info: #3b82f6;
+
+  --color-text-primary: #111827;
+  --color-text-secondary: #6b7280;
+  --color-text-tertiary: #9ca3af;
+  --color-text-info: #1d4ed8;
+
+  --color-vert: #1D9E75;
+  --color-azul: #185FA5;
+  --color-naranja: #BA7517;
+  --color-rojo: #E24B4A;
+  --color-violeta: #534AB7;
+  --color-gris: #888780;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;
+  background: white;
+}
+
+button { font-family: inherit; }
+

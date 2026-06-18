@@ -1,0 +1,244 @@
+
+<div style="padding:8px 0">
+<div style="display:flex;gap:8px;justify-content:center;margin-bottom:16px;flex-wrap:wrap">
+  <button onclick="showSinc('marcas')" id="s-marcas" style="cursor:pointer;padding:6px 14px;font-size:13px;border-radius:6px;border:0.5px solid var(--color-border-info);background:var(--color-background-info);color:var(--color-text-info);font-weight:500">Las marcas</button>
+  <button onclick="showSinc('proceso')" id="s-proceso" style="cursor:pointer;padding:6px 14px;font-size:13px;border-radius:6px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-secondary)">Proceso paso a paso</button>
+  <button onclick="showSinc('error')" id="s-error" style="cursor:pointer;padding:6px 14px;font-size:13px;border-radius:6px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-secondary)">Qué pasa si te equivocás</button>
+</div>
+
+<svg width="100%" viewBox="0 0 680 430">
+  <defs>
+    <marker id="asc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- INFO BOX -->
+  <rect x="20" y="30" width="185" height="320" rx="10" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+  <text id="sc-title" x="112" y="58" text-anchor="middle" font-size="14" font-weight="500" fill="var(--color-text-primary)">Marcas de sincronización</text>
+  <text id="sc-1" x="112" y="82"  text-anchor="middle" font-size="12" fill="var(--color-text-secondary)">Cada motor tiene marcas</text>
+  <text id="sc-2" x="112" y="100" text-anchor="middle" font-size="12" fill="var(--color-text-secondary)">grabadas o pintadas en</text>
+  <text id="sc-3" x="112" y="118" text-anchor="middle" font-size="12" fill="var(--color-text-secondary)">las poleas y en la tapa.</text>
+  <text id="sc-4" x="112" y="146" text-anchor="middle" font-size="12" fill="#1D9E75">Antes de sacar la correa</text>
+  <text id="sc-5" x="112" y="164" text-anchor="middle" font-size="12" fill="#1D9E75">alineás las marcas.</text>
+  <text id="sc-6" x="112" y="182" text-anchor="middle" font-size="12" fill="#1D9E75">Después ponés la correa</text>
+  <text id="sc-7" x="112" y="200" text-anchor="middle" font-size="12" fill="#1D9E75">con las marcas alineadas.</text>
+  <text id="sc-8" x="112" y="228" text-anchor="middle" font-size="12" fill="var(--color-text-secondary)">El manual del Gol tiene</text>
+  <text id="sc-9" x="112" y="246" text-anchor="middle" font-size="12" fill="var(--color-text-secondary)">el diagrama exacto de</text>
+  <text id="sc-10" x="112" y="264" text-anchor="middle" font-size="12" fill="var(--color-text-secondary)">dónde va cada marca.</text>
+  <text id="sc-tip" x="112" y="296" text-anchor="middle" font-size="11" fill="#BA7517"></text>
+  <text id="sc-tip2" x="112" y="312" text-anchor="middle" font-size="11" fill="#BA7517"></text>
+  <text id="sc-tip3" x="112" y="328" text-anchor="middle" font-size="11" fill="#BA7517"></text>
+
+  <!-- ===== MARCAS ===== -->
+  <g id="grp-marcas">
+    <!-- Polea cigüeñal (abajo) -->
+    <circle cx="340" cy="340" r="44" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="1.5"/>
+    <circle cx="340" cy="340" r="36" fill="none" stroke="var(--color-border-secondary)" stroke-width="0.5" stroke-dasharray="4 3" opacity="0.4"/>
+    <text x="340" y="337" text-anchor="middle" font-size="11" font-weight="500" fill="var(--color-text-primary)">Polea</text>
+    <text x="340" y="352" text-anchor="middle" font-size="10" fill="var(--color-text-secondary)">cigüeñal</text>
+    <!-- Marca del cigüeñal (triángulo en la polea) -->
+    <polygon id="marca-cig" points="340,296 333,308 347,308" fill="#E24B4A" opacity="0.9"/>
+    <!-- Marca en la tapa (línea fija) -->
+    <rect x="336" y="282" width="8" height="14" rx="2" fill="var(--color-text-secondary)" opacity="0.5"/>
+    <text x="390" y="288" font-size="10" fill="#E24B4A">← marca polea</text>
+    <text x="390" y="303" font-size="10" fill="var(--color-text-secondary)">← referencia tapa</text>
+
+    <!-- Polea árbol levas (arriba) -->
+    <circle cx="340" cy="130" r="32" fill="var(--color-background-secondary)" stroke="#BA7517" stroke-width="1.5"/>
+    <text x="340" y="127" text-anchor="middle" font-size="10" font-weight="500" fill="#BA7517">Polea</text>
+    <text x="340" y="141" text-anchor="middle" font-size="10" fill="#BA7517">árbol levas</text>
+    <!-- Marca árbol levas -->
+    <polygon id="marca-lev" points="340,98 333,110 347,110" fill="#E24B4A" opacity="0.9"/>
+    <!-- Referencia tapa arriba -->
+    <rect x="336" y="86" width="8" height="12" rx="2" fill="var(--color-text-secondary)" opacity="0.5"/>
+    <text x="390" y="96" font-size="10" fill="#E24B4A">← marca polea</text>
+    <text x="390" y="110" font-size="10" fill="var(--color-text-secondary)">← referencia tapa</text>
+
+    <!-- Correa entre poleas -->
+    <rect x="322" y="162" width="36" height="178" rx="0" fill="none" stroke="#534AB7" stroke-width="7" opacity="0.35"/>
+    <text x="280" y="255" text-anchor="end" font-size="11" fill="#534AB7">correa</text>
+
+    <!-- Tensador -->
+    <circle cx="390" cy="235" r="16" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="1"/>
+    <text x="390" y="232" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">ten-</text>
+    <text x="390" y="243" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">sador</text>
+
+    <!-- Alineación OK -->
+    <rect x="230" y="380" width="220" height="36" rx="8" fill="var(--color-background-secondary)" stroke="#1D9E75" stroke-width="1"/>
+    <text x="340" y="403" text-anchor="middle" font-size="12" fill="#1D9E75">✓ Marcas alineadas = sincronizado</text>
+
+    <!-- Nota relación 2:1 -->
+    <rect x="470" y="180" width="175" height="80" rx="8" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+    <text x="557" y="204" text-anchor="middle" font-size="11" font-weight="500" fill="var(--color-text-primary)">Relación de poleas:</text>
+    <text x="557" y="222" text-anchor="middle" font-size="11" fill="var(--color-text-secondary)">Polea levas = 2x grande</text>
+    <text x="557" y="240" text-anchor="middle" font-size="11" fill="var(--color-text-secondary)">= gira a la mitad</text>
+    <text x="557" y="256" text-anchor="middle" font-size="11" fill="#BA7517">2 vueltas cigüeñal</text>
+    <text x="557" y="270" text-anchor="middle" font-size="10" fill="#BA7517">= 1 vuelta árbol levas</text>
+  </g>
+
+  <!-- ===== PROCESO PASO A PASO ===== -->
+  <g id="grp-proceso" opacity="0">
+    <!-- Pasos -->
+    <rect x="230" y="30" width="420" height="56" rx="8" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+    <rect x="234" y="34" width="28" height="28" rx="6" fill="#534AB7" opacity="0.8"/>
+    <text x="248" y="52" text-anchor="middle" font-size="13" font-weight="500" fill="#fff">1</text>
+    <text x="280" y="50" font-size="12" fill="var(--color-text-primary)">Girás el motor a mano hasta que</text>
+    <text x="280" y="66" font-size="12" fill="var(--color-text-primary)">las marcas queden alineadas (PMR)</text>
+
+    <rect x="230" y="100" width="420" height="56" rx="8" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+    <rect x="234" y="104" width="28" height="28" rx="6" fill="#534AB7" opacity="0.8"/>
+    <text x="248" y="122" text-anchor="middle" font-size="13" font-weight="500" fill="#fff">2</text>
+    <text x="280" y="120" font-size="12" fill="var(--color-text-primary)">Sacás la correa vieja. Las poleas</text>
+    <text x="280" y="136" font-size="12" fill="var(--color-text-primary)">NO se mueven — quedaron bloqueadas.</text>
+
+    <rect x="230" y="170" width="420" height="56" rx="8" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+    <rect x="234" y="174" width="28" height="28" rx="6" fill="#534AB7" opacity="0.8"/>
+    <text x="248" y="192" text-anchor="middle" font-size="13" font-weight="500" fill="#fff">3</text>
+    <text x="280" y="190" font-size="12" fill="var(--color-text-primary)">Ponés la correa nueva con las</text>
+    <text x="280" y="206" font-size="12" fill="var(--color-text-primary)">marcas todavía alineadas.</text>
+
+    <rect x="230" y="240" width="420" height="56" rx="8" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+    <rect x="234" y="244" width="28" height="28" rx="6" fill="#534AB7" opacity="0.8"/>
+    <text x="248" y="262" text-anchor="middle" font-size="13" font-weight="500" fill="#fff">4</text>
+    <text x="280" y="260" font-size="12" fill="var(--color-text-primary)">Tensás la correa con el tensador.</text>
+    <text x="280" y="276" font-size="12" fill="var(--color-text-primary)">Ni floja ni muy apretada.</text>
+
+    <rect x="230" y="310" width="420" height="56" rx="8" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+    <rect x="234" y="314" width="28" height="28" rx="6" fill="#1D9E75" opacity="0.8"/>
+    <text x="248" y="332" text-anchor="middle" font-size="13" font-weight="500" fill="#fff">5</text>
+    <text x="280" y="330" font-size="12" fill="var(--color-text-primary)">Girás el motor 2 vueltas a mano</text>
+    <text x="280" y="346" font-size="12" fill="#1D9E75">y verificás que las marcas vuelven a coincidir.</text>
+
+    <!-- Qué es PMR -->
+    <rect x="230" y="378" width="420" height="36" rx="8" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+    <text x="440" y="401" text-anchor="middle" font-size="11" fill="var(--color-text-secondary)">PMR = Punto Muerto Superior — pistón 1 en lo más alto de su recorrido</text>
+  </g>
+
+  <!-- ===== ERROR ===== -->
+  <g id="grp-error" opacity="0">
+    <!-- Polea levas desalineada -->
+    <circle cx="310" cy="120" r="32" fill="var(--color-background-secondary)" stroke="#E24B4A" stroke-width="1.5"/>
+    <text x="310" y="117" text-anchor="middle" font-size="10" font-weight="500" fill="#E24B4A">Polea</text>
+    <text x="310" y="131" text-anchor="middle" font-size="10" fill="#E24B4A">levas</text>
+    <!-- Marca desalineada -->
+    <polygon points="335,105 342,118 328,118" fill="#E24B4A" opacity="0.9"/>
+    <!-- Referencia -->
+    <rect x="306" y="86" width="8" height="12" rx="2" fill="var(--color-text-secondary)" opacity="0.5"/>
+    <text x="280" y="96" text-anchor="end" font-size="10" fill="var(--color-text-secondary)">referencia</text>
+    <text x="280" y="114" text-anchor="end" font-size="10" fill="#E24B4A">marca desviada</text>
+
+    <!-- Correa -->
+    <rect x="292" y="152" width="36" height="178" rx="0" fill="none" stroke="#534AB7" stroke-width="7" opacity="0.35"/>
+
+    <!-- Polea cigüeñal -->
+    <circle cx="310" cy="350" r="44" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="1.5"/>
+    <polygon points="310,306 303,318 317,318" fill="#E24B4A" opacity="0.9"/>
+    <rect x="306" y="292" width="8" height="14" rx="2" fill="var(--color-text-secondary)" opacity="0.5"/>
+    <text x="310" y="348" text-anchor="middle" font-size="10" fill="var(--color-text-secondary)">cigüeñal</text>
+    <text x="310" y="364" text-anchor="middle" font-size="10" fill="var(--color-text-secondary)">(alineado)</text>
+
+    <!-- Consecuencias -->
+    <rect x="390" y="50" width="255" height="320" rx="10" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+    <text x="517" y="78" text-anchor="middle" font-size="13" font-weight="500" fill="#E24B4A">Si la correa queda mal:</text>
+
+    <rect x="402" y="90" width="231" height="52" rx="6" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+    <text x="517" y="112" text-anchor="middle" font-size="11" fill="var(--color-text-secondary)">1 diente desviado →</text>
+    <text x="517" y="130" text-anchor="middle" font-size="11" fill="#BA7517">motor arranca pero anda mal,</text>
+    <text x="517" y="146" text-anchor="middle" font-size="10" fill="#BA7517">sin potencia, consume más</text>
+
+    <rect x="402" y="152" width="231" height="52" rx="6" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+    <text x="517" y="174" text-anchor="middle" font-size="11" fill="var(--color-text-secondary)">Varios dientes →</text>
+    <text x="517" y="192" text-anchor="middle" font-size="11" fill="#E24B4A">motor no arranca,</text>
+    <text x="517" y="208" text-anchor="middle" font-size="10" fill="#E24B4A">válvulas y pistones chocan</text>
+
+    <rect x="402" y="214" width="231" height="52" rx="6" fill="var(--color-background-secondary)" stroke="#E24B4A" stroke-width="1"/>
+    <text x="517" y="236" text-anchor="middle" font-size="11" fill="var(--color-text-secondary)">Muy desviado →</text>
+    <text x="517" y="254" text-anchor="middle" font-size="11" fill="#E24B4A">motor fundido,</text>
+    <text x="517" y="270" text-anchor="middle" font-size="10" fill="#E24B4A">válvulas dobladas</text>
+
+    <!-- Consejo -->
+    <rect x="402" y="276" width="231" height="78" rx="8" fill="var(--color-background-secondary)" stroke="#1D9E75" stroke-width="1"/>
+    <text x="517" y="298" text-anchor="middle" font-size="11" font-weight="500" fill="#1D9E75">Por eso el paso 5 es clave:</text>
+    <text x="517" y="316" text-anchor="middle" font-size="11" fill="var(--color-text-secondary)">girar 2 vueltas a mano</text>
+    <text x="517" y="334" text-anchor="middle" font-size="11" fill="var(--color-text-secondary)">y verificar marcas antes</text>
+    <text x="517" y="350" text-anchor="middle" font-size="11" fill="var(--color-text-secondary)">de arrancar el motor.</text>
+  </g>
+</svg>
+</div>
+
+<script>
+(function(){
+  function setBtn(id) {
+    ['marcas','proceso','error'].forEach(function(k){
+      var b = document.getElementById('s-'+k);
+      if(!b) return;
+      if(k===id){
+        b.style.background='var(--color-background-info)'; b.style.color='var(--color-text-info)';
+        b.style.borderColor='var(--color-border-info)'; b.style.fontWeight='500';
+      } else {
+        b.style.background='var(--color-background-secondary)'; b.style.color='var(--color-text-secondary)';
+        b.style.borderColor='var(--color-border-secondary)'; b.style.fontWeight='400';
+      }
+    });
+  }
+  function op(id,val){ var e=document.getElementById(id); if(e) e.setAttribute('opacity',val); }
+  function txt(id,val){ var e=document.getElementById(id); if(e) e.textContent=val; }
+
+  window.showSinc = function(tab) {
+    setBtn(tab);
+    ['grp-marcas','grp-proceso','grp-error'].forEach(function(id){ op(id,0); });
+
+    if(tab==='marcas'){
+      op('grp-marcas',1);
+      txt('sc-title','Marcas de sincronización');
+      txt('sc-1','Cada motor tiene marcas'); txt('sc-2','grabadas o pintadas en');
+      txt('sc-3','las poleas y en la tapa.');
+      txt('sc-4','Antes de sacar la correa'); txt('sc-5','alineás las marcas.');
+      txt('sc-6','Después ponés la correa'); txt('sc-7','con las marcas alineadas.');
+      txt('sc-8','El manual del Gol tiene'); txt('sc-9','el diagrama exacto de');
+      txt('sc-10','dónde va cada marca.');
+      txt('sc-tip',''); txt('sc-tip2',''); txt('sc-tip3','');
+      document.getElementById('sc-4').setAttribute('fill','#1D9E75');
+      document.getElementById('sc-5').setAttribute('fill','#1D9E75');
+      document.getElementById('sc-6').setAttribute('fill','#1D9E75');
+      document.getElementById('sc-7').setAttribute('fill','#1D9E75');
+
+    } else if(tab==='proceso'){
+      op('grp-proceso',1);
+      txt('sc-title','Paso a paso');
+      txt('sc-1','El proceso es siempre'); txt('sc-2','el mismo, en cualquier');
+      txt('sc-3','motor.');
+      txt('sc-4','La clave es NO mover'); txt('sc-5','las poleas una vez');
+      txt('sc-6','que las alineaste.'); txt('sc-7','');
+      txt('sc-8','Muchos mecánicos'); txt('sc-9','marcan las poleas con');
+      txt('sc-10','corrector o fibra antes');
+      txt('sc-tip','de sacar la correa,'); txt('sc-tip2','por las dudas.'); txt('sc-tip3','');
+      document.getElementById('sc-4').setAttribute('fill','#E24B4A');
+      document.getElementById('sc-5').setAttribute('fill','#E24B4A');
+      document.getElementById('sc-6').setAttribute('fill','#E24B4A');
+
+    } else {
+      op('grp-error',1);
+      txt('sc-title','Si te equivocás');
+      txt('sc-1','El motor tiene mucho'); txt('sc-2','margen para errores');
+      txt('sc-3','pequeños... pero no para');
+      txt('sc-4','errores grandes.'); txt('sc-5','');
+      txt('sc-6','Siempre verificar con'); txt('sc-7','2 vueltas a mano antes');
+      txt('sc-8','de arrancar el motor.'); txt('sc-9','');
+      txt('sc-10','Si arrancás con la correa');
+      txt('sc-tip','mal puesta y hay choque,'); txt('sc-tip2','el daño es inmediato'); txt('sc-tip3','e irreparable.');
+      document.getElementById('sc-4').setAttribute('fill','#E24B4A');
+      document.getElementById('sc-5').setAttribute('fill','#E24B4A');
+      document.getElementById('sc-6').setAttribute('fill','#1D9E75');
+      document.getElementById('sc-7').setAttribute('fill','#1D9E75');
+      document.getElementById('sc-8').setAttribute('fill','#1D9E75');
+      document.getElementById('sc-tip').setAttribute('fill','#E24B4A');
+      document.getElementById('sc-tip2').setAttribute('fill','#E24B4A');
+      document.getElementById('sc-tip3').setAttribute('fill','#E24B4A');
+    }
+  };
+
+  window.showSinc('marcas');
+})();
+</script>

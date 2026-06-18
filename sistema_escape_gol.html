@@ -1,0 +1,199 @@
+
+<div style="padding:8px 0">
+<div style="display:flex;gap:6px;justify-content:center;margin-bottom:14px;flex-wrap:wrap" id="esc-btns"></div>
+
+<div id="esc-info" style="padding:12px 16px;background:var(--color-background-secondary);border-radius:8px;border:0.5px solid var(--color-border-info);margin-bottom:12px;min-height:70px">
+  <div style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px" id="esc-title">Seleccioná una parte</div>
+  <div style="font-size:12px;color:var(--color-text-secondary)" id="esc-body">El escape lleva los gases desde el motor hasta la parte trasera del auto. Tocá cada componente para ver qué hace.</div>
+  <div style="font-size:11px;color:#BA7517;margin-top:6px" id="esc-tip"></div>
+</div>
+
+<svg width="100%" viewBox="0 0 680 300">
+  <defs>
+    <marker id="aesc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- Auto contorno simplificado -->
+  <rect x="30" y="80" width="620" height="140" rx="20" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="0.5" opacity="0.3"/>
+  <text x="60" y="70" font-size="10" fill="var(--color-text-tertiary)">FRENTE →</text>
+  <text x="600" y="70" text-anchor="end" font-size="10" fill="var(--color-text-tertiary)">← ATRÁS</text>
+
+  <!-- Flecha dirección gases -->
+  <path d="M 80 150 L 630 150" fill="none" stroke="var(--color-text-tertiary)" stroke-width="1" stroke-dasharray="4 4" opacity="0.2" marker-end="url(#aesc)"/>
+
+  <!-- 1. MOTOR -->
+  <rect id="r-esc-motor" x="35" y="100" width="80" height="80" rx="8" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="1"/>
+  <text x="75" y="137" text-anchor="middle" font-size="11" font-weight="500" fill="var(--color-text-primary)">Motor</text>
+  <text x="75" y="153" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">4 cilindros</text>
+
+  <!-- 2. COLECTOR / MANIFOLD -->
+  <rect id="r-manifold" x="115" y="110" width="70" height="60" rx="6" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="1"/>
+  <!-- 4 tubos del colector -->
+  <line x1="115" y1="120" x2="100" y2="108" stroke="var(--color-text-secondary)" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+  <line x1="115" y1="130" x2="100" y2="122" stroke="var(--color-text-secondary)" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+  <line x1="115" y1="148" x2="100" y2="148" stroke="var(--color-text-secondary)" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+  <line x1="115" y1="158" x2="100" y2="162" stroke="var(--color-text-secondary)" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+  <text x="150" y="137" text-anchor="middle" font-size="9" font-weight="500" fill="var(--color-text-primary)">Colector</text>
+  <text x="150" y="151" text-anchor="middle" font-size="8" fill="var(--color-text-secondary)">(manifold)</text>
+  <text x="150" y="163" text-anchor="middle" font-size="8" fill="var(--color-text-secondary)">4→1 tubos</text>
+
+  <!-- Tubo 1 -->
+  <rect x="185" y="136" width="40" height="8" rx="2" fill="#888780" opacity="0.5"/>
+
+  <!-- 3. CATALIZADOR -->
+  <rect id="r-cata" x="225" y="110" width="80" height="60" rx="8" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="1"/>
+  <!-- Interior catalizador (canales) -->
+  <line x1="238" y1="120" x2="238" y2="162" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <line x1="248" y1="120" x2="248" y2="162" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <line x1="258" y1="120" x2="258" y2="162" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <line x1="268" y1="120" x2="268" y2="162" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <line x1="278" y1="120" x2="278" y2="162" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <line x1="288" y1="120" x2="288" y2="162" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <text x="265" y="177" text-anchor="middle" font-size="9" font-weight="500" fill="var(--color-text-primary)">Catalizador</text>
+  <text x="265" y="190" text-anchor="middle" font-size="8" fill="var(--color-text-secondary)">convierte gases tóxicos</text>
+
+  <!-- Tubo 2 -->
+  <rect x="305" y="136" width="60" height="8" rx="2" fill="#888780" opacity="0.5"/>
+
+  <!-- Sonda lambda -->
+  <rect id="r-lambda" x="310" y="110" width="40" height="30" rx="5" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <line x1="330" y1="110" x2="330" y2="140" stroke="#534AB7" stroke-width="1.5" stroke-dasharray="3 2" opacity="0.6"/>
+  <text x="330" y="106" text-anchor="middle" font-size="8" fill="#534AB7">sonda λ</text>
+  <text x="330" y="185" text-anchor="middle" font-size="8" fill="#534AB7">sensor O₂</text>
+
+  <!-- 4. SILENCIADOR INTERMEDIO -->
+  <rect id="r-sil1" x="365" y="105" width="90" height="70" rx="8" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="1"/>
+  <!-- Interior silenciador (deflectores) -->
+  <line x1="395" y1="115" x2="395" y2="165" stroke="var(--color-border-secondary)" stroke-width="0.5" opacity="0.6"/>
+  <line x1="425" y1="115" x2="425" y2="165" stroke="var(--color-border-secondary)" stroke-width="0.5" opacity="0.6"/>
+  <path d="M 380 130 Q 410 115 440 130" fill="none" stroke="var(--color-border-secondary)" stroke-width="0.5" opacity="0.5"/>
+  <path d="M 380 150 Q 410 165 440 150" fill="none" stroke="var(--color-border-secondary)" stroke-width="0.5" opacity="0.5"/>
+  <text x="410" y="183" text-anchor="middle" font-size="9" font-weight="500" fill="var(--color-text-primary)">Silenciador</text>
+  <text x="410" y="196" text-anchor="middle" font-size="8" fill="var(--color-text-secondary)">intermedio</text>
+
+  <!-- Tubo 3 -->
+  <rect x="455" y="136" width="50" height="8" rx="2" fill="#888780" opacity="0.5"/>
+
+  <!-- 5. SILENCIADOR FINAL -->
+  <rect id="r-sil2" x="505" y="105" width="100" height="70" rx="8" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="1"/>
+  <line x1="535" y1="115" x2="535" y2="165" stroke="var(--color-border-secondary)" stroke-width="0.5" opacity="0.6"/>
+  <line x1="565" y1="115" x2="565" y2="165" stroke="var(--color-border-secondary)" stroke-width="0.5" opacity="0.6"/>
+  <path d="M 518 128 Q 552 113 585 128" fill="none" stroke="var(--color-border-secondary)" stroke-width="0.5" opacity="0.5"/>
+  <path d="M 518 152 Q 552 167 585 152" fill="none" stroke="var(--color-border-secondary)" stroke-width="0.5" opacity="0.5"/>
+  <text x="555" y="183" text-anchor="middle" font-size="9" font-weight="500" fill="var(--color-text-primary)">Silenciador</text>
+  <text x="555" y="196" text-anchor="middle" font-size="8" fill="var(--color-text-secondary)">final</text>
+
+  <!-- 6. CAÑO DE ESCAPE -->
+  <rect id="r-cano" x="605" y="136" width="40" height="8" rx="2" fill="#888780" opacity="0.7"/>
+  <text x="625" y="158" text-anchor="middle" font-size="8" fill="var(--color-text-secondary)">caño</text>
+
+  <!-- Gases saliendo -->
+  <path id="gases-out" d="M 645 130 Q 655 135 650 140 Q 660 145 655 150" fill="none" stroke="#888780" stroke-width="1" stroke-dasharray="3 2" opacity="0.5"/>
+  <text x="660" y="143" font-size="9" fill="var(--color-text-tertiary)">→</text>
+
+  <!-- Temperaturas -->
+  <text x="75" y="235" text-anchor="middle" font-size="10" fill="#E24B4A">~800°C</text>
+  <text x="265" y="210" text-anchor="middle" font-size="9" fill="#BA7517">~400°C</text>
+  <text x="410" y="210" text-anchor="middle" font-size="9" fill="#BA7517">~200°C</text>
+  <text x="555" y="210" text-anchor="middle" font-size="9" fill="#1D9E75">~80°C</text>
+  <text x="625" y="158" text-anchor="middle" font-size="8" fill="var(--color-text-tertiary)"></text>
+
+  <!-- Barra temperatura -->
+  <defs>
+    <linearGradient id="temp-grad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#E24B4A"/>
+      <stop offset="50%" stop-color="#BA7517"/>
+      <stop offset="100%" stop-color="#1D9E75"/>
+    </linearGradient>
+  </defs>
+  <rect x="35" y="225" width="610" height="6" rx="3" fill="url(#temp-grad)" opacity="0.4"/>
+  <text x="340" y="246" text-anchor="middle" font-size="9" fill="var(--color-text-tertiary)">temperatura decrece a lo largo del escape</text>
+
+  <!-- Highlight box -->
+  <rect id="esc-hl" x="0" y="0" width="0" height="0" rx="10" fill="none" stroke="var(--color-border-info)" stroke-width="2.5" opacity="0"/>
+</svg>
+</div>
+
+<script>
+(function(){
+  var partes = [
+    {
+      label: 'Colector',
+      rect: [113,108,74,64],
+      title: 'Colector de escape (manifold)',
+      body: 'Recoge los gases de los 4 cilindros en un solo tubo. Está pegado a la culata del motor. Es la parte más caliente de todo el escape — puede llegar a 800°C. En el Gol es de hierro fundido.',
+      tip: '⚠ Si está fisurado hace un ruido de "tick tick" en frío que desaparece al calentar.'
+    },
+    {
+      label: 'Catalizador',
+      rect: [223,108,84,64],
+      title: 'Catalizador (tres vías)',
+      body: 'Convierte CO, HC y NOx en CO2, H2O y N2. Adentro tiene una cerámica con miles de canales cubiertos de platino y paladio. Necesita estar a más de 300°C para funcionar — los primeros minutos contamina más.',
+      tip: '⚠ Si lo golpeás contra el piso se rompe la cerámica interna. Se escucha como maraqueo.'
+    },
+    {
+      label: 'Sonda lambda',
+      rect: [308,108,44,34],
+      title: 'Sonda lambda (sensor de oxígeno)',
+      body: 'Mide el oxígeno en los gases de escape y le dice a la ECU si la mezcla aire/nafta está bien. Si hay mucho oxígeno → mezcla pobre. Si hay poco → mezcla rica. La ECU corrige los inyectores en tiempo real.',
+      tip: 'Si falla: el motor consume más nafta y la luz del tablero se prende (check engine).'
+    },
+    {
+      label: 'Silenciador 1',
+      rect: [363,103,94,74],
+      title: 'Silenciador intermedio',
+      body: 'Primera etapa de reducción de ruido. Los gases pasan por cámaras con deflectores que hacen rebotar las ondas de sonido para cancelarlas. También reduce la temperatura de los gases.',
+      tip: 'Si está oxidado por adentro puede romperse y hacer ruido de "tractor".'
+    },
+    {
+      label: 'Silenciador 2',
+      rect: [503,103,104,74],
+      title: 'Silenciador final',
+      body: 'Segunda etapa — termina de bajar el ruido. Es el más grande y el que más se ve desde atrás del auto. Tiene el caño de escape que sobresale. En el Gol suele estar atornillado con abrazaderas.',
+      tip: 'El primero en oxidarse por acumular condensación. Se reemplaza fácil con abrazaderas.'
+    },
+    {
+      label: 'Temperatura',
+      rect: [35,220,610,30],
+      title: 'Temperatura a lo largo del escape',
+      body: 'El colector cerca del motor llega a 800°C. El catalizador trabaja a 400°C. El silenciador intermedio a ~200°C. El caño final sale a ~80°C. Por eso el escape tiene soportes de goma — absorben la dilatación térmica.',
+      tip: '⚠ Nunca tocar el escape con el motor recién apagado — quema hasta 20 minutos después.'
+    }
+  ];
+
+  function op(id, val) { var e = document.getElementById(id); if(e) e.setAttribute('opacity', val); }
+
+  var btnRow = document.getElementById('esc-btns');
+  partes.forEach(function(p) {
+    var b = document.createElement('button');
+    b.textContent = p.label;
+    b.style.cssText = 'cursor:pointer;padding:6px 12px;font-size:12px;border-radius:6px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-secondary);';
+    b.addEventListener('click', function() {
+      btnRow.querySelectorAll('button').forEach(function(btn) {
+        btn.style.background = 'var(--color-background-secondary)';
+        btn.style.color = 'var(--color-text-secondary)';
+        btn.style.borderColor = 'var(--color-border-secondary)';
+        btn.style.fontWeight = '400';
+      });
+      b.style.background = 'var(--color-background-info)';
+      b.style.color = 'var(--color-text-info)';
+      b.style.borderColor = 'var(--color-border-info)';
+      b.style.fontWeight = '500';
+
+      document.getElementById('esc-title').textContent = p.title;
+      document.getElementById('esc-body').textContent = p.body;
+      document.getElementById('esc-tip').textContent = p.tip || '';
+
+      var hl = document.getElementById('esc-hl');
+      hl.setAttribute('x', p.rect[0]-4);
+      hl.setAttribute('y', p.rect[1]-4);
+      hl.setAttribute('width', p.rect[2]+8);
+      hl.setAttribute('height', p.rect[3]+8);
+      op('esc-hl', 1);
+    });
+    btnRow.appendChild(b);
+  });
+})();
+</script>

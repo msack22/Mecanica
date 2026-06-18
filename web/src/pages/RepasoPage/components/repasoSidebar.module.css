@@ -1,0 +1,37 @@
+.panel{
+  background: var(--color-background-secondary);
+  border: 0.5px solid var(--color-border-secondary);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+.titleRow{display:flex; align-items:center; gap:10px; margin-bottom:2px;}
+.title{font-size:16px; color:var(--color-text-primary); font-weight:650; flex:1;}
+.subtitulo{font-size:12px; color:var(--color-text-tertiary); margin-bottom:12px;}
+.prioridad{font-size:10px; padding:3px 8px; border-radius:999px; background: #FAECE7; color:#993C1D; font-weight:600; border:1px solid rgba(153,60,29,0.15);}
+.body{font-size:13px; color:var(--color-text-secondary); line-height:1.7; padding:10px 12px; background: rgba(255,255,255,0.55); border-radius:10px; border:0.5px solid rgba(0,0,0,0.04);} 
+.tagsWrap{margin-top:10px;}
+
+.sectionTitle{margin-top:14px; font-size:11px; color:var(--color-text-secondary); letter-spacing:0.4px; text-transform:uppercase; font-weight:700;}
+.practice{margin-top:8px; display:flex; flex-direction:column; gap:10px;}
+.practiceItem{padding:10px 12px; border:0.5px solid rgba(0,0,0,0.06); background:white; border-radius:10px;}
+.practiceTitle{font-size:12px; font-weight:650; color:var(--color-text-primary); margin-bottom:6px;}
+.item{font-size:12px; padding:6px 10px; border-radius:8px; border-left:3px solid transparent; background: rgba(243,244,246,0.9); line-height:1.5; margin-bottom:4px; color:var(--color-text-secondary);} 
+
+.item:last-child{margin-bottom:0;}
+
+.verde{border-left-color: var(--color-vert);}
+.azul{border-left-color: var(--color-azul);}
+.naranja{border-left-color: var(--color-naranja);}
+.rojo{border-left-color: var(--color-rojo);}
+.violeta{border-left-color: var(--color-violeta);}
+.gris{border-left-color: var(--color-gris);}
+
+.tagsWrap{display:flex; flex-wrap:wrap; gap:8px;}
+.hint{margin-top:12px; font-size:12px; color:var(--color-text-tertiary);} 
+
+.selector{margin-top:14px;}
+.selectorLabel{font-size:11px; color:var(--color-text-secondary); margin-bottom:8px; font-weight:650; text-transform:uppercase; letter-spacing:0.35px;}
+.selectorButtons{display:flex; gap:8px; flex-wrap:wrap;}
+.selBtn{cursor:pointer; padding:6px 10px; font-size:11px; border-radius:8px; border:0.5px solid var(--color-border-secondary); background: rgba(255,255,255,0.6); color:var(--color-text-secondary);} 
+.selBtnActive{background: var(--color-background-info); border-color: var(--color-border-info); color: var(--color-text-info); font-weight:650;}
+

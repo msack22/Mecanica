@@ -1,0 +1,213 @@
+
+<div style="padding:8px 0">
+
+<div style="margin-bottom:10px">
+  <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:8px">¿Cuándo aparece el ruido?</div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap" id="cuando-btns"></div>
+</div>
+
+<div id="ruidos-lista" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px"></div>
+
+<div id="ruido-info" style="padding:14px 18px;background:var(--color-background-secondary);border-radius:10px;border:0.5px solid var(--color-border-info);min-height:110px">
+  <div style="font-size:14px;font-weight:500;color:var(--color-text-primary);margin-bottom:6px" id="ruido-title">Seleccioná un momento y después un ruido</div>
+  <div style="font-size:12px;color:var(--color-text-secondary);line-height:1.7" id="ruido-body">Esta guía te permite diagnosticar el origen de casi cualquier ruido en el auto.</div>
+  <div style="font-size:11px;color:#E24B4A;margin-top:8px;font-weight:500" id="ruido-urgencia"></div>
+  <div style="font-size:11px;color:#1D9E75;margin-top:4px" id="ruido-solucion"></div>
+</div>
+</div>
+
+<script>
+(function(){
+  var categorias = {
+    'Al pasar badenes': [
+      {
+        icon: '💥', ruido: 'Golpe seco (clonc)',
+        color: '#E24B4A',
+        causa: 'Silent block o rótula del brazo de suspensión gastados. El brazo tiene juego y golpea al comprimirse la suspensión.',
+        urgencia: '⚠ URGENTE — rótula gastada puede separarse en movimiento.',
+        solucion: '✓ Revisar: levantás la rueda y movés arriba/abajo. Si hay juego → rótula o silent block.'
+      },
+      {
+        icon: '🔔', ruido: 'Golpe metálico (toc toc)',
+        color: '#BA7517',
+        causa: 'Bieleta estabilizadora con terminaciones gastadas. Es el ruido más común en el Gol y uno de los más baratos de reparar.',
+        urgencia: '',
+        solucion: '✓ Fácil de confirmar: movés la rueda de lado a lado con el auto en el aire. Si hay juego lateral → bieleta.'
+      },
+      {
+        icon: '💨', ruido: 'Golpe sordo amortiguado',
+        color: '#534AB7',
+        causa: 'Amortiguador gastado — ya no tiene resistencia interna. El resorte rebota sin control.',
+        urgencia: '',
+        solucion: '✓ Test: empujás el guardabarro hacia abajo y soltás. Si rebota más de una vez → amortiguador.'
+      },
+      {
+        icon: '🪨', ruido: 'Ruido raspar o rozar',
+        color: '#888780',
+        causa: 'El auto toca el fondo — guardabarros, escape o chasis golpea contra algo. Falta altura libre al suelo.',
+        urgencia: '',
+        solucion: '✓ Revisás visualmente desde abajo qué está rozando. Solución: lift o resortes más altos.'
+      }
+    ],
+    'Al frenar': [
+      {
+        icon: '😬', ruido: 'Chillido agudo (squeak)',
+        color: '#BA7517',
+        causa: 'Pastillas de freno llegando al límite de desgaste. Tienen un indicador metálico que chilla cuando se gastan para avisarte.',
+        urgencia: '⚠ Cambiar pronto — si ignorás el chillido aparece el golpe metálico y ahí dañaste el disco.',
+        solucion: '✓ Revisás el grosor de la pastilla visualmente por la llanta. Si tiene menos de 3mm → cambio urgente.'
+      },
+      {
+        icon: '⚙️', ruido: 'Golpe metálico al frenar',
+        color: '#E24B4A',
+        causa: 'Pastillas completamente gastadas — el metal de la pastilla está raspando el disco directamente.',
+        urgencia: '⚠ URGENTE — estás dañando el disco que es mucho más caro. Frenos comprometidos.',
+        solucion: '✓ Cambio inmediato de pastillas y revisión del disco.'
+      },
+      {
+        icon: '📳', ruido: 'Vibración en el pedal',
+        color: '#534AB7',
+        causa: 'Disco de freno deformado (runout). El disco no es perfectamente plano — al frenar las pastillas lo agarran de forma despareja.',
+        urgencia: '',
+        solucion: '✓ Se puede rectificar el disco si tiene suficiente grosor. Si no → cambio de disco.'
+      },
+      {
+        icon: '💥', ruido: 'Golpe al inicio del frenado',
+        color: '#BA7517',
+        causa: 'Bieletas o silent blocks con juego — al transferir el peso hacia adelante al frenar, el brazo se mueve.',
+        urgencia: '',
+        solucion: '✓ Revisar bieletas y silent blocks del brazo de suspensión.'
+      }
+    ],
+    'Al doblar': [
+      {
+        icon: '🦀', ruido: 'Crack crack al doblar lento',
+        color: '#E24B4A',
+        causa: 'Junta homocinética exterior gastada. La bota se rompió, la grasa salió y la junta se seca. Clásico en autos con muchos km.',
+        urgencia: '⚠ Atención — si se rompe completamente perdés tracción en esa rueda.',
+        solucion: '✓ Se confirma: doblás todo el volante y acelerás despacio. Si cruje → homocinética exterior.'
+      },
+      {
+        icon: '🌀', ruido: 'Zumbido que cambia al doblar',
+        color: '#BA7517',
+        causa: 'Rodamiento de rueda gastado. Al doblar el peso se transfiere — si el ruido aumenta en curva derecha → rodamiento izquierdo y viceversa.',
+        urgencia: '',
+        solucion: '✓ Test: a 60-80 km/h hacés curvas suaves alternadas. El lado que descarga y el ruido baja → ese rodamiento.'
+      },
+      {
+        icon: '💥', ruido: 'Golpe al girar el volante parado',
+        color: '#534AB7',
+        causa: 'Rótula de dirección (en el tirante) con juego, o junta de la columna de dirección gastada.',
+        urgencia: '',
+        solucion: '✓ Revisás el juego del volante. Más de 2-3cm de juego libre → revisar rótulas de dirección.'
+      }
+    ],
+    'En movimiento constante': [
+      {
+        icon: '✈️', ruido: 'Zumbido que sube con velocidad',
+        color: '#BA7517',
+        causa: 'Rodamiento de rueda gastado. El zumbido es como un avión adentro del auto y es proporcional a la velocidad.',
+        urgencia: '',
+        solucion: '✓ Para confirmar: a 80 km/h movés levemente el volante a cada lado. El zumbido cambia → rodamiento del lado que descarga.'
+      },
+      {
+        icon: '🎵', ruido: 'Ruido de tamborileo rítmico',
+        color: '#534AB7',
+        causa: 'Neumático con desgaste irregular (plano) o con un punto duro. También puede ser rueda desbalanceada.',
+        urgencia: '',
+        solucion: '✓ Revisás el dibujo del neumático — si tiene una zona más desgastada que otra → desalineación o desbalance.'
+      },
+      {
+        icon: '🔧', ruido: 'Ruido metálico constante del motor',
+        color: '#E24B4A',
+        causa: 'Puede ser: cadena/correa de distribución floja (tick rítmico), alternador con rodamiento gastado (chirrido), o bomba de dirección (gemido).',
+        urgencia: '⚠ Tick rítmico del motor en caliente puede ser falta de aceite o hidráulicas de válvulas.',
+        solucion: '✓ Revisás nivel de aceite primero. Si está bien → escuchar con motor en ralentí para localizar origen.'
+      }
+    ],
+    'Al arrancar en frío': [
+      {
+        icon: '🔔', ruido: 'Tick tick que desaparece en caliente',
+        color: '#BA7517',
+        causa: 'Hidráulicas de válvulas (taqués hidráulicos) que tardan en llenarse de aceite. Normal en motores con muchos km o con aceite viejo.',
+        urgencia: '',
+        solucion: '✓ Solución: cambio de aceite con flush. Si persiste después del cambio → taqués desgastados.'
+      },
+      {
+        icon: '💨', ruido: 'Golpe metálico al arrancar',
+        color: '#E24B4A',
+        causa: 'Bielas o cojinetes del cigüeñal con juego. El aceite no llegó todavía a lubricar y se escucha el juego. Puede ser señal de desgaste interno serio.',
+        urgencia: '⚠ URGENTE si es persistente — desgaste interno del motor. Test de compresión obligatorio.',
+        solucion: '✓ Si el golpe desaparece en 2-3 segundos es normal. Si persiste más de 10 segundos → problema serio.'
+      },
+      {
+        icon: '😬', ruido: 'Chirrido al arrancar que desaparece',
+        color: '#1D9E75',
+        causa: 'Correa auxiliar o de distribución con tensión incorrecta o húmeda. Normal en días lluviosos o si la correa está vieja.',
+        urgencia: '',
+        solucion: '✓ Revisás la tensión de las correas. Si están bien tensadas y el chirrido persiste → correa a cambiar.'
+      }
+    ]
+  };
+
+  var currentCat = null;
+  var cuandoBtns = document.getElementById('cuando-btns');
+
+  Object.keys(categorias).forEach(function(cat) {
+    var b = document.createElement('button');
+    b.textContent = cat;
+    b.style.cssText = 'cursor:pointer;padding:6px 12px;font-size:12px;border-radius:6px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-secondary);';
+    b.addEventListener('click', function() {
+      cuandoBtns.querySelectorAll('button').forEach(function(btn) {
+        btn.style.background = 'var(--color-background-secondary)';
+        btn.style.color = 'var(--color-text-secondary)';
+        btn.style.borderColor = 'var(--color-border-secondary)';
+        btn.style.fontWeight = '400';
+      });
+      b.style.background = 'var(--color-background-info)';
+      b.style.color = 'var(--color-text-info)';
+      b.style.borderColor = 'var(--color-border-info)';
+      b.style.fontWeight = '500';
+
+      currentCat = cat;
+      var lista = document.getElementById('ruidos-lista');
+      lista.innerHTML = '';
+
+      categorias[cat].forEach(function(r) {
+        var card = document.createElement('div');
+        card.style.cssText = 'cursor:pointer;padding:10px 12px;border-radius:8px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);';
+        card.innerHTML = '<div style="display:flex;align-items:center;gap:8px">' +
+          '<span style="font-size:20px">' + r.icon + '</span>' +
+          '<div>' +
+            '<div style="font-size:12px;font-weight:500;color:' + r.color + '">' + r.ruido + '</div>' +
+            '<div style="font-size:10px;color:var(--color-text-tertiary);margin-top:2px">' + cat + '</div>' +
+          '</div>' +
+        '</div>';
+        card.addEventListener('click', function() {
+          lista.querySelectorAll('div[data-sel]').forEach(function(c) {
+            c.style.borderColor = 'var(--color-border-secondary)';
+            c.removeAttribute('data-sel');
+          });
+          card.style.borderColor = r.color;
+          card.setAttribute('data-sel','1');
+
+          document.getElementById('ruido-title').textContent = r.icon + ' ' + r.ruido;
+          document.getElementById('ruido-body').textContent = r.causa;
+          document.getElementById('ruido-urgencia').textContent = r.urgencia;
+          document.getElementById('ruido-solucion').textContent = r.solucion;
+        });
+        lista.appendChild(card);
+      });
+
+      document.getElementById('ruido-title').textContent = 'Seleccioná un ruido';
+      document.getElementById('ruido-body').textContent = 'Elegí el ruido que más se parece al que escuchás.';
+      document.getElementById('ruido-urgencia').textContent = '';
+      document.getElementById('ruido-solucion').textContent = '';
+    });
+    cuandoBtns.appendChild(b);
+  });
+
+  // activar primero
+  cuandoBtns.querySelectorAll('button')[0].click();
+})();
+</script>
