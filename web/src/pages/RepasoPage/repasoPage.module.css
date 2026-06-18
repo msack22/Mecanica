@@ -329,6 +329,26 @@
   font-weight: 600;
 }
 
+.sidebarGroupLabel {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+  letter-spacing: 0.8px;
+  padding: 4px 12px;
+  margin-top: 8px;
+  margin-bottom: 2px;
+  opacity: 0.85;
+}
+
+.topicItemActivePhoto {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+
 /* Sandbox / Detalle de la Derecha */
 .sandbox {
   display: flex;

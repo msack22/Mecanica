@@ -155,9 +155,9 @@ export function RepasoPage() {
   }
 
   // Seleccionar tema
-  const handleSelectTopic = (topicKey: string) => {
+  const handleSelectTopic = (topicKey: string, defaultViewMode: 'diagram' | 'real' = 'diagram') => {
     setActiveTopicKey(topicKey)
-    setViewMode('diagram')
+    setViewMode(defaultViewMode)
   }
 
   // Volver al inicio (macro)
@@ -176,6 +176,17 @@ export function RepasoPage() {
     if (!activeSystem) return null
     return activeSystem.topics.find((t) => t.key === activeTopicKey) || activeSystem.topics[0] || null
   }, [activeSystem, activeTopicKey])
+
+  // Temas de flujos y fotos para el activeSystem
+  const flowTopics = useMemo(() => {
+    if (!activeSystem) return []
+    return activeSystem.topics
+  }, [activeSystem])
+
+  const photoTopics = useMemo(() => {
+    if (!activeSystem) return []
+    return activeSystem.topics.filter((t) => !!t.imageUrl)
+  }, [activeSystem])
 
   // Procedimientos filtrados
   const filteredProcedimientos = useMemo(() => {
@@ -330,18 +341,39 @@ export function RepasoPage() {
               </div>
 
               <nav className={styles.topicList}>
-                {activeSystem.topics.map((topic) => {
-                  const isActive = activeTopic?.key === topic.key
+                {/* Grupo Flujos */}
+                <div className={styles.sidebarGroupLabel}>Flujos</div>
+                {flowTopics.map((topic) => {
+                  const isActive = activeTopic?.key === topic.key && viewMode === 'diagram'
                   return (
                     <button
-                      key={topic.key}
-                      onClick={() => handleSelectTopic(topic.key)}
+                      key={`flow-${topic.key}`}
+                      onClick={() => handleSelectTopic(topic.key, 'diagram')}
                       className={`${styles.topicItem} ${isActive ? styles.topicItemActive : ''}`}
                     >
                       <span>{topic.title}</span>
                     </button>
                   )
                 })}
+
+                {/* Grupo Fotos (solo si hay fotos reales) */}
+                {photoTopics.length > 0 && (
+                  <>
+                    <div className={styles.sidebarGroupLabel} style={{ marginTop: '16px' }}>Fotos</div>
+                    {photoTopics.map((topic) => {
+                      const isActive = activeTopic?.key === topic.key && viewMode === 'real'
+                      return (
+                        <button
+                          key={`photo-${topic.key}`}
+                          onClick={() => handleSelectTopic(topic.key, 'real')}
+                          className={`${styles.topicItem} ${isActive ? (styles.topicItemActivePhoto ?? styles.topicItemActive) : ''}`}
+                        >
+                          <span>{topic.title}</span>
+                        </button>
+                      )
+                    })}
+                  </>
+                )}
               </nav>
             </aside>
 
