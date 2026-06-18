@@ -13,6 +13,7 @@ export const mecanicaData: SystemCategory[] = [
         title: 'Ciclo de 4 Tiempos',
         subtitle: 'El ciclo termodinámico de combustión',
         widget: 'ciclo_4_tiempos',
+        imageUrl: '/images/cilindros_bloque.png',
         body: 'El ciclo de 4 tiempos (Admisión, Compresión, Explosión, Escape) es el principio fundamental de funcionamiento de la gran mayoría de los motores de combustión interna. En cada ciclo, el pistón realiza cuatro recorridos (dos de subida y dos de bajada) y el cigüeñal da dos vueltas completas.',
         tip: 'El inyector solo pulveriza combustible en el paso 1 (Admisión), y la chispa de la bujía solo salta al final del paso 2 para iniciar el paso 3 (Explosión).',
         warning: 'Las válvulas abren y cierran en momentos críticos: admisión abierta en paso 1, escape abierta en paso 4. Si la sincronía falla, el pistón puede chocar con las válvulas.',
@@ -33,6 +34,7 @@ export const mecanicaData: SystemCategory[] = [
         title: 'Conexiones Internas',
         subtitle: 'Cómo se transmite el movimiento del pistón',
         widget: 'conexiones_internas',
+        imageUrl: '/images/biela_piston_desmontados.png',
         body: 'Para convertir la fuerza lineal de la explosión en fuerza rotativa, el pistón se conecta al cigüeñal a través de la biela. Esta unión requiere pasadores de acero y cojinetes lubricados para soportar las altas presiones y revoluciones sin fundirse.',
         tip: 'El bulón conecta el pistón con el extremo superior de la biela, mientras que la muñequilla conecta el extremo inferior de la biela al cigüeñal.',
         warning: 'La falta de lubricación en la muñequilla del cigüeñal provoca el desgaste del cojinete, produciendo el famoso "golpe de biela" y la eventual rotura del motor.',
@@ -72,6 +74,7 @@ export const mecanicaData: SystemCategory[] = [
         title: 'Cigüeñal y Árbol de Levas',
         subtitle: 'El sistema de sincronización mecánica',
         widget: 'ciguenal_arbol_levas',
+        imageUrl: '/images/arbol_levas_culata.png',
         body: 'El cigüeñal está abajo en el bloque y gira impulsado por los pistones. El árbol de levas está arriba en la culata y gira para empujar las válvulas. Ambos deben estar perfectamente sincronizados a través de la correa de distribución.',
         tip: 'La regla clave de la mecánica de 4 tiempos: el árbol de levas gira a la MITAD de la velocidad del cigüeñal (Relación 2:1).',
         warning: 'En motores 8v hay un solo árbol de levas. En motores 16v hay dos árboles (uno para válvulas de admisión y otro para escape).',
@@ -111,6 +114,7 @@ export const mecanicaData: SystemCategory[] = [
         title: 'Bloqueo de Poleas',
         subtitle: 'Mantener las poleas fijas durante el cambio',
         widget: 'bloqueo_poleas',
+        imageUrl: '/images/bloqueo_engranaje.png',
         body: 'Al retirar la correa de distribución vieja, las poleas quedan libres. Los resortes de las válvulas que están comprimidos ejercen fuerza sobre las levas y pueden hacer girar el árbol de levas inesperadamente, perdiendo la sincronía.',
         tip: 'Se puede improvisar pintando una línea continua con corrector blanco sobre el engranaje y la tapa trasera antes de remover la correa vieja.',
         warning: 'Nunca uses pinzas de fuerza directamente sobre los dientes de los engranajes, ya que los filos dañarán la correa nueva en pocos kilómetros.',
@@ -173,6 +177,27 @@ export const mecanicaData: SystemCategory[] = [
             ]
           }
         ]
+      },
+      {
+        key: 'circuito_lubricacion',
+        title: 'Circuito de Lubricación',
+        subtitle: 'El flujo del aceite protector en el motor',
+        widget: 'circuito_lubricacion',
+        imageUrl: '/images/carter_bomba_aceite.png',
+        body: 'El aceite motor se acumula en el cárter inferior. Al dar marcha, la bomba de aceite (conectada directamente al cigüeñal) succiona el lubricante a través del chupador y lo fuerza a pasar por el filtro de aceite. Desde allí, fluye a alta presión por las galerías del bloque hacia los cojinetes de cigüeñal y bielas, y sube por un conducto ascendente a la culata para bañar el árbol de levas antes de retornar por gravedad al cárter.',
+        tip: 'La bomba de aceite está montada físicamente en el extremo delantero del cigüeñal. Para llegar a ella, es obligatorio desmontar la correa de distribución, retirar el engranaje inferior del cigüeñal, remover el chapón protector y quitar por completo el cárter de aluminio.',
+        warning: 'Si la luz de presión de aceite (aceitera roja) se enciende en el tablero, apagá el motor DE INMEDIATO. Circular sin presión de aceite fundirá los cojinetes y el árbol de levas en menos de un minuto.',
+        recorridos: [
+          {
+            title: 'Recorrido del Aceite',
+            items: [
+              { c: 'naranja', t: '1. Succión: El colador (chupador) filtra partículas grandes en el fondo del cárter.' },
+              { c: 'azul', t: '2. Filtración: El filtro retiene micropartículas metálicas y de carbón antes del motor.' },
+              { c: 'rojo', t: '3. Galería Principal: El canal central distribuye aceite a presión a los cojinetes móviles.' },
+              { c: 'violeta', t: '4. Culata superior: El flujo baña las levas a 90°C y retorna por canales de drenaje.' }
+            ]
+          }
+        ]
       }
     ]
   },
@@ -189,9 +214,9 @@ export const mecanicaData: SystemCategory[] = [
         subtitle: 'El control térmico del motor',
         widget: 'circuito_refrigeracion',
         body: 'El líquido refrigerante (agua destilada con anticongelante/anticorrosivo) absorbe el calor excesivo del motor circulando por canales internos y se enfría al pasar por el radiador frontal asistido por el electroventilador.',
-        tip: 'El termostato actúa como compuerta: cerrado si el motor está frío para calentar rápido, abierto si está caliente para mandar el líquido al radiador.',
+        tip: 'La bomba de agua está ubicada en el bloque motor detrás de las tapas plásticas de distribución. Para cambiarla se debe drenar el refrigerante por la manguera inferior, remover el chapón, quitar la rueda derecha, desmontar la correa de accesorios, poner a punto y retirar la correa de distribución.',
         warning: 'Nunca uses agua común de la canilla. Los minerales oxidan las camisas de agua del bloque de cilindros y rompen la bomba de agua.',
-        imageUrl: '/images/motor_completo.png',
+        imageUrl: '/images/circuito_agua_vano.png',
         recorridos: [
           {
             title: 'Piezas del Circuito',
@@ -217,6 +242,7 @@ export const mecanicaData: SystemCategory[] = [
         title: 'Mono vs Multipunto',
         subtitle: 'La evolución de la inyección de combustible',
         widget: 'mono_vs_multipunto',
+        imageUrl: '/images/flauta_inyectores.png',
         body: 'Los motores antiguos usaban carburador o un único inyector central (monopunto) en la entrada del colector de admisión. Los modernos (como el Gol Trend) utilizan inyección multipunto, con un inyector dedicado por cada cilindro.',
         tip: 'La inyección multipunto es mucho más eficiente porque la computadora (ECU) inyecta la cantidad exacta para cada cilindro de forma individual.',
         recorridos: [
@@ -234,6 +260,7 @@ export const mecanicaData: SystemCategory[] = [
         title: 'Opciones de Potencia',
         subtitle: 'Formas de mejorar el rendimiento del motor',
         widget: 'potencia_opciones',
+        imageUrl: '/images/filtro_deportivo.png',
         body: 'El motor 1.6 MSI del Gol Trend entrega 110 hp de fábrica. Hay modificaciones de menor a mayor complejidad para mejorar su potencia y torque, optimizando la entrada de aire, salida de gases y la cartografía de la ECU.',
         tip: 'La reprogramación (remap) es la mejor relación costo/potencia sin comprometer componentes internos.',
         warning: 'Instalar un kit de turbo sin forjar bielas y pistones es extremadamente arriesgado y reduce drásticamente la vida útil del motor.',
@@ -262,6 +289,7 @@ export const mecanicaData: SystemCategory[] = [
         title: 'Cableado Eléctrico',
         subtitle: 'Los circuitos de potencia y señal del auto',
         widget: 'cableado_electrico',
+        imageUrl: '/images/fusiblera_electrica.png',
         body: 'El sistema eléctrico se divide en tres circuitos principales: arranque, carga y encendido/chispa. Los cables tienen colores estándar para facilitar el diagnóstico, y las fichas de los sensores tienen guías únicas.',
         tip: 'El cable ROJO siempre transporta 12V de alimentación. El cable NEGRO o MARRÓN se conecta a la carrocería (masa/tierra).',
         warning: 'Antes de cambiar un repuesto eléctrico caro, revisá siempre el fusible correspondiente en la fusiblera. ¡Se cambia gratis en segundos!',
@@ -289,7 +317,7 @@ export const mecanicaData: SystemCategory[] = [
         key: 'transmision_embrague',
         title: 'Transmisión & Embrague',
         subtitle: 'Cómo viaja la fuerza del motor a las ruedas',
-        widget: 'cambio_disco_embrague', // Adaptamos
+        widget: 'cambio_disco_embrague',
         body: 'El embrague es el mecanismo que conecta y desconecta la rotación del motor de la caja de cambios. Al soltar el pedal, el disco de embrague queda aprisionado contra el volante del motor transmitiendo el giro.',
         tip: 'El pedal de embrague no hace el cambio de marcha; solo separa el motor para que los engranajes de la caja giren libres.',
         warning: 'Apoyar el pie levemente sobre el pedal de embrague mientras manejás provoca patinamiento microscópico y gasta el disco en pocos meses.',
@@ -319,6 +347,7 @@ export const mecanicaData: SystemCategory[] = [
         title: 'Sistema de Escape',
         subtitle: 'La salida y filtración de gases quemados',
         widget: 'sistema_escape',
+        imageUrl: '/images/caño_escape_inferior.png',
         body: 'El escape canaliza los gases desde la culata del motor hasta la parte trasera del coche. A lo largo de la tubería, los gases bajan de 800°C a ~80°C y se reduce la contaminación mediante el catalizador.',
         tip: 'La sonda lambda mide la concentración de oxígeno en el escape y le avisa a la ECU para ajustar la mezcla de combustible en tiempo real.',
         warning: 'Un catalizador roto por golpes contra el suelo produce un tintineo metálico interno ("maraqueo") y restringe el flujo de escape ahogando al motor.',
@@ -338,6 +367,7 @@ export const mecanicaData: SystemCategory[] = [
         title: 'Colores de Humo',
         subtitle: 'Diagnóstico de motor por escape',
         widget: 'colores_humo',
+        imageUrl: '/images/escape_humo_azul.png',
         body: 'El color del humo que sale del caño de escape es un excelente indicador del estado interno del motor y de qué fluido se está quemando en los cilindros.',
         tip: 'Un leve humo o vapor blanco al arrancar en frío que desaparece en dos minutos es normal: es condensación de agua en el caño de escape.',
         warning: 'Humo azul constante indica que el motor está consumiendo aceite. Requiere desarme de culata o rectificación del bloque de cilindros.',
@@ -387,6 +417,7 @@ export const mecanicaData: SystemCategory[] = [
         title: 'Diagnóstico por Ruidos',
         subtitle: 'Guía práctica para identificar fallas por sonido',
         widget: 'diagnostico_ruidos',
+        imageUrl: '/images/fuelle_homocinetica_roto.png',
         body: 'Los ruidos extraños en la suspensión o frenos suelen tener causas sumamente específicas. Identificar el momento exacto en el que ocurren permite localizar la pieza defectuosa sin desarmar.',
         tip: 'Zumbido constante que sube con la velocidad (como si tuvieras un avión adentro del auto) indica rulemán o rodamiento de rueda gastado.',
         recorridos: [
@@ -406,6 +437,7 @@ export const mecanicaData: SystemCategory[] = [
         title: 'Lift para Camino de Tierra',
         subtitle: 'Cómo levantar el auto para terrenos difíciles',
         widget: 'lift_camino_tierra',
+        imageUrl: '/images/espiral_elevado.png',
         body: 'El Gol de fábrica es bajo y suele tocar el cárter en huellas profundas de tierra. Para transitar caminos rurales, se puede elevar la suspensión modificando amortiguadores y espirales.',
         tip: 'La Opción B (+5cm) es el punto óptimo entre altura de despeje y estabilidad en ruta sin deformar los semiejes.',
         warning: 'Al realizar cualquier lift de suspensión, es OBLIGATORIO alinear las ruedas inmediatamente para evitar un desgaste acelerado de las cubiertas y pérdida de control.',
@@ -425,6 +457,7 @@ export const mecanicaData: SystemCategory[] = [
         title: 'Vista desde Abajo',
         subtitle: 'Esquema completo del chasis inferior',
         widget: 'vista_desde_abajo',
+        imageUrl: '/images/chasis_coche_elevador.png',
         body: 'Ver el auto levantado en una fosa o elevador revela la disposición completa de los componentes mecánicos, el recorrido del escape y la ubicación de las suspensiones.',
         tip: 'Desde abajo, lo primero que se ve debajo del motor es el protector de cárter (chapón) que protege el cárter de aceite.',
         recorridos: [
@@ -441,3 +474,4 @@ export const mecanicaData: SystemCategory[] = [
     ]
   }
 ]
+

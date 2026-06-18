@@ -39,6 +39,7 @@ export type TopicWidget =
   | 'potencia_opciones'
   | 'lift_camino_tierra'
   | 'circuito_refrigeracion'
+  | 'circuito_lubricacion'
 
 export type ConceptItem = {
   c: TopicColor

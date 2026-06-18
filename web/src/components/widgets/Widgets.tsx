@@ -1699,75 +1699,178 @@ function VistaDesdeAbajoWidget({ viewMode }: WidgetProps) {
 // 15. WIDGET: Cableado Electrico
 // ==========================================
 function CableadoElectricoWidget({ viewMode }: WidgetProps) {
-  const [tab, setTab] = useState<'reglas' | 'colores' | 'fichas'>('reglas')
+  const [state, setState] = useState<'off' | 'acc' | 'start' | 'run'>('off')
+  const [sparkIdx, setSparkIdx] = useState(0)
+
+  // Ciclo de chispa secuencial 1 -> 3 -> 4 -> 2 para motor en marcha
+  useEffect(() => {
+    if (state !== 'run') return
+    const interval = setInterval(() => {
+      setSparkIdx((prev) => (prev + 1) % 4)
+    }, 200)
+    return () => clearInterval(interval)
+  }, [state])
 
   if (viewMode === 'real') {
     return (
       <HotspotImage
-        src="/images/motor_completo.png"
-        alt="Motor Gol EA111 real"
+        src="/images/fusiblera_electrica.png"
+        alt="Fusiblera y componentes eléctricos reales"
         hotspots={[
-          { id: '1', x: 10, y: 35, title: 'Batería 12V', desc: 'Fuente de corriente continua del vehículo.' },
-          { id: '2', x: 43, y: 64, title: 'Cables de bujías de alta tensión', desc: 'Conducen la chispa desde la bobina.' },
-          { id: '3', x: 20, y: 68, title: 'Alternador', desc: 'Generador eléctrico. Convierte energía mecánica en eléctrica para cargar la batería.' },
-          { id: '4', x: 28, y: 43, title: 'Fusible / Relé de Batería', desc: 'Fusibles principales colocados en la bornera de la batería para protección.' }
+          { id: '1', x: 41, y: 44, title: 'Fusiblera principal', desc: 'Ubicada en el vano motor. Aloja los fusibles de protección de alta corriente (bomba de agua, electroventilador, inyección).' },
+          { id: '2', x: 45, y: 91, title: 'Batería 12V Varta', desc: 'Fuente de corriente continua del Gol. Almacena la energía para el arranque inicial.' },
+          { id: '3', x: 86, y: 56, title: 'Alternador (Oculto abajo)', desc: 'Generador movido por correa que recarga la batería y provee corriente con el motor en marcha.' }
         ]}
       />
     )
   }
 
+  // Orden de encendido del motor 4 cilindros del Gol: 1 - 3 - 4 - 2
+  const sparkOrder = [1, 3, 4, 2]
+  const activeSparkBujia = state === 'run' ? sparkOrder[sparkIdx] : null
+
   return (
     <div className={styles.widgetWrap}>
+      {/* Controles de Llave */}
       <div className={styles.controlRow}>
-        <button className={`${styles.controlBtn} ${tab === 'reglas' ? styles.controlBtnActive : ''}`} onClick={() => setTab('reglas')}>Las 3 Reglas</button>
-        <button className={`${styles.controlBtn} ${tab === 'colores' ? styles.controlBtnActive : ''}`} onClick={() => setTab('colores')}>Colores</button>
-        <button className={`${styles.controlBtn} ${tab === 'fichas' ? styles.controlBtnActive : ''}`} onClick={() => setTab('fichas')}>Fichas sueltas</button>
+        <button className={`${styles.controlBtn} ${state === 'off' ? styles.controlBtnActive : ''}`} onClick={() => setState('off')}>🔑 Apagado</button>
+        <button className={`${styles.controlBtn} ${state === 'acc' ? styles.controlBtnActive : ''}`} onClick={() => setState('acc')}>🔋 Contacto</button>
+        <button className={`${styles.controlBtn} ${state === 'start' ? styles.controlBtnActiveOrange : ''}`} onClick={() => setState('start')}>⚡ Arranque</button>
+        <button className={`${styles.controlBtn} ${state === 'run' ? styles.controlBtnActiveGreen : ''}`} onClick={() => setState('run')}>🚗 En Marcha</button>
       </div>
 
       <div className={styles.infoBox}>
         <div className={styles.infoTitle}>
-          {tab === 'reglas' && 'Las 3 Reglas de Oro de la Electricidad'}
-          {tab === 'colores' && 'Códigos de Color Estandarizados'}
-          {tab === 'fichas' && '¿Cómo diagnosticar una ficha suelta?'}
+          {state === 'off' && 'Llave en APAGADO - Sin Consumo'}
+          {state === 'acc' && 'Llave en CONTACTO - Computadora y Sensores Activos'}
+          {state === 'start' && 'Llave en ARRANQUE - Motor de Arranque Girando'}
+          {state === 'run' && 'Motor en MARCHA - Alternador Cargando y Bujías en Ciclo'}
         </div>
         <div className={styles.infoBody}>
-          {tab === 'reglas' && '1) Alimentación (+): La corriente sale del polo positivo de la batería, 2) Protección (Fusible): Pasa obligatoriamente por un fusible calibrado que se quemará ante cortocircuitos, 3) Retorno (-): Llega al componente y retorna a la batería a través de la chapa del auto (masa).'}
-          {tab === 'colores' && 'El cableado tiene colores que indican su función: ROJO = Corriente directa (+12V de batería). NEGRO/MARRÓN = Masa (retorno negativo a la carrocería). OTROS COLORES = Señales de la computadora (ECU) o salidas controladas de relés.'}
-          {tab === 'fichas' && 'Si encontrás una ficha suelta en el Gol: 1) Contá los pines (inyectores=2 pines, sensores MAP=4 pines, etc.), 2) Seguí el tramo del mazo de cables (cercanía física al componente), 3) Buscá el conector macho libre en las inmediaciones. Las fichas tienen muescas únicas y nunca encajan al revés.'}
+          {state === 'off' && 'Todos los sistemas principales están desactivados. Solo hay un consumo mínimo de memoria de la ECU y reloj.'}
+          {state === 'acc' && 'La batería alimenta la fusiblera de cabina y la ECU. La bomba de combustible presuriza la rampa durante 2 segundos.'}
+          {state === 'start' && 'La batería envía toda la potencia (~150 Amperes) al motor de arranque acoplado al volante motor para hacerlo girar mecánicamente.'}
+          {state === 'run' && 'El motor gira solo. El alternador genera ~14.2V cargando la batería y alimentando todo el circuito. Las bujías tiran chispa en orden secuencial: 1 → 3 → 4 → 2.'}
         </div>
       </div>
 
       <svg className={styles.svg} viewBox="0 0 680 340">
+        {/* Fondo y marco */}
+        <rect x="10" y="10" width="660" height="320" rx="10" fill="rgba(255,255,255,0.01)" stroke="rgba(255,255,255,0.03)" />
+
         {/* Batería */}
-        <rect x="50" y="50" width="100" height="60" rx="6" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)" />
-        <text x="100" y="85" textAnchor="middle" fontSize="12" fill="#ffffff">Batería 12V</text>
-        <rect x="55" y="42" width="14" height="8" fill="#E24B4A" />
-        <text x="62" y="38" textAnchor="middle" fontSize="8" fill="#E24B4A">+</text>
-        <rect x="131" y="42" width="14" height="8" fill="#888780" />
-        <text x="138" y="38" textAnchor="middle" fontSize="8" fill="rgba(255,255,255,0.5)">-</text>
+        <rect x="40" y="200" width="100" height="70" rx="6" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)" />
+        <rect x="45" y="192" width="16" height="8" fill="#E24B4A" />
+        <rect x="119" y="192" width="16" height="8" fill="#888780" />
+        <text x="53" y="188" fontSize="8" fill="#E24B4A">+</text>
+        <text x="127" y="188" fontSize="8" fill="#888780">-</text>
+        <text x="90" y="240" textAnchor="middle" fontSize="11" fill="#ffffff" fontWeight="600">Batería 12V</text>
 
-        {/* Fusible */}
-        <rect x="220" y="50" width="110" height="60" rx="6" fill="rgba(255,255,255,0.06)" stroke="#BA7517" strokeWidth="1" />
-        <text x="275" y="80" textAnchor="middle" fontSize="10" fill="#BA7517" fontWeight="600">Fusiblera</text>
-        <text x="275" y="96" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.5)">protección fusible</text>
+        {/* Alternador */}
+        <circle cx="90" cy="80" r="30" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1.5" />
+        <g className={state === 'run' ? styles.spinning : ''} style={{ transformBox: 'fill-box', transformOrigin: 'center' }}>
+          <circle cx="90" cy="80" r="24" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.2)" strokeWidth="1.5" />
+          <line x1="90" y1="56" x2="90" y2="104" stroke="rgba(255,255,255,0.25)" strokeWidth="2" />
+          <line x1="66" y1="80" x2="114" y2="80" stroke="rgba(255,255,255,0.25)" strokeWidth="2" />
+        </g>
+        <text x="90" y="125" textAnchor="middle" fontSize="8" fill="rgba(255,255,255,0.6)">Alternador</text>
 
-        {/* Componente */}
-        <rect x="420" y="50" width="110" height="60" rx="6" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)" />
-        <text x="475" y="85" textAnchor="middle" fontSize="10" fill="rgba(255,255,255,0.7)">Inyector / Sensor</text>
+        {/* Motor de Arranque */}
+        <rect x="210" y="205" width="90" height="50" rx="6" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)" />
+        <text x="255" y="235" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.7)">M. Arranque</text>
+        {state === 'start' && (
+          <circle cx="255" cy="230" r="20" fill="none" stroke="#BA7517" strokeWidth="2" strokeDasharray="5 3" className={styles.spinning} style={{ transformBox: 'fill-box', transformOrigin: 'center' }} />
+        )}
 
-        {/* Cables */}
-        {/* Positivo */}
-        <path d="M 62 42 L 62 30 L 275 30 L 275 50" fill="none" stroke="#E24B4A" strokeWidth="2.5" strokeDasharray={tab === 'colores' ? 'none' : '4 3'} />
-        <path d="M 275 110 L 275 130 L 475 130 L 475 110" fill="none" stroke="#E24B4A" strokeWidth="2.5" strokeDasharray={tab === 'colores' ? 'none' : '4 3'} />
-        <text x="350" y="145" textAnchor="middle" fontSize="9" fill="#E24B4A">alimentación (+)</text>
+        {/* ECU / Fusiblera */}
+        <rect x="210" y="50" width="100" height="70" rx="6" fill="rgba(255,255,255,0.04)" stroke="#BA7517" strokeWidth="1" />
+        <text x="260" y="80" textAnchor="middle" fontSize="10" fill="#BA7517" fontWeight="600">Fusiblera & ECU</text>
+        <text x="260" y="98" textAnchor="middle" fontSize="8" fill="rgba(255,255,255,0.5)">
+          {state !== 'off' ? '💻 ACTIVE' : '💤 STANDBY'}
+        </text>
 
-        {/* Masa */}
-        <path d="M 138 42 L 138 20 L 500 20 L 500 50" fill="none" stroke="#888780" strokeWidth="2.5" />
-        <text x="320" y="15" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.4)">retorno masa (-)</text>
+        {/* Bobina de Encendido */}
+        <rect x="390" y="50" width="80" height="60" rx="6" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.15)" />
+        <text x="430" y="80" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.7)" fontWeight="600">Bobina (DIS)</text>
+        <text x="430" y="96" textAnchor="middle" fontSize="8" fill="rgba(255,255,255,0.4)">12V → 25KV</text>
+
+        {/* 4 Bujías / Cilindros */}
+        {[1, 2, 3, 4].map((cyl, idx) => {
+          const xPos = 380 + idx * 65
+          const hasSpark = activeSparkBujia === cyl
+          return (
+            <g key={cyl}>
+              {/* Cuerpo Bujía */}
+              <rect x={xPos} y="180" width="22" height="40" rx="2" fill="rgba(255,255,255,0.2)" stroke="rgba(255,255,255,0.3)" />
+              <line x1={xPos + 11} y1="180" x2={xPos + 11} y2="150" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" />
+              <text x={xPos + 11} y={235} textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.5)">Bujía {cyl}</text>
+
+              {/* Cable de bobina a bujía */}
+              <path d={`M 430 110 C 430 150, ${xPos + 11} 120, ${xPos + 11} 150`} fill="none" stroke={state === 'run' ? '#E24B4A' : 'rgba(255,255,255,0.15)'} strokeWidth="1.5" />
+
+              {/* Chispa */}
+              {hasSpark && (
+                <g>
+                  <circle cx={xPos + 11} cy="225" r="12" fill="#3b82f6" opacity="0.6" />
+                  <polygon points={`${xPos + 11},215 ${xPos + 6},225 ${xPos + 16},225`} fill="#ffffff" />
+                  <circle cx={xPos + 11} cy="225" r="3" fill="#ffffff" />
+                </g>
+              )}
+            </g>
+          )
+        })}
+
+        {/* Líneas de cableado animadas */}
+        {/* Retorno Masa Negativa */}
+        <path d="M 127 192 L 127 160 L 650 160" fill="none" stroke="#888780" strokeWidth="2" />
+        
+        {/* Batería -> Fusiblera */}
+        <path
+          d="M 53 192 L 53 145 L 210 145 L 210 100"
+          fill="none"
+          stroke={state !== 'off' ? '#E24B4A' : 'rgba(255,255,255,0.15)'}
+          strokeWidth="2.5"
+          className={state !== 'off' ? styles.flowing : ''}
+          strokeDasharray={state !== 'off' ? '6 4' : 'none'}
+        />
+
+        {/* Fusiblera -> Bobina */}
+        <path
+          d="M 310 85 L 390 85"
+          fill="none"
+          stroke={state === 'run' ? '#E24B4A' : 'rgba(255,255,255,0.15)'}
+          strokeWidth="2.5"
+          className={state === 'run' ? styles.flowing : ''}
+          strokeDasharray={state === 'run' ? '6 4' : 'none'}
+        />
+
+        {/* Batería -> Motor de arranque */}
+        <path
+          d="M 53 270 L 53 300 L 210 300 L 210 230"
+          fill="none"
+          stroke={state === 'start' ? '#E24B4A' : 'rgba(255,255,255,0.15)'}
+          strokeWidth="3"
+          className={state === 'start' ? styles.flowing : ''}
+          strokeDasharray={state === 'start' ? '8 4' : 'none'}
+        />
+
+        {/* Alternador -> Batería (Carga) */}
+        <path
+          d="M 90 110 L 90 200"
+          fill="none"
+          stroke={state === 'run' ? '#3b82f6' : 'rgba(255,255,255,0.15)'}
+          strokeWidth="2.5"
+          className={state === 'run' ? styles.flowing : ''}
+          strokeDasharray={state === 'run' ? '6 4' : 'none'}
+        />
+        {state === 'run' && (
+          <text x="115" y="150" fontSize="8" fill="#3b82f6" fontWeight="bold">← Recarga (14V)</text>
+        )}
       </svg>
     </div>
   )
 }
+
 
 // ==========================================
 // 16. WIDGET: Mono Vs Multipunto
@@ -2051,21 +2154,20 @@ function LiftCaminoTierraWidget({ viewMode }: WidgetProps) {
 }
 
 // ==========================================
-// 19. WIDGET: Circuito Refrigeración
-// ==========================================
 function CircuitoRefrigeracionWidget({ viewMode }: WidgetProps) {
   const [isHot, setIsHot] = useState(false)
+  const [activeTab, setActiveTab] = useState<'flujo' | 'desarmado'>('flujo')
 
   if (viewMode === 'real') {
     return (
       <HotspotImage
-        src="/images/motor_completo.png"
-        alt="Circuito de refrigeración del motor"
+        src="/images/circuito_agua_vano.png"
+        alt="Circuito de refrigeración del motor real"
         hotspots={[
-          { id: '1', x: 91, y: 56, title: 'Depósito de Expansión', desc: 'Contenedor translúcido para revisar el nivel del líquido refrigerante. Tiene marcas de MIN/MAX.' },
-          { id: '2', x: 70, y: 46, title: 'Manguera superior de agua', desc: 'Manguera gruesa que lleva el líquido caliente desde la culata al radiador frontal.' },
-          { id: '3', x: 75, y: 15, title: 'Radiador y Electroventilador', desc: 'Ubicados en el frente para enfriar el líquido con el aire de marcha y el soplador eléctrico.' },
-          { id: '4', x: 29, y: 64, title: 'Bomba de agua y Termostato (Ocultos)', desc: 'La bomba (movida por la correa de distribución) y el termostato están detrás de las tapas protectoras en el bloque y la culata.' }
+          { id: '1', x: 73, y: 55, title: 'Depósito de Expansión', desc: 'Depósito translúcido con líquido rosa refrigerante G13. Posee marcas de nivel MIN/MAX.' },
+          { id: '2', x: 34, y: 52, title: 'Mazo de mangueras y Termostato', desc: 'Mangueras negras que conducen el agua hacia el bloque y el radiador. El termostato regula el paso.' },
+          { id: '3', x: 25, y: 86, title: 'Bomba de Agua (Oculta)', desc: 'Está instalada en el bloque motor (detrás de las tapas de distribución) y es movida por la correa dentada.' },
+          { id: '4', x: 10, y: 75, title: 'Radiador Frontal', desc: 'Ubicado en el frente para intercambiar calor con el aire del exterior impulsado por el electroventilador.' }
         ]}
       />
     )
@@ -2074,123 +2176,320 @@ function CircuitoRefrigeracionWidget({ viewMode }: WidgetProps) {
   return (
     <div className={styles.widgetWrap}>
       <div className={styles.controlRow}>
-        <button className={`${styles.controlBtn} ${!isHot ? styles.controlBtnActive : ''}`} onClick={() => setIsHot(false)}>Motor Frío (Ralentí inicial)</button>
-        <button className={`${styles.controlBtn} ${isHot ? styles.controlBtnActiveGreen : ''}`} onClick={() => setIsHot(true)}>Motor Caliente (+88°C)</button>
+        <button className={`${styles.controlBtn} ${activeTab === 'flujo' ? styles.controlBtnActive : ''}`} onClick={() => setActiveTab('flujo')}>Simulación de Flujo</button>
+        <button className={`${styles.controlBtn} ${activeTab === 'desarmado' ? styles.controlBtnActiveOrange : ''}`} onClick={() => setActiveTab('desarmado')}>Guía de Desarmado</button>
       </div>
 
-      <div className={styles.infoBox}>
-        <div className={styles.infoTitle}>{!isHot ? 'Termostato Cerrado - Calentamiento Rápido' : 'Termostato Abierto - Ciclo de Enfriamiento'}</div>
-        <div className={styles.infoBody}>
-          {!isHot
-            ? 'El agua circula únicamente dentro del bloque motor y la calefacción (bucle de bypass). El termostato bloquea el paso hacia el radiador para que el motor alcance rápido sus ~90°C de temperatura de trabajo.'
-            : 'El termostato se dilata y abre el circuito a los ~88°C. El refrigerante caliente fluye por la manguera superior al radiador, es enfriado por el aire y el electroventilador, y la bomba de agua lo reintroduce frío por abajo.'
-          }
+      {activeTab === 'flujo' ? (
+        <>
+          <div className={styles.controlRow} style={{ marginTop: '8px', gap: '8px' }}>
+            <button className={`${styles.controlBtn} ${!isHot ? styles.controlBtnActive : ''}`} onClick={() => setIsHot(false)}>Motor Frío (Ralentí inicial)</button>
+            <button className={`${styles.controlBtn} ${isHot ? styles.controlBtnActiveGreen : ''}`} onClick={() => setIsHot(true)}>Motor Caliente (+88°C)</button>
+          </div>
+
+          <div className={styles.infoBox}>
+            <div className={styles.infoTitle}>{!isHot ? 'Termostato Cerrado - Calentamiento Rápido' : 'Termostato Abierto - Ciclo de Enfriamiento'}</div>
+            <div className={styles.infoBody}>
+              {!isHot
+                ? 'El agua circula únicamente dentro del bloque motor y la calefacción (bucle de bypass). El termostato bloquea el paso hacia el radiador para que el motor alcance rápido sus ~90°C de temperatura de trabajo.'
+                : 'El termostato se abre a los ~88°C. El refrigerante caliente fluye por la manguera superior al radiador, es enfríado por el aire y el electroventilador, y la bomba de agua lo reintroduce frío por abajo.'
+              }
+            </div>
+          </div>
+
+          <svg className={styles.svg} viewBox="0 0 680 340">
+            {/* Fondo y etiquetas */}
+            <rect x="10" y="10" width="660" height="320" rx="10" fill="rgba(255,255,255,0.01)" stroke="rgba(255,255,255,0.03)" />
+            
+            {/* Bloque Motor */}
+            <rect x="420" y="70" width="180" height="200" rx="8" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)" strokeWidth="1.5" />
+            <text x="510" y="160" textAnchor="middle" fontSize="13" fontWeight="600" fill="#ffffff">Bloque Motor</text>
+            <text x="510" y="180" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.4)">EA111 1.6 MSI</text>
+
+            {/* Canales Internos del Motor (Celeste si frío, Rojo/Naranja si caliente) */}
+            <path d="M 450 110 L 570 110 L 570 230 L 450 230 Z" fill="none" stroke={isHot ? '#ef4444' : '#3b82f6'} strokeWidth="5" opacity="0.3" />
+
+            {/* Radiador Frontal */}
+            <rect x="80" y="70" width="120" height="200" rx="8" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)" strokeWidth="1.5" />
+            {/* Celdas del radiador */}
+            <line x1="100" y1="85" x2="100" y2="255" stroke="rgba(255,255,255,0.15)" strokeWidth="2" />
+            <line x1="120" y1="85" x2="120" y2="255" stroke="rgba(255,255,255,0.15)" strokeWidth="2" />
+            <line x1="140" y1="85" x2="140" y2="255" stroke="rgba(255,255,255,0.15)" strokeWidth="2" />
+            <line x1="160" y1="85" x2="160" y2="255" stroke="rgba(255,255,255,0.15)" strokeWidth="2" />
+            <line x1="180" y1="85" x2="180" y2="255" stroke="rgba(255,255,255,0.15)" strokeWidth="2" />
+            <text x="140" y="60" textAnchor="middle" fontSize="11" fill="rgba(255,255,255,0.6)" fontWeight="600">Radiador</text>
+
+            {/* Electroventilador */}
+            <g className={isHot ? styles.spinning : ''} style={{ transformBox: 'fill-box', transformOrigin: 'center' }}>
+              <circle cx="140" cy="170" r="35" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5" />
+              {/* Aspas */}
+              <line x1="140" y1="135" x2="140" y2="205" stroke="rgba(255,255,255,0.4)" strokeWidth="3" />
+              <line x1="105" y1="170" x2="175" y2="170" stroke="rgba(255,255,255,0.4)" strokeWidth="3" />
+              <line x1="115" y1="145" x2="165" y2="195" stroke="rgba(255,255,255,0.4)" strokeWidth="3" />
+              <line x1="115" y1="195" x2="165" y2="145" stroke="rgba(255,255,255,0.4)" strokeWidth="3" />
+              <circle cx="140" cy="170" r="8" fill="rgba(255,255,255,0.6)" />
+            </g>
+
+            {/* Depósito de Expansión */}
+            <rect x="470" y="20" width="80" height="40" rx="6" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" />
+            <text x="510" y="44" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.5)">Depósito</text>
+            {/* Nivel de refrigerante rosa/rosa caliente */}
+            <rect x="471" y="38" width="78" height="21" rx="2" fill="#E24B4A" opacity="0.3" />
+            <line x1="540" y1="35" x2="550" y2="35" stroke="rgba(255,255,255,0.3)" strokeWidth="1" />
+            <text x="560" y="38" fontSize="7" fill="rgba(255,255,255,0.4)">MAX</text>
+
+            {/* Manguera Superior (Caliente) */}
+            <path
+              d="M 420 100 L 200 100"
+              fill="none"
+              stroke={isHot ? '#E24B4A' : '#888780'}
+              strokeWidth="5"
+              strokeDasharray={isHot ? '8 4' : 'none'}
+              className={isHot ? styles.flowing : ''}
+              style={{ transition: 'stroke 0.3s ease' }}
+            />
+            <text x="310" y="90" textAnchor="middle" fontSize="9" fill={isHot ? '#E24B4A' : 'rgba(255,255,255,0.4)'} fontWeight="600">
+              Manguera Superior (Caliente)
+            </text>
+
+            {/* Termostato (Válvula) */}
+            <g>
+              <circle cx="410" cy="100" r="14" fill="#111622" stroke={isHot ? '#1D9E75' : '#E24B4A'} strokeWidth="2" />
+              <text x="410" y="103" textAnchor="middle" fontSize="8" fontWeight="bold" fill={isHot ? '#1D9E75' : '#E24B4A'}>
+                {isHot ? 'ABR' : 'CER'}
+              </text>
+              <text x="410" y="125" textAnchor="middle" fontSize="8" fill="rgba(255,255,255,0.6)">Termostato</text>
+            </g>
+
+            {/* Manguera Inferior (Retorno Frío) */}
+            <path
+              d="M 200 240 L 420 240"
+              fill="none"
+              stroke={isHot ? '#3b82f6' : '#888780'}
+              strokeWidth="5"
+              strokeDasharray={isHot ? '8 4' : 'none'}
+              className={isHot ? styles.flowing : ''}
+              style={{ transition: 'stroke 0.3s ease' }}
+            />
+            <text x="310" y="258" textAnchor="middle" fontSize="9" fill={isHot ? '#3b82f6' : 'rgba(255,255,255,0.4)'} fontWeight="600">
+              Manguera Inferior (Retorno Frío)
+            </text>
+
+            {/* Bomba de Agua */}
+            <g>
+              <circle cx="430" cy="240" r="14" fill="#111622" stroke="#3b82f6" strokeWidth="2" />
+              <path d="M 423 240 L 437 240 M 430 233 L 430 247" stroke="#3b82f6" strokeWidth="1.5" />
+              <circle cx="430" cy="240" r="4" fill="#ffffff" />
+              <text x="430" y="268" textAnchor="middle" fontSize="8" fill="rgba(255,255,255,0.6)">Bomba de Agua</text>
+            </g>
+
+            {/* Canal de Bypass (Retorno corto interno del bloque cuando está frío) */}
+            <path
+              d="M 450 110 C 370 120, 370 220, 450 230"
+              fill="none"
+              stroke={!isHot ? '#3b82f6' : 'rgba(255,255,255,0.1)'}
+              strokeWidth="3.5"
+              strokeDasharray={!isHot ? '6 3' : 'none'}
+              className={!isHot ? styles.flowing : ''}
+              opacity={!isHot ? 0.9 : 0.2}
+              style={{ transition: 'stroke 0.3s ease, opacity 0.3s ease' }}
+            />
+            {!isHot && (
+              <text x="350" y="170" textAnchor="middle" fontSize="8" fill="#3b82f6" fontWeight="bold">
+                Bypass Activo
+              </text>
+            )}
+          </svg>
+        </>
+      ) : (
+        <div className={styles.practiceContainer} style={{ marginTop: '8px' }}>
+          <div className={styles.practiceSection}>
+            <h4 className={styles.practiceHeading}>🔧 Desarmado Paso a Paso: Cambiar Bomba de Agua (EA111)</h4>
+            <div className={styles.bulletsList}>
+              <div className={`${styles.bulletItem} ${styles.bulletazul}`}>
+                <strong>Paso 1: Vaciar refrigerante</strong><br />
+                Aflojar el tapón o quitar la manguera inferior del radiador. Drenar por completo el refrigerante en una bandeja limpia.
+              </div>
+              <div className={`${styles.bulletItem} ${styles.bulletgris}`}>
+                <strong>Paso 2: Acceso inferior y accesorios</strong><br />
+                Desmontar el protector de cárter (chapón), levantar la rueda delantera derecha, quitar el guardaplast y aflojar la polea tensora para retirar la correa de accesorios (alternador/dirección).
+              </div>
+              <div className={`${styles.bulletItem} ${styles.bulletnaranja}`}>
+                <strong>Paso 3: Puesta a punto</strong><br />
+                Girar el cigüeñal hasta alinear las marcas PMS (Punto Muerto Superior) en el engranaje del árbol de levas y cigüeñal.
+              </div>
+              <div className={`${styles.bulletItem} ${styles.bulletrojo}`}>
+                <strong>Paso 4: Desmontar distribución</strong><br />
+                Aflojar la polea tensora de distribución y retirar la correa dentada con precaución de no mover las marcas.
+              </div>
+              <div className={`${styles.bulletItem} ${styles.bulletverde}`}>
+                <strong>Paso 5: Extraer la bomba de agua</strong><br />
+                Retirar los 3 tornillos Allen de fijación que unen la bomba al bloque del motor, removerla y limpiar bien los restos de junta vieja.
+              </div>
+              <div className={`${styles.bulletItem} ${styles.bulletvioleta}`}>
+                <strong>Paso 6: Instalación y purgado</strong><br />
+                Colocar junta nueva con un sutil sellador, ajustar los tornillos, armar la distribución, rellenar con líquido nuevo y purgar el aire.
+              </div>
+            </div>
+          </div>
         </div>
+      )}
+    </div>
+  )
+}
+
+
+// ==========================================
+// 20. WIDGET: Circuito de Lubricación (Aceite)
+// ==========================================
+function CircuitoLubricacionWidget({ viewMode }: WidgetProps) {
+  const [isLowPressure, setIsLowPressure] = useState(false)
+  const [activeTab, setActiveTab] = useState<'flujo' | 'desarmado'>('flujo')
+
+  if (viewMode === 'real') {
+    return (
+      <HotspotImage
+        src="/images/carter_bomba_aceite.png"
+        alt="Bomba de aceite y cárter desmontado real"
+        hotspots={[
+          { id: '1', x: 50, y: 10, title: 'Engranaje de Distribución del Cigüeñal', desc: 'Engranaje inferior del cigüeñal que impulsa mecánicamente la distribución y la bomba de aceite.' },
+          { id: '2', x: 63, y: 41, title: 'Cuerpo de la Bomba de Aceite', desc: 'Bomba de engranajes instalada en el frente del bloque motor, montada directamente alrededor de la punta del cigüeñal.' },
+          { id: '3', x: 63, y: 60, title: 'Tubo de Succión (Chupador)', desc: 'Tubo de aluminio largo que succiona el aceite desde el fondo del cárter.' },
+          { id: '4', x: 65, y: 87, title: 'Colador del Chupador (Malla)', desc: 'Malla metálica fina en la punta del chupador que retiene partículas grandes e impurezas del fondo del cárter.' }
+        ]}
+      />
+    )
+  }
+
+  return (
+    <div className={styles.widgetWrap}>
+      {/* Selector de Pestaña */}
+      <div className={styles.controlRow}>
+        <button className={`${styles.controlBtn} ${activeTab === 'flujo' ? styles.controlBtnActive : ''}`} onClick={() => setActiveTab('flujo')}>Simulación de Flujo</button>
+        <button className={`${styles.controlBtn} ${activeTab === 'desarmado' ? styles.controlBtnActiveOrange : ''}`} onClick={() => setActiveTab('desarmado')}>Guía de Desarmado</button>
       </div>
 
-      <svg className={styles.svg} viewBox="0 0 680 340">
-        {/* Fondo y etiquetas */}
-        <rect x="10" y="10" width="660" height="320" rx="10" fill="rgba(255,255,255,0.01)" stroke="rgba(255,255,255,0.03)" />
-        
-        {/* Bloque Motor */}
-        <rect x="420" y="70" width="180" height="200" rx="8" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)" strokeWidth="1.5" />
-        <text x="510" y="160" textAnchor="middle" fontSize="13" fontWeight="600" fill="#ffffff">Bloque Motor</text>
-        <text x="510" y="180" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.4)">EA111 1.6 MSI</text>
+      {activeTab === 'flujo' ? (
+        <>
+          <div className={styles.controlRow} style={{ marginTop: '8px', gap: '8px' }}>
+            <button className={`${styles.controlBtn} ${!isLowPressure ? styles.controlBtnActiveGreen : ''}`} onClick={() => setIsLowPressure(false)}>Presión Correcta (Engrase Normal)</button>
+            <button className={`${styles.controlBtn} ${isLowPressure ? styles.controlBtnActiveRed : ''}`} onClick={() => setIsLowPressure(true)}>Falta de Presión (Alerta Crítica)</button>
+          </div>
 
-        {/* Canales Internos del Motor (Celeste si frío, Rojo/Naranja si caliente) */}
-        <path d="M 450 110 L 570 110 L 570 230 L 450 230 Z" fill="none" stroke={isHot ? '#ef4444' : '#3b82f6'} strokeWidth="5" opacity="0.3" />
+          <div className={styles.infoBox}>
+            <div className={styles.infoTitle}>{!isLowPressure ? 'Presión Normal - Película Protectora Activa' : 'Falta de Presión - Fricción y Desgaste Crítico'}</div>
+            <div className={styles.infoBody}>
+              {!isLowPressure
+                ? 'El lubricante es succionado y filtrado, fluyendo a presión por las galerías del bloque. Baña permanentemente los cojinetes del cigüeñal y sube a la culata para lubricar las levas a alta presión.'
+                : 'La bomba de aceite no genera presión (bomba rota o falta de nivel). El aceite deja de fluir. En segundos, las levas superiores y los cojinetes del cigüeñal rozan metal contra metal a más de 120°C, fundiendo el motor.'
+              }
+            </div>
+          </div>
 
-        {/* Radiador Frontal */}
-        <rect x="80" y="70" width="120" height="200" rx="8" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)" strokeWidth="1.5" />
-        {/* Celdas del radiador */}
-        <line x1="100" y1="85" x2="100" y2="255" stroke="rgba(255,255,255,0.15)" strokeWidth="2" />
-        <line x1="120" y1="85" x2="120" y2="255" stroke="rgba(255,255,255,0.15)" strokeWidth="2" />
-        <line x1="140" y1="85" x2="140" y2="255" stroke="rgba(255,255,255,0.15)" strokeWidth="2" />
-        <line x1="160" y1="85" x2="160" y2="255" stroke="rgba(255,255,255,0.15)" strokeWidth="2" />
-        <line x1="180" y1="85" x2="180" y2="255" stroke="rgba(255,255,255,0.15)" strokeWidth="2" />
-        <text x="140" y="60" textAnchor="middle" fontSize="11" fill="rgba(255,255,255,0.6)" fontWeight="600">Radiador</text>
+          <svg className={styles.svg} viewBox="0 0 680 340">
+            {/* Fondo */}
+            <rect x="10" y="10" width="660" height="320" rx="10" fill="rgba(255,255,255,0.01)" stroke="rgba(255,255,255,0.03)" />
 
-        {/* Electroventilador */}
-        <g className={isHot ? styles.spinning : ''} style={{ transformBox: 'fill-box', transformOrigin: 'center' }}>
-          <circle cx="140" cy="170" r="35" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5" />
-          {/* Aspas */}
-          <line x1="140" y1="135" x2="140" y2="205" stroke="rgba(255,255,255,0.4)" strokeWidth="3" />
-          <line x1="105" y1="170" x2="175" y2="170" stroke="rgba(255,255,255,0.4)" strokeWidth="3" />
-          <line x1="115" y1="145" x2="165" y2="195" stroke="rgba(255,255,255,0.4)" strokeWidth="3" />
-          <line x1="115" y1="195" x2="165" y2="145" stroke="rgba(255,255,255,0.4)" strokeWidth="3" />
-          <circle cx="140" cy="170" r="8" fill="rgba(255,255,255,0.6)" />
-        </g>
+            {/* Motor (Corte) */}
+            {/* Tapa de válvulas */}
+            <rect x="250" y="30" width="180" height="40" rx="6" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.12)" />
+            <text x="340" y="52" textAnchor="middle" fontSize="10" fill="rgba(255,255,255,0.5)">Tapa de Válvulas</text>
 
-        {/* Depósito de Expansión */}
-        <rect x="470" y="20" width="80" height="40" rx="6" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" />
-        <text x="510" y="44" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.5)">Depósito</text>
-        {/* Nivel de refrigerante rosa/rosa caliente */}
-        <rect x="471" y="38" width="78" height="21" rx="2" fill="#E24B4A" opacity="0.3" />
-        <line x1="540" y1="35" x2="550" y2="35" stroke="rgba(255,255,255,0.3)" strokeWidth="1" />
-        <text x="560" y="38" fontSize="7" fill="rgba(255,255,255,0.4)">MAX</text>
+            {/* Bloque motor */}
+            <rect x="250" y="70" width="180" height="150" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.12)" />
+            <text x="340" y="145" textAnchor="middle" fontSize="11" fill="rgba(255,255,255,0.4)">Bloque Cilindros</text>
 
-        {/* Manguera Superior (Caliente) */}
-        <path
-          d="M 420 100 L 200 100"
-          fill="none"
-          stroke={isHot ? '#E24B4A' : '#888780'}
-          strokeWidth="5"
-          strokeDasharray={isHot ? '8 4' : 'none'}
-          className={isHot ? styles.flowing : ''}
-          style={{ transition: 'stroke 0.3s ease' }}
-        />
-        <text x="310" y="90" textAnchor="middle" fontSize="9" fill={isHot ? '#E24B4A' : 'rgba(255,255,255,0.4)'} fontWeight="600">
-          Manguera Superior (Caliente)
-        </text>
+            {/* Cárter inferior (Aceite) */}
+            <rect x="250" y="220" width="180" height="60" rx="4" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" />
+            {/* Nivel de aceite */}
+            <rect x="251" y="245" width="178" height="34" rx="2" fill="#BA7517" opacity="0.4" />
+            <text x="340" y="265" textAnchor="middle" fontSize="10" fill="#BA7517" fontWeight="bold">Aceite Motor (Cárter)</text>
 
-        {/* Termostato (Válvula) */}
-        <g>
-          <circle cx="410" cy="100" r="14" fill="#111622" stroke={isHot ? '#1D9E75' : '#E24B4A'} strokeWidth="2" />
-          <text x="410" y="103" textAnchor="middle" fontSize="8" fontWeight="bold" fill={isHot ? '#1D9E75' : '#E24B4A'}>
-            {isHot ? 'ABR' : 'CER'}
-          </text>
-          <text x="410" y="125" textAnchor="middle" fontSize="8" fill="rgba(255,255,255,0.6)">Termostato</text>
-        </g>
+            {/* Chupador y Filtro */}
+            <line x1="320" y1="260" x2="320" y2="200" stroke="#BA7517" strokeWidth="4" />
+            <circle cx="320" cy="260" r="10" fill="none" stroke="#BA7517" strokeWidth="2" />
+            <text x="305" y="263" fontSize="8" fill="rgba(255,255,255,0.5)">chupador</text>
 
-        {/* Manguera Inferior (Retorno Frío) */}
-        <path
-          d="M 200 240 L 420 240"
-          fill="none"
-          stroke={isHot ? '#3b82f6' : '#888780'}
-          strokeWidth="5"
-          strokeDasharray={isHot ? '8 4' : 'none'}
-          className={isHot ? styles.flowing : ''}
-          style={{ transition: 'stroke 0.3s ease' }}
-        />
-        <text x="310" y="258" textAnchor="middle" fontSize="9" fill={isHot ? '#3b82f6' : 'rgba(255,255,255,0.4)'} fontWeight="600">
-          Manguera Inferior (Retorno Frío)
-        </text>
+            {/* Bomba de aceite (Engranaje) */}
+            <g className={!isLowPressure ? styles.spinning : ''} style={{ transformBox: 'fill-box', transformOrigin: 'center' }}>
+              <circle cx="320" cy="200" r="14" fill="#111622" stroke="#BA7517" strokeWidth="2" />
+              <line x1="320" y1="186" x2="320" y2="214" stroke="#BA7517" strokeWidth="2" />
+              <line x1="306" y1="200" x2="334" y2="200" stroke="#BA7517" strokeWidth="2" />
+            </g>
+            <text x="340" y="204" fontSize="8" fill="rgba(255,255,255,0.5)">bomba</text>
 
-        {/* Bomba de Agua */}
-        <g>
-          <circle cx="430" cy="240" r="14" fill="#111622" stroke="#3b82f6" strokeWidth="2" />
-          <path d="M 423 240 L 437 240 M 430 233 L 430 247" stroke="#3b82f6" strokeWidth="1.5" />
-          <circle cx="430" cy="240" r="4" fill="#ffffff" />
-          <text x="430" y="268" textAnchor="middle" fontSize="8" fill="rgba(255,255,255,0.6)">Bomba de Agua</text>
-        </g>
+            {/* Filtro de Aceite */}
+            <rect x="150" y="170" width="50" height="40" rx="4" fill="rgba(255,255,255,0.05)" stroke="#3b82f6" strokeWidth="1.5" />
+            <text x="175" y="195" textAnchor="middle" fontSize="9" fill="#3b82f6">Filtro</text>
 
-        {/* Canal de Bypass (Retorno corto interno del bloque cuando está frío) */}
-        <path
-          d="M 450 110 C 370 120, 370 220, 450 230"
-          fill="none"
-          stroke={!isHot ? '#3b82f6' : 'rgba(255,255,255,0.1)'}
-          strokeWidth="3.5"
-          strokeDasharray={!isHot ? '6 3' : 'none'}
-          className={!isHot ? styles.flowing : ''}
-          opacity={!isHot ? 0.9 : 0.2}
-          style={{ transition: 'stroke 0.3s ease, opacity 0.3s ease' }}
-        />
-        {!isHot && (
-          <text x="350" y="170" textAnchor="middle" fontSize="8" fill="#3b82f6" fontWeight="bold">
-            Bypass Activo
-          </text>
-        )}
-      </svg>
+            {/* Árbol de levas (Arriba) */}
+            <circle cx="340" cy="52" r="12" fill={isLowPressure ? '#ef4444' : '#BA7517'} stroke={isLowPressure ? '#ef4444' : 'rgba(255,255,255,0.3)'} strokeWidth="1.5" className={isLowPressure ? styles.pulsingRed : ''} />
+            <text x="340" y="38" textAnchor="middle" fontSize="7" fill="rgba(255,255,255,0.4)">Levas</text>
+
+            {/* Cigüeñal / Cojinete (Abajo) */}
+            <circle cx="340" cy="180" r="15" fill={isLowPressure ? '#ef4444' : '#BA7517'} stroke={isLowPressure ? '#ef4444' : 'rgba(255,255,255,0.3)'} strokeWidth="1.5" className={isLowPressure ? styles.pulsingRed : ''} />
+            <text x="340" y="183" textAnchor="middle" fontSize="7" fill="#ffffff">Cojinete</text>
+
+            {/* Galerías y Canales de Aceite */}
+            {/* Bomba -> Filtro */}
+            <path d="M 306 200 L 200 200" fill="none" stroke="#BA7517" strokeWidth="3.5" opacity={isLowPressure ? 0.25 : 0.9} />
+            {/* Filtro -> Galería Principal */}
+            <path d="M 175 170 L 175 140 L 340 140 L 340 165" fill="none" stroke="#BA7517" strokeWidth="3.5" opacity={isLowPressure ? 0.25 : 0.9} />
+            {/* Galería Principal -> Culata (Arriba) */}
+            <path d="M 340 140 L 300 140 L 300 52 L 328 52" fill="none" stroke="#BA7517" strokeWidth="3" opacity={isLowPressure ? 0.2 : 0.8} />
+
+            {/* Animaciones de flujo ( flowing ) */}
+            {!isLowPressure && (
+              <>
+                <path d="M 306 200 L 200 200" fill="none" stroke="#ffffff" strokeWidth="1.5" strokeDasharray="5 5" className={styles.flowing} />
+                <path d="M 175 170 L 175 140 L 340 140 L 340 165" fill="none" stroke="#ffffff" strokeWidth="1.5" strokeDasharray="5 5" className={styles.flowing} />
+                <path d="M 340 140 L 300 140 L 300 52 L 328 52" fill="none" stroke="#ffffff" strokeWidth="1.2" strokeDasharray="5 5" className={styles.flowing} />
+              </>
+            )}
+
+            {/* Mensajes de Alerta */}
+            {isLowPressure && (
+              <g>
+                <rect x="450" y="140" width="180" height="50" rx="6" fill="rgba(239, 68, 68, 0.15)" stroke="#ef4444" strokeWidth="1.5" />
+                <text x="540" y="162" textAnchor="middle" fontSize="10" fontWeight="bold" fill="#ef4444">¡BAJA PRESIÓN DE ACEITE!</text>
+                <text x="540" y="178" textAnchor="middle" fontSize="8" fill="#ef4444">Fricción severa y sobrecalentamiento</text>
+              </g>
+            )}
+          </svg>
+        </>
+      ) : (
+        <div className={styles.practiceContainer} style={{ marginTop: '8px' }}>
+          <div className={styles.practiceSection}>
+            <h4 className={styles.practiceHeading}>🔧 Desarmado Paso a Paso: Acceso a la Bomba de Aceite (EA111)</h4>
+            <div className={styles.bulletsList}>
+              <div className={`${styles.bulletItem} ${styles.bulletnaranja}`}>
+                <strong>Paso 1: Drenar el aceite viejo</strong><br />
+                Quitar el tapón roscado del cárter (llave de 19mm) y dejar vaciar por completo el aceite caliente en un recipiente adecuado.
+              </div>
+              <div className={`${styles.bulletItem} ${styles.bulletgris}`}>
+                <strong>Paso 2: Retirar el protector de cárter</strong><br />
+                Desatornillar y quitar el chapón protector metálico inferior para liberar la zona de trabajo.
+              </div>
+              <div className={`${styles.bulletItem} ${styles.bulletazul}`}>
+                <strong>Paso 3: Remover el cárter de aluminio</strong><br />
+                Retirar los ~16 tornillos Allen o hexagonales que sujetan el cárter de aluminio al bloque del motor, golpearlo suavemente y quitarlo.
+              </div>
+              <div className={`${styles.bulletItem} ${styles.bulletrojo}`}>
+                <strong>Paso 4: Desmontar la distribución inferior</strong><br />
+                Desmontar la correa de distribución y retirar el engranaje dentado inferior del cigüeñal.
+              </div>
+              <div className={`${styles.bulletItem} ${styles.bulletverde}`}>
+                <strong>Paso 5: Desmontar la bomba de aceite</strong><br />
+                La bomba está encastrada en el eje del cigüeñal. Quitar los tornillos del frente del bloque motor y deslizarla hacia afuera junto con el chupador.
+              </div>
+              <div className={`${styles.bulletItem} ${styles.bulletvioleta}`}>
+                <strong>Paso 6: Limpieza y sellado nuevo</strong><br />
+                Limpiar bien los restos de junta de silicona vieja en el bloque. Colocar junta tórica y bomba nueva, aplicar sellador en el cárter y rearmar todo.
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
@@ -2206,6 +2505,8 @@ export function RenderWidget({ widgetKey, viewMode }: { widgetKey: TopicWidget; 
       return <ConexionesInternasWidget viewMode={viewMode} />
     case 'circuito_refrigeracion':
       return <CircuitoRefrigeracionWidget viewMode={viewMode} />
+    case 'circuito_lubricacion':
+      return <CircuitoLubricacionWidget viewMode={viewMode} />
     case 'motor_niveles':
       return <MotorNivelesWidget viewMode={viewMode} />
     case 'aros_piston_detalle':

@@ -298,3 +298,14 @@
   animation: flow 1.2s linear infinite;
 }
 
+@keyframes pulseRed {
+  0% { opacity: 0.65; fill: #ef4444; }
+  50% { opacity: 1; fill: #f87171; }
+  100% { opacity: 0.65; fill: #ef4444; }
+}
+
+.pulsingRed {
+  animation: pulseRed 0.8s ease-in-out infinite;
+}
+
+
