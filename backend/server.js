@@ -532,29 +532,43 @@ app.post('/api/send-alert', async (req, res) => {
 
   // 1. Procesar Envío por Email
   if (email) {
-    console.log(`Enviando alerta por email a: ${email}`);
+    console.log(`[EMAIL] Iniciando envío de alerta por email a: ${email}`);
     emailSent = await sendViaBrevo(email, title, html || message);
-    if (!emailSent) {
+    
+    if (emailSent) {
+      console.log(`[EMAIL] Alerta enviada con éxito vía Brevo a: ${email}`);
+    } else {
+      console.warn(`[EMAIL] Falló envío vía Brevo a: ${email}. Intentando reintento vía SendGrid...`);
       emailSent = await sendViaSendGrid(email, title, html || message);
+      
+      if (emailSent) {
+        console.log(`[EMAIL] Alerta enviada con éxito vía SendGrid a: ${email}`);
+      } else {
+        console.error(`[EMAIL] ERROR CRÍTICO: No se pudo enviar el correo a ${email} con ningún proveedor (Brevo/SendGrid). Verifica las API keys y límites.`);
+      }
     }
+  } else {
+    console.log(`[EMAIL] No se solicitó envío por Email (canal deshabilitado o sin dirección).`);
   }
 
   // 2. Procesar Envío por WhatsApp
   if (whatsapp) {
     if (!isWhatsAppReady) {
-      console.error("No se pudo enviar WhatsApp: el cliente no está inicializado o autenticado.");
+      console.error(`[WHATSAPP] ERROR: No se pudo enviar el mensaje a ${whatsapp} porque el cliente de WhatsApp Web no está listo/autenticado.`);
     } else {
       try {
         const normalized = normalizeNumber(whatsapp);
         const jid = normalized + "@c.us";
-        console.log(`Enviando alerta de WhatsApp a: ${jid}`);
+        console.log(`[WHATSAPP] Enviando mensaje de WhatsApp a: ${jid}`);
         await client.sendMessage(jid, message);
         whatsappSent = true;
-        console.log(`WhatsApp enviado con éxito a: ${jid}`);
+        console.log(`[WHATSAPP] Mensaje enviado con éxito a: ${jid}`);
       } catch (err) {
-        console.error("Error al enviar mensaje de WhatsApp:", err);
+        console.error(`[WHATSAPP] ERROR al enviar mensaje de WhatsApp a ${whatsapp}:`, err);
       }
     }
+  } else {
+    console.log(`[WHATSAPP] No se solicitó envío por WhatsApp (canal deshabilitado o sin número).`);
   }
 
   // Si se envió con éxito y se provee carId, actualizar fecha de última alerta en MySQL
