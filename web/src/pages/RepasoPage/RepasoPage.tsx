@@ -302,13 +302,15 @@ export function RepasoPage() {
               </>
             )}
           </div>
-          <button
-            className={styles.toggleSidebarBtn}
-            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-            title={sidebarCollapsed ? "Mostrar barra de temas" : "Contraer barra de temas"}
-          >
-            {sidebarCollapsed ? '📂 Temas' : '📁 Ocultar'}
-          </button>
+          {sidebarCollapsed && (
+            <button
+              className={styles.toggleSidebarBtn}
+              onClick={() => setSidebarCollapsed(false)}
+              title="Mostrar barra de temas"
+            >
+              📂 Mostrar Temas
+            </button>
+          )}
         </nav>
       )}
 
@@ -350,14 +352,23 @@ export function RepasoPage() {
             {/* Barra Lateral Izquierda (Listado de Temas del Sistema) */}
             {!sidebarCollapsed && (
               <aside className={styles.sidebar}>
-              <div className={styles.sidebarHeader}>
-                <button onClick={handleGoHome} className={styles.backBtn}>
-                  ← Volver al Mapa
-                </button>
-                <h2 className={styles.sidebarTitle}>
-                  {activeSystem.icon} {activeSystem.label}
-                </h2>
-              </div>
+                <div className={styles.sidebarHeader}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <button onClick={handleGoHome} className={styles.backBtn}>
+                      ← Volver al Mapa
+                    </button>
+                    <button
+                      onClick={() => setSidebarCollapsed(true)}
+                      className={styles.sidebarCollapseBtn}
+                      title="Contraer barra de temas"
+                    >
+                      ◀ Ocultar
+                    </button>
+                  </div>
+                  <h2 className={styles.sidebarTitle}>
+                    {activeSystem.icon} {activeSystem.label}
+                  </h2>
+                </div>
 
               <nav className={styles.topicList}>
                 {/* Grupo Flujos */}
