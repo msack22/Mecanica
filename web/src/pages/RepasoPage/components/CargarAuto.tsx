@@ -51,6 +51,8 @@ const SPECS: MaintenanceSpec[] = [
   { label: 'Líquido Refrigerante', key: 'refrigerante', limitKm: 60000, limitMonths: 36, icon: '💧' }
 ]
 
+const BACKEND_URL = `http://${window.location.hostname}:3002`;
+
 export function CargarAuto() {
   const [user, setUser] = useState<User | null>(null);
   const [cars, setCars] = useState<Car[]>([]);
@@ -104,7 +106,7 @@ export function CargarAuto() {
         setAuthLoading(true);
         setAuthError(null);
         try {
-          const response = await fetch('http://localhost:3002/api/auth/google-login', {
+          const response = await fetch(`${BACKEND_URL}/api/auth/google-login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, name: name || '' })
@@ -143,7 +145,7 @@ export function CargarAuto() {
 
     const fetchCars = async () => {
       try {
-        const response = await fetch('http://localhost:3002/api/cars', {
+        const response = await fetch(`${BACKEND_URL}/api/cars`, {
           headers: { 'Authorization': `Bearer ${user.token}` }
         });
         if (response.ok) {
@@ -176,7 +178,7 @@ export function CargarAuto() {
 
     const delayDebounceFn = setTimeout(async () => {
       try {
-        await fetch(`http://localhost:3002/api/cars/${activeCar.id}`, {
+        await fetch(`${BACKEND_URL}/api/cars/${activeCar.id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -204,7 +206,7 @@ export function CargarAuto() {
       : { email: authEmail, password: authPassword, name: authName };
 
     try {
-      const response = await fetch(`http://localhost:3002/api/auth/${url}`, {
+      const response = await fetch(`${BACKEND_URL}/api/auth/${url}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
@@ -262,7 +264,7 @@ export function CargarAuto() {
     if (!newCarAlias.trim() || !user) return;
 
     try {
-      const response = await fetch('http://localhost:3002/api/cars', {
+      const response = await fetch(`${BACKEND_URL}/api/cars`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -297,7 +299,7 @@ export function CargarAuto() {
     if (!window.confirm(`¿Estás seguro de eliminar el auto "${activeCar.alias}"? Se borrará todo su historial.`)) return;
 
     try {
-      const response = await fetch(`http://localhost:3002/api/cars/${activeCar.id}`, {
+      const response = await fetch(`${BACKEND_URL}/api/cars/${activeCar.id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${user.token}` }
       });
@@ -461,7 +463,7 @@ export function CargarAuto() {
       <p><em>Este es un recordatorio automático generado desde tu Manual de Mecánica Local.</em></p>`;
 
     try {
-      const response = await fetch('http://localhost:3002/api/send-alert', {
+      const response = await fetch(`${BACKEND_URL}/api/send-alert`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -546,7 +548,7 @@ export function CargarAuto() {
           </div>
 
           <button onClick={handleGoogleLogin} className={styles.googleBtn} type="button">
-            <span style={{ fontSize: '16px' }}>🌐</span> Ingresar con Google (Gmail)
+            <span style={{ fontSize: '16px' }}>🌐</span> Conectar con Google
           </button>
 
           <div className={styles.orDivider}>o usa tu mail y contraseña</div>
