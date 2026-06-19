@@ -4,6 +4,7 @@ import { procedimientosData, type Procedimiento } from '../../data/procedimiento
 import { RenderWidget } from '../../components/widgets/Widgets'
 import { TagPills } from './components/TagPills'
 import { OverviewMap } from '../../components/OverviewMap'
+import { MantenimientoPreventivo } from './components/MantenimientoPreventivo'
 import styles from './repasoPage.module.css'
 
 type SearchResult = {
@@ -17,7 +18,7 @@ type SearchResult = {
 }
 
 export function RepasoPage() {
-  const [activeTab, setActiveTab] = useState<'repaso' | 'procedimientos'>('repaso')
+  const [activeTab, setActiveTab] = useState<'repaso' | 'mantenimiento' | 'procedimientos'>('repaso')
   const [activeSystemKey, setActiveSystemKey] = useState<string | null>(null)
   const [activeTopicKey, setActiveTopicKey] = useState<string | null>(null)
   const [procFilterSystem, setProcFilterSystem] = useState<string | null>('mec') // default mecánico
@@ -215,6 +216,12 @@ export function RepasoPage() {
             onClick={() => setActiveTab('repaso')}
           >
             Repaso de Sistemas
+          </button>
+          <button
+            className={`${styles.navTab} ${activeTab === 'mantenimiento' ? styles.navTabActive : ''}`}
+            onClick={() => setActiveTab('mantenimiento')}
+          >
+            Plan de Mantenimiento
           </button>
           <button
             className={`${styles.navTab} ${activeTab === 'procedimientos' ? styles.navTabActive : ''}`}
@@ -492,9 +499,27 @@ export function RepasoPage() {
             </main>
           </div>
         )
+      ) : activeTab === 'mantenimiento' ? (
+        // ==========================================
+        // SECCIÓN 2: PLAN DE MANTENIMIENTO PREVENTIVO
+        // ==========================================
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', flexGrow: 1 }}>
+          <div className={styles.detailCard}>
+            <div className={styles.topicTitleArea}>
+              <h2 className={styles.topicHeading}>📅 Plan de Mantenimiento Preventivo</h2>
+              <p className={styles.topicSubtitle}>Cronograma oficial para el motor 1.6 MSI EA111 del Gol Trend</p>
+            </div>
+            <p className={styles.topicBodyText}>
+              Mantener al día los fluidos, filtros y componentes de desgaste del auto es la mejor manera de asegurar su confiabilidad, extender la vida útil del motor y ahorrar en reparaciones costosas.
+            </p>
+            <div className={styles.widgetBox}>
+              <MantenimientoPreventivo />
+            </div>
+          </div>
+        </div>
       ) : (
         // ==========================================
-        // SECCIÓN 2: PROCEDIMIENTOS DE TALLER (VIDEOS)
+        // SECCIÓN 3: PROCEDIMIENTOS DE TALLER (VIDEOS)
         // ==========================================
         <div className={styles.layout}>
           {/* Barra Lateral Izquierda (Filtro por Sistema que Repara) */}
