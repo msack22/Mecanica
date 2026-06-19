@@ -431,6 +431,7 @@ app.post('/api/cars', authenticateToken, async (req, res) => {
   }
 
   try {
+    const normalizedWhatsapp = whatsapp ? normalizeNumber(whatsapp) : '';
     const [result] = await pool.query(`
       INSERT INTO cars (
         user_id, alias, brand, model, year, kmActual, kmAnual, 
@@ -445,7 +446,7 @@ app.post('/api/cars', authenticateToken, async (req, res) => {
       kmActual || 90000,
       kmAnual || 12000,
       email || '',
-      whatsapp || '',
+      normalizedWhatsapp,
       enableEmail ? 1 : 0,
       enableWhatsapp ? 1 : 0
     ]);
@@ -477,6 +478,7 @@ app.put('/api/cars/:id', authenticateToken, async (req, res) => {
       return res.status(404).json({ error: 'Vehículo no encontrado o acceso denegado.' });
     }
 
+    const normalizedWhatsapp = whatsapp ? normalizeNumber(whatsapp) : '';
     await pool.query(`
       UPDATE cars SET 
         alias = ?, brand = ?, model = ?, year = ?, kmActual = ?, kmAnual = ?, 
@@ -487,7 +489,7 @@ app.put('/api/cars/:id', authenticateToken, async (req, res) => {
       WHERE id = ? AND user_id = ?
     `, [
       alias, brand, model, year, kmActual, kmAnual, 
-      email, whatsapp, enableEmail ? 1 : 0, enableWhatsapp ? 1 : 0, 
+      email, normalizedWhatsapp, enableEmail ? 1 : 0, enableWhatsapp ? 1 : 0, 
       aceiteDate, aceiteKm, bujiasDate, bujiasKm, 
       frenosDate, correaDate, correaKm, refrigeranteDate, 
       refrigeranteKm, lastAlertSentDate || null,

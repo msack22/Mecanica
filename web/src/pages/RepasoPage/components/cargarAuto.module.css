@@ -482,6 +482,26 @@
   background: rgba(239, 68, 68, 0.2);
 }
 
+.btnDangerMini {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 12.5px;
+  font-weight: 550;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.btnDangerMini:hover {
+  background: rgba(239, 68, 68, 0.25);
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.2);
+}
+
 /* DIALOG / MODAL STYLES */
 .modalBackdrop {
   position: fixed;

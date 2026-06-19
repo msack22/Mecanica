@@ -491,54 +491,70 @@ export function CargarAuto() {
   const overdueOrNearItems = calculatedItems.filter(item => item.calc.status !== 'ok');
 
   // Lanzar alertas manuales o automáticas al backend local
-  const triggerAlert = async (forceManual = false) => {
+  const triggerAlert = async (forceManual = false, isTest = false) => {
     if (!activeCar || !user) return;
-    if (overdueOrNearItems.length === 0) {
-      if (forceManual) {
-        setAlertStatusMessage('ℹ️ Todos los mantenimientos están al día. No se requieren alertas.');
-      }
-      return;
-    }
 
     if (!activeCar.email && !activeCar.whatsapp) {
       setAlertStatusMessage('⚠️ Configura un correo o WhatsApp en el auto activo para recibir las alertas.');
       return;
     }
 
+    setIsAlertSending(true);
+    setAlertStatusMessage('⏳ Conectando con el servidor de alertas...');
+
+    let alertTitle = `[Alerta Mecánica] Vencimientos para tu ${activeCar.model} 🚗`;
+    let alertMessageText = '';
+    let alertMessageHtml = '';
+
+    if (isTest) {
+      alertTitle = `[Prueba] Test de Canales de Alerta - ${activeCar.alias} 🚗`;
+      alertMessageText = `¡Hola! Esta es una alerta de prueba exitosa desde tu Manual de Mecánica Gol Trend para el vehículo "${activeCar.alias}".\nTus canales de notificación están correctamente configurados.\n¡Buen viaje!`;
+      alertMessageHtml = `<h3>Prueba de Alerta Exitosa 🚗</h3>
+        <p>¡Hola! Esta es una alerta de prueba exitosa desde tu <strong>Manual de Mecánica Gol Trend</strong> para el vehículo <strong>"${activeCar.alias}"</strong>.</p>
+        <p>Tus canales de notificación (Email / WhatsApp) están correctamente configurados y activos.</p>
+        <p><em>Buen viaje y maneja con cuidado.</em></p>`;
+    } else {
+      if (overdueOrNearItems.length === 0) {
+        if (forceManual) {
+          setAlertStatusMessage('ℹ️ Todos los mantenimientos están al día. No se requieren alertas.');
+        }
+        setIsAlertSending(false);
+        return;
+      }
+
+      const detailLines = overdueOrNearItems.map(item => {
+        const prefix = item.calc.status === 'overdue' ? '🛑 [VENCIDO]' : '⚠️ [PRÓXIMO]';
+        return `${prefix} ${item.spec.label}: ${item.calc.text}`;
+      });
+
+      alertMessageText = `¡Hola! Aquí tienes el estado de alertas de mantenimiento preventivo para tu vehículo "${activeCar.alias}" (${activeCar.brand} ${activeCar.model} - Km Actual: ${activeCar.kmActual.toLocaleString()} km):\n\n${detailLines.join('\n')}\n\nRevisa el manual interactivo para ver los procedimientos de taller y consejos.`;
+      alertMessageHtml = `<h3>Alerta de Mantenimiento Preventivo</h3>
+        <p>Hola, aquí tienes el reporte de alertas pendientes para tu vehículo <strong>"${activeCar.alias}"</strong> (${activeCar.brand} ${activeCar.model} - Km actual: <strong>${activeCar.kmActual.toLocaleString()} km</strong>):</p>
+        <ul>
+          ${overdueOrNearItems.map(item => {
+            const color = item.calc.status === 'overdue' ? '#ef4444' : '#f59e0b';
+            const prefix = item.calc.status === 'overdue' ? 'VENCIDO' : 'PRÓXIMO';
+            return `<li style="margin-bottom: 8px;">
+              <strong style="color: ${color};">[${prefix}] ${item.spec.label}</strong>: ${item.calc.text}
+            </li>`;
+          }).join('')}
+        </ul>
+        <p><em>Este es un recordatorio automático generado desde tu Manual de Mecánica Local.</em></p>`;
+    }
+
     // LÓGICA DE ALERTA CADA 10 DÍAS PARA EVITAR SPAM EN ENVIOS AUTOMÁTICOS
     const today = new Date();
-    if (!forceManual && activeCar.lastAlertSentDate) {
+    if (!forceManual && !isTest && activeCar.lastAlertSentDate) {
       const lastSent = new Date(activeCar.lastAlertSentDate);
       const diffTime = Math.abs(today.getTime() - lastSent.getTime());
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       
       if (diffDays < 10) {
         console.log(`Alerta automática bloqueada. Pasaron ${diffDays} días de la última (intervalo: 10 días).`);
+        setIsAlertSending(false);
         return;
       }
     }
-
-    setIsAlertSending(true);
-    setAlertStatusMessage('⏳ Conectando con el servidor de alertas...');
-
-    const detailLines = overdueOrNearItems.map(item => {
-      const prefix = item.calc.status === 'overdue' ? '🛑 [VENCIDO]' : '⚠️ [PRÓXIMO]';
-      return `${prefix} ${item.spec.label}: ${item.calc.text}`;
-    });
-
-    const alertMessageText = `¡Hola! Aquí tienes el estado de alertas de mantenimiento preventivo para tu vehículo "${activeCar.alias}" (${activeCar.brand} ${activeCar.model} - Km Actual: ${activeCar.kmActual.toLocaleString()} km):\n\n${detailLines.join('\n')}\n\nRevisa el manual interactivo para ver los procedimientos de taller y consejos.`;
-    const alertMessageHtml = `<h3>Alerta de Mantenimiento Preventivo</h3>
-      <p>Hola, aquí tienes el reporte de alertas pendientes para tu vehículo <strong>"${activeCar.alias}"</strong> (${activeCar.brand} ${activeCar.model} - Km actual: <strong>${activeCar.kmActual.toLocaleString()} km</strong>):</p>
-      <ul>
-        ${overdueOrNearItems.map(item => {
-          const color = item.calc.status === 'overdue' ? '#ef4444' : '#f59e0b';
-          const prefix = item.calc.status === 'overdue' ? 'VENCIDO' : 'PRÓXIMO';
-          return `<li style="margin-bottom: 8px;">
-            <strong style="color: ${color};">[${prefix}] ${item.spec.label}</strong>: ${item.calc.text}
-          </li>`;
-        }).join('')}
-      </ul>
-      <p><em>Este es un recordatorio automático generado desde tu Manual de Mecánica Local.</em></p>`;
 
     try {
       const response = await fetch(`${BACKEND_URL}/api/send-alert`, {
@@ -547,10 +563,10 @@ export function CargarAuto() {
         body: JSON.stringify({
           email: activeCar.enableEmail && activeCar.email ? activeCar.email : undefined,
           whatsapp: activeCar.enableWhatsapp && activeCar.whatsapp ? activeCar.whatsapp : undefined,
-          title: `[Alerta Mecánica] Vencimientos para tu ${activeCar.model} 🚗`,
+          title: alertTitle,
           message: alertMessageText,
           html: alertMessageHtml,
-          carId: activeCar.id // Pasar carId para actualizar lastAlertSentDate en MySQL
+          carId: isTest ? undefined : activeCar.id // No actualizar la fecha de alerta si es una prueba
         })
       });
 
@@ -563,11 +579,13 @@ export function CargarAuto() {
         else if (data.whatsappSent) channelText = 'WhatsApp';
         else channelText = 'Ninguno';
 
-        setAlertStatusMessage(`✅ Alertas automáticas enviadas con éxito por: ${channelText}.`);
+        setAlertStatusMessage(`✅ ${isTest ? 'Prueba de alerta' : 'Alertas'} enviada con éxito por: ${channelText}.`);
         
-        // Actualizar el estado local para reflejar la última fecha de alerta de inmediato
-        const todayStr = new Date().toDateString();
-        handleCarValueChange('lastAlertSentDate', todayStr);
+        if (!isTest) {
+          // Actualizar el estado local para reflejar la última fecha de alerta de inmediato
+          const todayStr = new Date().toDateString();
+          handleCarValueChange('lastAlertSentDate', todayStr);
+        }
       } else {
         setAlertStatusMessage(`❌ Error del servidor de alertas: ${data.error || 'Desconocido'}`);
       }
@@ -734,6 +752,12 @@ export function CargarAuto() {
             {cars.length === 0 && <option value="">Sin vehículos registrados</option>}
           </select>
 
+          {activeCar && (
+            <button className={styles.btnDangerMini} onClick={handleDeleteCar} title="Eliminar este auto">
+              🗑️ Eliminar Auto
+            </button>
+          )}
+
           <button className={styles.btnSecondary} onClick={() => setShowAddCarModal(true)}>
             ➕ Agregar Auto
           </button>
@@ -822,26 +846,32 @@ export function CargarAuto() {
               </div>
             </div>
 
-            {overdueOrNearItems.length > 0 && (
-              <button
-                onClick={() => triggerAlert(true)}
-                className={styles.btnPrimary}
-                style={{ marginTop: '12px' }}
-                disabled={isAlertSending}
-              >
-                {isAlertSending ? 'Enviando...' : '📧 Enviar Reporte de Alertas'}
-              </button>
-            )}
-
             {alertStatusMessage && (
               <div style={{ fontSize: '12px', marginTop: '8px', padding: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '6px', lineHeight: '1.4' }}>
                 {alertStatusMessage}
               </div>
             )}
 
-            <button onClick={handleDeleteCar} className={styles.btnDanger}>
-              🗑️ Eliminar Vehículo
-            </button>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '12px' }}>
+              {overdueOrNearItems.length > 0 && (
+                <button
+                  onClick={() => triggerAlert(true, false)}
+                  className={styles.btnPrimary}
+                  disabled={isAlertSending}
+                >
+                  {isAlertSending ? 'Enviando...' : '📧 Enviar Reporte de Alertas'}
+                </button>
+              )}
+
+              <button
+                onClick={() => triggerAlert(true, true)}
+                className={styles.btnSecondary}
+                style={{ width: '100%', justifyContent: 'center' }}
+                disabled={isAlertSending}
+              >
+                🔔 Probar Alertas
+              </button>
+            </div>
           </div>
 
           {/* Columna Derecha: Dashboard y Fechas de Mantenimiento */}
