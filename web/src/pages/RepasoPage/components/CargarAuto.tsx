@@ -51,7 +51,7 @@ const SPECS: MaintenanceSpec[] = [
   { label: 'Líquido Refrigerante', key: 'refrigerante', limitKm: 60000, limitMonths: 36, icon: '💧' }
 ]
 
-const BACKEND_URL = `http://${window.location.hostname}:3002`;
+const BACKEND_URL = '';
 
 export function CargarAuto() {
   const [user, setUser] = useState<User | null>(null);
@@ -631,7 +631,7 @@ export function CargarAuto() {
     try {
       const response = await fetch(`${BACKEND_URL}/api/send-alert`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${user?.token}` },
         body: JSON.stringify({
           email: isTest 
             ? (testChannel === 'email' || testChannel === 'whatsapp' || !testChannel ? activeCar.email : undefined)
@@ -903,14 +903,17 @@ export function CargarAuto() {
             </div>
 
             <div className={styles.formGroup} style={{ marginTop: '8px' }}>
-              <label className={styles.label}>WhatsApp (Nro con prefijo)</label>
+              <label className={styles.label}>WhatsApp</label>
               <input
                 type="text"
                 className={styles.input}
-                placeholder="e.g. 5491122334455"
+                placeholder="Ej: 3440000000 (sin 0 ni 15)"
                 value={activeCar.whatsapp}
                 onChange={(e) => handleCarValueChange('whatsapp', e.target.value)}
               />
+              <span style={{ fontSize: '11px', color: '#888', marginTop: '3px', display: 'block' }}>
+                Ingresá el número local sin 0 ni 15. Ej: 3440000000 → se envía como +54 9 3446 661504
+              </span>
               <div className={styles.checkboxGroup} onClick={() => handleCarValueChange('enableWhatsapp', !activeCar.enableWhatsapp)}>
                 <input
                   type="checkbox"

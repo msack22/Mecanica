@@ -1,12 +1,6 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import whatsAppPkg from 'whatsapp-web.js';
-const { Client, LocalAuth } = whatsAppPkg;
-import qrcode from 'qrcode-terminal';
-import fs from 'fs';
-import path from 'path';
-import { execSync } from 'child_process';
 import mysql from 'mysql2/promise';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -18,10 +12,9 @@ app.use(cors());
 app.use(express.json());
 
 const PORT = process.env.PORT || 3002;
-const WHATSAPP_DATA_PATH = "/Users/matiassack/Documents/Matias/whatsapp-session";
-const WHATSAPP_CLIENT_ID = "mecanica-backend";
-const WHATSAPP_USER_DATA_DIR = path.join(WHATSAPP_DATA_PATH, `session-${WHATSAPP_CLIENT_ID}`);
-const JWT_SECRET = process.env.SECRET_KEY || process.env.JWT_SECRET || 'mecanica_secret_key_repaso_321';
+const WA_SERVICE_URL = process.env.WA_SERVICE_URL || 'http://localhost:3099';
+const JWT_SECRET = process.env.SECRET_KEY || process.env.JWT_SECRET;
+if (!JWT_SECRET) throw new Error('JWT_SECRET no está configurado. Configurá SECRET_KEY o JWT_SECRET en el .env antes de iniciar.');
 
 // Conexión y Pool de MySQL
 let pool;
@@ -109,66 +102,21 @@ function authenticateToken(req, res, next) {
   });
 }
 
-// Matar procesos colgados de Puppeteer/Chrome para este cliente específico
-function killStaleBrowser() {
+// Envío de WhatsApp via servicio compartido
+async function sendWhatsApp(toRaw, text) {
   try {
-    execSync(`pkill -f "${WHATSAPP_USER_DATA_DIR}"`, { stdio: "ignore" });
-    console.log("WhatsApp: proceso Chrome anterior terminado.");
-  } catch { /* no había proceso */ }
-  // Eliminar locks
-  for (const lockFile of ["SingletonLock", "SingletonCookie", "SingletonSocket"]) {
-    try { fs.rmSync(path.join(WHATSAPP_USER_DATA_DIR, lockFile)); } catch {}
+    const res = await fetch(`${WA_SERVICE_URL}/send`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ to: toRaw, message: text }),
+    });
+    const data = await res.json();
+    return data.sent === true;
+  } catch (e) {
+    console.error('[WHATSAPP] Error llamando al servicio compartido:', e.message);
+    return false;
   }
 }
-
-// Inicializar cliente de WhatsApp Web
-killStaleBrowser();
-const client = new Client({
-  authStrategy: new LocalAuth({
-    clientId: WHATSAPP_CLIENT_ID,
-    dataPath: WHATSAPP_DATA_PATH,
-  }),
-  puppeteer: {
-    headless: true,
-    protocolTimeout: 120_000,
-    args: [
-      "--no-sandbox",
-      "--disable-dev-shm-usage",
-      "--disable-notifications",
-      "--disable-infobars",
-      "--no-default-browser-check",
-      "--disable-features=TranslateUI",
-    ],
-  },
-});
-
-let isWhatsAppReady = false;
-
-client.on('qr', (qr) => {
-  console.log("=======================================================================");
-  console.log("WHATSAPP QR DETECTADO. Escanealo para conectar el Manual de Mecánica:");
-  qrcode.generate(qr, { small: true });
-  console.log("=======================================================================");
-});
-
-client.on('ready', () => {
-  isWhatsAppReady = true;
-  console.log("✅ WhatsApp Web listo para enviar alertas.");
-});
-
-client.on('auth_failure', (msg) => {
-  isWhatsAppReady = false;
-  console.error("❌ Fallo de autenticación en WhatsApp Web:", msg);
-});
-
-client.on('disconnected', (reason) => {
-  isWhatsAppReady = false;
-  console.warn("⚠️ WhatsApp Web desconectado. Reintentando...", reason);
-});
-
-client.initialize().catch((err) => {
-  console.error("❌ Error inicializando WhatsApp Web:", err);
-});
 
 // Normalizar números de teléfono para Argentina (+54 9 ...)
 function normalizeNumber(raw) {
@@ -520,7 +468,7 @@ app.delete('/api/cars/:id', authenticateToken, async (req, res) => {
 });
 
 // Endpoint POST para disparar notificaciones
-app.post('/api/send-alert', async (req, res) => {
+app.post('/api/send-alert', authenticateToken, async (req, res) => {
   const { email, whatsapp, title, message, html, carId } = req.body;
   
   if (!email && !whatsapp) {
@@ -553,19 +501,12 @@ app.post('/api/send-alert', async (req, res) => {
 
   // 2. Procesar Envío por WhatsApp
   if (whatsapp) {
-    if (!isWhatsAppReady) {
-      console.error(`[WHATSAPP] ERROR: No se pudo enviar el mensaje a ${whatsapp} porque el cliente de WhatsApp Web no está listo/autenticado.`);
+    console.log(`[WHATSAPP] Enviando mensaje a: ${whatsapp}`);
+    whatsappSent = await sendWhatsApp(whatsapp, message);
+    if (whatsappSent) {
+      console.log(`[WHATSAPP] Mensaje enviado con éxito a: ${whatsapp}`);
     } else {
-      try {
-        const normalized = normalizeNumber(whatsapp);
-        const jid = normalized + "@c.us";
-        console.log(`[WHATSAPP] Enviando mensaje de WhatsApp a: ${jid}`);
-        await client.sendMessage(jid, message);
-        whatsappSent = true;
-        console.log(`[WHATSAPP] Mensaje enviado con éxito a: ${jid}`);
-      } catch (err) {
-        console.error(`[WHATSAPP] ERROR al enviar mensaje de WhatsApp a ${whatsapp}:`, err);
-      }
+      console.error(`[WHATSAPP] ERROR: No se pudo enviar el mensaje a ${whatsapp}.`);
     }
   } else {
     console.log(`[WHATSAPP] No se solicitó envío por WhatsApp (canal deshabilitado o sin número).`);
@@ -588,11 +529,14 @@ app.post('/api/send-alert', async (req, res) => {
   });
 });
 
-app.get('/api/health', (req, res) => {
-  res.json({
-    status: 'ok',
-    whatsappConnected: isWhatsAppReady
-  });
+app.get('/api/health', async (_req, res) => {
+  let waReady = false;
+  try {
+    const r = await fetch(`${WA_SERVICE_URL}/status`);
+    const d = await r.json();
+    waReady = d.ready === true;
+  } catch (_) {}
+  res.json({ status: 'ok', whatsappConnected: waReady });
 });
 
 // Inicializar BD primero, luego levantar servidor HTTP
