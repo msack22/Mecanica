@@ -78,6 +78,52 @@ export function CargarAuto() {
   const [isAlertSending, setIsAlertSending] = useState(false);
   const [alertStatusMessage, setAlertStatusMessage] = useState<string | null>(null);
 
+  // Diálogos personalizados (reemplaza alert / confirm)
+  const [dialogConfig, setDialogConfig] = useState<{
+    isOpen: boolean;
+    type: 'alert' | 'confirm';
+    title: string;
+    message: string;
+    isDanger?: boolean;
+    onConfirm?: () => void;
+    onCancel?: () => void;
+  }>({
+    isOpen: false,
+    type: 'alert',
+    title: '',
+    message: ''
+  });
+
+  const showConfirm = (title: string, message: string, onConfirm: () => void, isDanger = false) => {
+    setDialogConfig({
+      isOpen: true,
+      type: 'confirm',
+      title,
+      message,
+      isDanger,
+      onConfirm: () => {
+        onConfirm();
+        setDialogConfig(prev => ({ ...prev, isOpen: false }));
+      },
+      onCancel: () => {
+        setDialogConfig(prev => ({ ...prev, isOpen: false }));
+      }
+    });
+  };
+
+  const showAlert = (title: string, message: string, onConfirm?: () => void) => {
+    setDialogConfig({
+      isOpen: true,
+      type: 'alert',
+      title,
+      message,
+      onConfirm: () => {
+        if (onConfirm) onConfirm();
+        setDialogConfig(prev => ({ ...prev, isOpen: false }));
+      }
+    });
+  };
+
   const initialLoadRef = useRef(false);
 
   // 1. Cargar token de sesión
@@ -326,8 +372,13 @@ export function CargarAuto() {
   };
 
   const handleGoogleLoginFallback = () => {
-    alert("Estás iniciando sesión en Modo Demostración porque VITE_GOOGLE_CLIENT_ID no está configurado en web/.env.\n\nPara el flujo real, crea las credenciales en Google Cloud Console e insértalas en el archivo .env.");
-    handleGoogleLogin();
+    showAlert(
+      'ℹ️ Modo Demostración',
+      "Estás iniciando sesión en Modo Demostración porque VITE_GOOGLE_CLIENT_ID no está configurado en web/.env.\n\nPara el flujo real, crea las credenciales en Google Cloud Console e insértalas en el archivo .env.",
+      () => {
+        handleGoogleLogin();
+      }
+    );
   };
 
   const handleLogout = () => {
@@ -374,26 +425,32 @@ export function CargarAuto() {
   // Eliminar auto
   const handleDeleteCar = async () => {
     if (!activeCar || !user) return;
-    if (!window.confirm(`¿Estás seguro de eliminar el auto "${activeCar.alias}"? Se borrará todo su historial.`)) return;
+    
+    showConfirm(
+      '⚠️ Confirmar Eliminación',
+      `¿Estás seguro de eliminar el auto "${activeCar.alias}"? Se borrará todo su historial.`,
+      async () => {
+        try {
+          const response = await fetch(`${BACKEND_URL}/api/cars/${activeCar.id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${user.token}` }
+          });
 
-    try {
-      const response = await fetch(`${BACKEND_URL}/api/cars/${activeCar.id}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${user.token}` }
-      });
-
-      if (response.ok) {
-        const remaining = cars.filter(c => c.id !== activeCar.id);
-        setCars(remaining);
-        if (remaining.length > 0) {
-          setActiveCarId(remaining[0].id);
-        } else {
-          setActiveCarId(null);
+          if (response.ok) {
+            const remaining = cars.filter(c => c.id !== activeCar.id);
+            setCars(remaining);
+            if (remaining.length > 0) {
+              setActiveCarId(remaining[0].id);
+            } else {
+              setActiveCarId(null);
+            }
+          }
+        } catch (err) {
+          console.error(err);
         }
-      }
-    } catch (err) {
-      console.error(err);
-    }
+      },
+      true // isDanger
+    );
   };
 
   const handleCarValueChange = (field: keyof Car, value: any) => {
@@ -491,12 +548,27 @@ export function CargarAuto() {
   const overdueOrNearItems = calculatedItems.filter(item => item.calc.status !== 'ok');
 
   // Lanzar alertas manuales o automáticas al backend local
-  const triggerAlert = async (forceManual = false, isTest = false) => {
+  const triggerAlert = async (forceManual = false, isTest = false, testChannel?: 'email' | 'whatsapp') => {
     if (!activeCar || !user) return;
 
-    if (!activeCar.email && !activeCar.whatsapp) {
-      setAlertStatusMessage('⚠️ Configura un correo o WhatsApp en el auto activo para recibir las alertas.');
-      return;
+    if (isTest) {
+      if (testChannel === 'email' && !activeCar.email) {
+        setAlertStatusMessage('⚠️ Configura un correo en el auto activo para probar la alerta por email.');
+        return;
+      }
+      if (testChannel === 'whatsapp' && !activeCar.whatsapp) {
+        setAlertStatusMessage('⚠️ Configura un número de WhatsApp en el auto activo para probar la alerta.');
+        return;
+      }
+      if (!testChannel && !activeCar.email && !activeCar.whatsapp) {
+        setAlertStatusMessage('⚠️ Configura un correo o WhatsApp en el auto activo para probar las alertas.');
+        return;
+      }
+    } else {
+      if (!activeCar.email && !activeCar.whatsapp) {
+        setAlertStatusMessage('⚠️ Configura un correo o WhatsApp en el auto activo para recibir las alertas.');
+        return;
+      }
     }
 
     setIsAlertSending(true);
@@ -561,8 +633,12 @@ export function CargarAuto() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email: activeCar.enableEmail && activeCar.email ? activeCar.email : undefined,
-          whatsapp: activeCar.enableWhatsapp && activeCar.whatsapp ? activeCar.whatsapp : undefined,
+          email: isTest 
+            ? (testChannel === 'email' || testChannel === 'whatsapp' || !testChannel ? activeCar.email : undefined)
+            : (activeCar.enableEmail && activeCar.email ? activeCar.email : undefined),
+          whatsapp: isTest
+            ? (testChannel === 'whatsapp' || !testChannel ? activeCar.whatsapp : undefined)
+            : (activeCar.enableWhatsapp && activeCar.whatsapp ? activeCar.whatsapp : undefined),
           title: alertTitle,
           message: alertMessageText,
           html: alertMessageHtml,
@@ -864,6 +940,7 @@ export function CargarAuto() {
               )}
 
               <button
+                type="button"
                 onClick={() => triggerAlert(true, true)}
                 className={styles.btnSecondary}
                 style={{ width: '100%', justifyContent: 'center' }}
@@ -1058,6 +1135,37 @@ export function CargarAuto() {
                   </button>
                 </div>
               </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* DIÁLOGO / MODAL PERSONALIZADO DE ALERTA O CONFIRMACIÓN */}
+      {dialogConfig.isOpen && (
+        <div className={styles.modalBackdrop} onClick={() => dialogConfig.type === 'alert' && dialogConfig.onConfirm?.()}>
+          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.card}>
+              <div className={styles.cardTitle}>{dialogConfig.title}</div>
+              <div className={styles.modalMessage}>{dialogConfig.message}</div>
+              <div className={styles.modalButtons}>
+                {dialogConfig.type === 'confirm' && (
+                  <button 
+                    type="button" 
+                    className={styles.modalBtnCancel} 
+                    onClick={dialogConfig.onCancel}
+                  >
+                    Cancelar
+                  </button>
+                )}
+                <button 
+                  type="button" 
+                  className={dialogConfig.isDanger ? styles.modalBtnConfirmDanger : styles.modalBtnConfirm} 
+                  onClick={dialogConfig.onConfirm}
+                  autoFocus
+                >
+                  {dialogConfig.type === 'confirm' ? 'Aceptar' : 'OK'}
+                </button>
+              </div>
             </div>
           </div>
         </div>
