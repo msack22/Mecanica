@@ -81,15 +81,13 @@ function Ciclo4TiemposWidget({ viewMode }: WidgetProps) {
   if (viewMode === 'real') {
     return (
       <HotspotImage
-        src="/images/motor_completo.png"
-        alt="Motor EA111 de Volkswagen Gol"
+        src="/images/cilindros_bloque.png"
+        alt="Bloque de cilindros y pistones del motor real"
         hotspots={[
-          { id: '1', x: 48, y: 53, title: 'Tapa de Válvulas', desc: 'Capa metálica superior que cubre el árbol de levas y protege la distribución superior.' },
-          { id: '2', x: 29, y: 43, title: 'Tapón de Carga de Aceite', desc: 'Tapón de carga de lubricante. Dice "OIL" y tiene el logo de lubricación.' },
-          { id: '3', x: 43, y: 64, title: 'Cables de Bujías', desc: 'Llevan la alta tensión (25.000V) de la bobina a las bujías en la tapa.' },
-          { id: '4', x: 91, y: 56, title: 'Depósito de Refrigerante', desc: 'Almacena el líquido de refrigeración. Muestra el nivel MIN/MAX.' },
-          { id: '5', x: 10, y: 35, title: 'Batería 12V', desc: 'Fuente de energía eléctrica principal para arranque, luces y computadora (ECU).' },
-          { id: '6', x: 20, y: 68, title: 'Alternador', desc: 'Genera corriente eléctrica al girar para alimentar circuitos y cargar la batería.' }
+          { id: '1', x: 28, y: 45, title: 'Camisa del Cilindro', desc: 'Cavidad cilíndrica de hierro donde el pistón se desplaza. Su pared está pulida a espejo.' },
+          { id: '2', x: 50, y: 35, title: 'Cabeza del Pistón', desc: 'Superficie superior que recibe la fuerza de la combustión. Tiene muescas para evitar contacto con válvulas.' },
+          { id: '3', x: 72, y: 55, title: 'Bloque de Cilindros', desc: 'Carcasa principal del motor fundida en una sola pieza de metal, con conductos para agua y aceite.' },
+          { id: '4', x: 50, y: 75, title: 'Cámara de Combustión', desc: 'Espacio cerrado arriba del pistón donde se comprime y explota la mezcla de aire y combustible.' }
         ]}
       />
     )
@@ -2568,6 +2566,22 @@ function BujesCojinetesWidget({ viewMode }: WidgetProps) {
 
   return (
     <div className={styles.widgetWrap}>
+      {/* Diferencia conceptual */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px', marginBottom: '14px' }}>
+        <div style={{ padding: '10px 12px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', borderLeft: '3px solid #534AB7' }}>
+          <div style={{ fontSize: '11px', fontWeight: 600, color: '#534AB7', marginBottom: '4px' }}>COJINETE / RODAMIENTO</div>
+          <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.5 }}>Permite rotación con bolitas o rodillos. Para cosas que giran RÁPIDO y con carga.</div>
+        </div>
+        <div style={{ padding: '10px 12px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', borderLeft: '3px solid #1D9E75' }}>
+          <div style={{ fontSize: '11px', fontWeight: 600, color: '#1D9E75', marginBottom: '4px' }}>BUJE / SILENT BLOCK</div>
+          <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.5 }}>Absorbe vibraciones con goma. Para cosas que se mueven POCO y necesitan amortiguación.</div>
+        </div>
+        <div style={{ padding: '10px 12px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', borderLeft: '3px solid #E24B4A' }}>
+          <div style={{ fontSize: '11px', fontWeight: 600, color: '#E24B4A', marginBottom: '4px' }}>RETÉN</div>
+          <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.5 }}>Sella aceite de un eje giratorio. No soporta carga — solo evita fugas.</div>
+        </div>
+      </div>
+
       <div className={styles.controlRow}>
         {piezas.map((pieza, idx) => (
           <button
@@ -3072,6 +3086,13 @@ function RetenesJuntasWidget({ viewMode }: WidgetProps) {
           strokeWidth="2.5"
           opacity="0.85"
         />
+
+        {/* Leyenda */}
+        <rect x="60" y="380" width="14" height="14" rx="3" fill="#E24B4A" opacity="0.85"/>
+        <text x="80" y="392" fontSize="11" fill="rgba(255,255,255,0.6)">Retén (sella eje giratorio)</text>
+        <rect x="60" y="402" width="14" height="8" rx="2" fill="#1D9E75" opacity="0.7"/>
+        <text x="80" y="412" fontSize="11" fill="rgba(255,255,255,0.6)">Junta (sella superficie estática)</text>
+        <text x="340" y="445" textAnchor="middle" fontSize="10" fill="rgba(255,255,255,0.4)">Cualquier pérdida de aceite en el piso → identificar de dónde viene → determinar qué retén o junta falló</text>
       </svg>
     </div>
   )
@@ -3139,11 +3160,12 @@ function SistemaFrenosWidget({ viewMode }: WidgetProps) {
   if (viewMode === 'real') {
     return (
       <HotspotImage
-        src="/images/tren_delantero.png"
-        alt="Conjunto de disco y pinza de freno delanteros"
+        src="/images/sistema_frenos_real.png"
+        alt="Conjunto de disco y pinza de freno delanteros real"
         hotspots={[
-          { id: '1', x: 73, y: 68, title: 'Disco de Freno Ventilado', desc: 'Rotor de acero que disipa el calor. Las pastillas muerden esta superficie.' },
-          { id: '2', x: 86, y: 60, title: 'Caliper o Pinza de Freno', desc: 'Contiene el pistón hidráulico que empuja las pastillas contra el disco.' }
+          { id: '1', x: 38, y: 45, title: 'Disco de Freno Ventilado', desc: 'Rotor de acero con canales internos de ventilación que disipa el calor friccional.' },
+          { id: '2', x: 60, y: 50, title: 'Caliper o Pinza de Freno (Brembo)', desc: 'Mordaza hidráulica que empuja las pastillas contra el disco para frenar la rueda.' },
+          { id: '3', x: 68, y: 42, title: 'Pastillas de Freno (adentro)', desc: 'Bloques de fricción metálicos/semi-metálicos que se aprietan contra el disco giratorio.' }
         ]}
       />
     )
@@ -3335,11 +3357,12 @@ function UbicacionFrenosWidget({ viewMode }: WidgetProps) {
   if (viewMode === 'real') {
     return (
       <HotspotImage
-        src="/images/motor_completo.png"
-        alt="Vano motor del Volkswagen Gol Trend"
+        src="/images/ubicacion_frenos_real.png"
+        alt="Servofreno y bomba maestra en el vano motor real"
         hotspots={[
-          { id: '1', x: 20, y: 45, title: 'Servo y depósito de freno', desc: 'Ubicados contra el panel parallamas trasero del lado del conductor.' },
-          { id: '2', x: 70, y: 35, title: 'Ubicación Módulo ABS', desc: 'Caja de válvulas de freno acoplada del lado del acompañante en el motor.' }
+          { id: '1', x: 35, y: 55, title: 'Servofreno (Servo de Vacío)', desc: 'Disco negro grande que asiste hidráulicamente la fuerza de frenado mediante el vacío del motor.' },
+          { id: '2', x: 55, y: 60, title: 'Bomba Maestra de Freno', desc: 'Cilindro metálico de presión hidráulica atornillado directamente al frente del servofreno.' },
+          { id: '3', x: 52, y: 40, title: 'Depósito de Líquido de Freno', desc: 'Tanque plástico translúcido de almacenamiento del líquido DOT 4 con marcas de nivel MIN/MAX.' }
         ]}
       />
     )
