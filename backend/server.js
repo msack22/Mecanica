@@ -340,6 +340,12 @@ app.post('/api/auth/google-login', async (req, res) => {
       }
       
       const payload = await tokenRes.json();
+      
+      // Validar la audiencia del token para evitar ataques de suplantación de ID Token
+      if (payload.aud && payload.aud !== process.env.GOOGLE_CLIENT_ID) {
+        return res.status(400).json({ error: 'La audiencia del token de Google no coincide con esta aplicación.' });
+      }
+
       targetEmail = payload.email;
       targetName = payload.name || payload.given_name || '';
 
