@@ -325,6 +325,54 @@ app.post('/api/auth/login', async (req, res) => {
   }
 });
 
+app.post('/api/auth/google-login', async (req, res) => {
+  const { email, name } = req.body;
+  if (!email) {
+    return res.status(400).json({ error: 'Se requiere el correo de Google.' });
+  }
+
+  try {
+    // 1. Verificar si el usuario ya existe
+    const [rows] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
+    
+    let user;
+    if (rows.length === 0) {
+      // 2. Si no existe, crear un nuevo usuario con una contraseña aleatoria
+      const salt = await bcrypt.genSalt(10);
+      const randomPassword = Math.random().toString(36).slice(-10);
+      const hashedPassword = await bcrypt.hash(randomPassword, salt);
+
+      const [userResult] = await pool.query(
+        'INSERT INTO users (email, password, name) VALUES (?, ?, ?)',
+        [email, hashedPassword, name || '']
+      );
+
+      const userId = userResult.insertId;
+
+      // Crear auto inicial predeterminado
+      await pool.query(
+        'INSERT INTO cars (user_id, alias) VALUES (?, ?)',
+        [userId, 'Gol Trend (Mi Auto)']
+      );
+
+      user = { id: userId, email, name: name || '' };
+    } else {
+      user = rows[0];
+    }
+
+    // 3. Generar token de sesión JWT
+    const token = jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET, { expiresIn: '30d' });
+
+    res.json({
+      token,
+      user: { id: user.id, email: user.email, name: user.name }
+    });
+  } catch (err) {
+    console.error("Error en Google login:", err);
+    res.status(500).json({ error: 'Fallo al autenticar con Google en la base de datos.' });
+  }
+});
+
 // =======================================================================
 // RUTAS DE GESTIÓN DE AUTOS (CRUD AUTENTICADO)
 // =======================================================================

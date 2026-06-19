@@ -94,6 +94,45 @@ export function CargarAuto() {
     }
   }, []);
 
+  // Escuchar mensaje del popup de inicio de sesión de Google
+  useEffect(() => {
+    const handleAuthMessage = async (event: MessageEvent) => {
+      if (event.origin !== window.location.origin) return;
+      
+      const { type, email, name } = event.data || {};
+      if (type === 'google-auth-success' && email) {
+        setAuthLoading(true);
+        setAuthError(null);
+        try {
+          const response = await fetch('http://localhost:3002/api/auth/google-login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, name: name || '' })
+          });
+          
+          const data = await response.json();
+          if (response.ok) {
+            localStorage.setItem('mecanica_auth_token', data.token);
+            localStorage.setItem('mecanica_auth_user', JSON.stringify(data.user));
+            initialLoadRef.current = false;
+            setUser({ ...data.user, token: data.token });
+          } else {
+            setAuthError(data.error || 'Fallo al iniciar sesión con Google.');
+          }
+        } catch (err) {
+          setAuthError('No se pudo conectar al servidor de autenticación local. Verifica que el backend esté ejecutándose.');
+        } finally {
+          setAuthLoading(false);
+        }
+      }
+    };
+    
+    window.addEventListener('message', handleAuthMessage);
+    return () => {
+      window.removeEventListener('message', handleAuthMessage);
+    };
+  }, []);
+
   // 2. Cargar autos cuando el usuario se autentica
   useEffect(() => {
     if (!user) {
@@ -188,15 +227,27 @@ export function CargarAuto() {
     }
   };
 
-  // Mock de inicio de sesión con Google Chrome Email
-  const handleGoogleMockLogin = () => {
-    // Simulamos que lee la cuenta activa de Google Chrome del usuario
-    const chromeEmail = "tu-email@gmail.com";
-    setAuthEmail(chromeEmail);
-    setAuthName("Matias Sack");
-    setAuthMode('register');
+  // Iniciar sesión con Google (abre popup)
+  const handleGoogleLogin = () => {
     setAuthError(null);
-    setAlertStatusMessage("✨ Cuenta de Google detectada. Crea tu contraseña para registrarte rápidamente.");
+    const width = 500;
+    const height = 600;
+    const left = window.screen.width / 2 - width / 2;
+    const top = window.screen.height / 2 - height / 2;
+    
+    const popupUrl = `${window.location.origin}/google-login.html`;
+    
+    const popup = window.open(
+      popupUrl,
+      'Google Login',
+      `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes`
+    );
+    
+    if (popup) {
+      popup.focus();
+    } else {
+      setAuthError('No se pudo abrir la ventana emergente de Google. Por favor deshabilita el bloqueador de popups.');
+    }
   };
 
   const handleLogout = () => {
@@ -494,8 +545,8 @@ export function CargarAuto() {
             {authMode === 'login' ? '🔑 Ingresá a tu cuenta' : '📝 Registrate en el Manual'}
           </div>
 
-          <button onClick={handleGoogleMockLogin} className={styles.googleBtn}>
-            <span style={{ fontSize: '16px' }}>🌐</span> Registrarse/Ingresar con Google Chrome
+          <button onClick={handleGoogleLogin} className={styles.googleBtn} type="button">
+            <span style={{ fontSize: '16px' }}>🌐</span> Ingresar con Google (Gmail)
           </button>
 
           <div className={styles.orDivider}>o usa tu mail y contraseña</div>
