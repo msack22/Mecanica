@@ -7,6 +7,7 @@ import qrcode from 'qrcode-terminal';
 import fs from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
+import mysql from 'mysql2/promise';
 
 dotenv.config();
 
@@ -18,6 +19,65 @@ const PORT = process.env.PORT || 3002;
 const WHATSAPP_DATA_PATH = "/Users/matiassack/Documents/Matias/whatsapp-session";
 const WHATSAPP_CLIENT_ID = "mecanica-backend";
 const WHATSAPP_USER_DATA_DIR = path.join(WHATSAPP_DATA_PATH, `session-${WHATSAPP_CLIENT_ID}`);
+
+// Conexión y Pool de MySQL
+let pool;
+
+async function initializeDatabase() {
+  const dbUrl = process.env.DATABASE_URL || `mysql://${process.env.DB_USER || 'root'}:${process.env.DB_PASSWORD || ''}@${process.env.DB_HOST || 'localhost'}:${process.env.DB_PORT || '3306'}/${process.env.DB_NAME || 'mecanica'}`;
+  
+  if (!dbUrl) {
+    console.error("DATABASE_URL o variables DB_... no configuradas en .env");
+    process.exit(1);
+  }
+
+  try {
+    // 1. Conectar sin base de datos especificada para poder crearla si no existe
+    const lastSlashIdx = dbUrl.lastIndexOf('/');
+    const connectionUriWithoutDb = dbUrl.substring(0, lastSlashIdx);
+    const dbName = dbUrl.substring(lastSlashIdx + 1);
+
+    console.log(`Conectando a MySQL en: ${connectionUriWithoutDb} ...`);
+    const tempConnection = await mysql.createConnection(connectionUriWithoutDb);
+    await tempConnection.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\``);
+    await tempConnection.end();
+    console.log(`Base de datos \`${dbName}\` asegurada.`);
+
+    // 2. Conectar con la base de datos específica e inicializar pool
+    pool = mysql.createPool(dbUrl);
+
+    // 3. Crear tabla si no existe
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS car_config (
+        id INT PRIMARY KEY DEFAULT 1,
+        kmActual INT NOT NULL DEFAULT 90000,
+        kmAnual INT NOT NULL DEFAULT 12000,
+        email VARCHAR(255) DEFAULT '',
+        whatsapp VARCHAR(255) DEFAULT '',
+        enableEmail BOOLEAN DEFAULT TRUE,
+        enableWhatsapp BOOLEAN DEFAULT TRUE,
+        aceiteDate VARCHAR(50) DEFAULT '2025-10-10',
+        aceiteKm INT DEFAULT 85000,
+        bujiasDate VARCHAR(50) DEFAULT '2024-06-01',
+        bujiasKm INT DEFAULT 70000,
+        frenosDate VARCHAR(50) DEFAULT '2025-06-01',
+        correaDate VARCHAR(50) DEFAULT '2022-06-01',
+        correaKm INT DEFAULT 60000,
+        refrigeranteDate VARCHAR(50) DEFAULT '2024-06-01',
+        refrigeranteKm INT DEFAULT 70000,
+        lastAlertSentDate VARCHAR(50) DEFAULT NULL,
+        CONSTRAINT single_row CHECK (id = 1)
+      )
+    `);
+
+    // 4. Insertar fila por defecto si está vacía
+    await pool.query('INSERT IGNORE INTO car_config (id) VALUES (1)');
+    console.log("✅ Tabla car_config inicializada en MySQL.");
+  } catch (err) {
+    console.error("❌ Fallo al inicializar base de datos MySQL:", err);
+    process.exit(1);
+  }
+}
 
 // Matar procesos colgados de Puppeteer/Chrome para este cliente específico
 function killStaleBrowser() {
@@ -157,6 +217,54 @@ async function sendViaSendGrid(to, subject, htmlContent) {
   }
 }
 
+// Endpoints de configuración de auto (CRUD sobre MySQL)
+app.get('/api/car-config', async (req, res) => {
+  try {
+    const [rows] = await pool.query('SELECT * FROM car_config WHERE id = 1');
+    if (rows.length === 0) {
+      await pool.query('INSERT IGNORE INTO car_config (id) VALUES (1)');
+      const [newRows] = await pool.query('SELECT * FROM car_config WHERE id = 1');
+      return res.json(newRows[0]);
+    }
+    // Mapear booleanos numéricos de MySQL a booleanos reales
+    const config = rows[0];
+    config.enableEmail = !!config.enableEmail;
+    config.enableWhatsapp = !!config.enableWhatsapp;
+    res.json(config);
+  } catch (err) {
+    console.error("Error al obtener car_config:", err);
+    res.status(500).json({ error: 'Fallo al recuperar la configuración de MySQL.' });
+  }
+});
+
+app.post('/api/car-config', async (req, res) => {
+  const {
+    kmActual, kmAnual, email, whatsapp, enableEmail, enableWhatsapp,
+    aceiteDate, aceiteKm, bujiasDate, bujiasKm, frenosDate,
+    correaDate, correaKm, refrigeranteDate, refrigeranteKm, lastAlertSentDate
+  } = req.body;
+
+  try {
+    await pool.query(`
+      UPDATE car_config SET 
+        kmActual = ?, kmAnual = ?, email = ?, whatsapp = ?, 
+        enableEmail = ?, enableWhatsapp = ?, aceiteDate = ?, aceiteKm = ?, 
+        bujiasDate = ?, bujiasKm = ?, frenosDate = ?, correaDate = ?, 
+        correaKm = ?, refrigeranteDate = ?, refrigeranteKm = ?, lastAlertSentDate = ?
+      WHERE id = 1
+    `, [
+      kmActual, kmAnual, email, whatsapp, 
+      enableEmail ? 1 : 0, enableWhatsapp ? 1 : 0, aceiteDate, aceiteKm, 
+      bujiasDate, bujiasKm, frenosDate, correaDate, 
+      correaKm, refrigeranteDate, refrigeranteKm, lastAlertSentDate || null
+    ]);
+    res.json({ success: true });
+  } catch (err) {
+    console.error("Error al guardar car_config:", err);
+    res.status(500).json({ error: 'Fallo al guardar la configuración en MySQL.' });
+  }
+});
+
 // Endpoint POST para disparar notificaciones
 app.post('/api/send-alert', async (req, res) => {
   const { email, whatsapp, title, message, html } = req.body;
@@ -210,6 +318,9 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Servidor backend de alertas escuchando en http://localhost:${PORT}`);
+// Inicializar BD primero, luego levantar servidor HTTP
+initializeDatabase().then(() => {
+  app.listen(PORT, () => {
+    console.log(`🚀 Servidor backend de alertas escuchando en http://localhost:${PORT}`);
+  });
 });

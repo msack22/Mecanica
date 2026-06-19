@@ -57,24 +57,56 @@ const SPECS: MaintenanceSpec[] = [
 ]
 
 export function CargarAuto() {
-  const [config, setConfig] = useState<CarConfig>(() => {
-    const saved = localStorage.getItem('mecanica_mi_auto');
-    if (saved) {
-      try {
-        return { ...DEFAULT_CONFIG, ...JSON.parse(saved) };
-      } catch {
-        return DEFAULT_CONFIG;
-      }
-    }
-    return DEFAULT_CONFIG;
-  });
-
+  const [config, setConfig] = useState<CarConfig>(DEFAULT_CONFIG);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [isAlertSending, setIsAlertSending] = useState(false);
   const [alertStatusMessage, setAlertStatusMessage] = useState<string | null>(null);
 
+  // Cargar datos desde MySQL en el arranque
   useEffect(() => {
-    localStorage.setItem('mecanica_mi_auto', JSON.stringify(config));
-  }, [config]);
+    const fetchConfig = async () => {
+      try {
+        console.log("Solicitando configuración al backend...");
+        const response = await fetch('http://localhost:3002/api/car-config');
+        if (response.ok) {
+          const data = await response.json();
+          setConfig(data);
+        } else {
+          // Fallback a localStorage si falla la API
+          const saved = localStorage.getItem('mecanica_mi_auto');
+          if (saved) setConfig(JSON.parse(saved));
+        }
+      } catch (err) {
+        console.warn("No se pudo conectar al backend MySQL, usando localStorage como respaldo:", err);
+        const saved = localStorage.getItem('mecanica_mi_auto');
+        if (saved) setConfig(JSON.parse(saved));
+      } finally {
+        setIsLoaded(true);
+      }
+    };
+    fetchConfig();
+  }, []);
+
+  // Debounced auto-save hacia MySQL y localStorage
+  useEffect(() => {
+    if (!isLoaded) return;
+    
+    const delayDebounceFn = setTimeout(async () => {
+      try {
+        await fetch('http://localhost:3002/api/car-config', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(config)
+        });
+        localStorage.setItem('mecanica_mi_auto', JSON.stringify(config));
+      } catch (err) {
+        console.warn("Fallo al auto-guardar en la base de datos MySQL, respaldando en localStorage:", err);
+        localStorage.setItem('mecanica_mi_auto', JSON.stringify(config));
+      }
+    }, 800); // 800ms debounce
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [config, isLoaded]);
 
   // Cálculos de estado para cada mantenimiento
   const calculateItemStatus = (spec: MaintenanceSpec) => {
