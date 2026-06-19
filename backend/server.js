@@ -8,6 +8,8 @@ import fs from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
 import mysql from 'mysql2/promise';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 dotenv.config();
 
@@ -19,6 +21,7 @@ const PORT = process.env.PORT || 3002;
 const WHATSAPP_DATA_PATH = "/Users/matiassack/Documents/Matias/whatsapp-session";
 const WHATSAPP_CLIENT_ID = "mecanica-backend";
 const WHATSAPP_USER_DATA_DIR = path.join(WHATSAPP_DATA_PATH, `session-${WHATSAPP_CLIENT_ID}`);
+const JWT_SECRET = process.env.SECRET_KEY || process.env.JWT_SECRET || 'mecanica_secret_key_repaso_321';
 
 // Conexión y Pool de MySQL
 let pool;
@@ -26,11 +29,6 @@ let pool;
 async function initializeDatabase() {
   const dbUrl = process.env.DATABASE_URL || `mysql://${process.env.DB_USER || 'root'}:${process.env.DB_PASSWORD || ''}@${process.env.DB_HOST || 'localhost'}:${process.env.DB_PORT || '3306'}/${process.env.DB_NAME || 'mecanica'}`;
   
-  if (!dbUrl) {
-    console.error("DATABASE_URL o variables DB_... no configuradas en .env");
-    process.exit(1);
-  }
-
   try {
     // 1. Conectar sin base de datos especificada para poder crearla si no existe
     const lastSlashIdx = dbUrl.lastIndexOf('/');
@@ -46,10 +44,26 @@ async function initializeDatabase() {
     // 2. Conectar con la base de datos específica e inicializar pool
     pool = mysql.createPool(dbUrl);
 
-    // 3. Crear tabla si no existe
+    // 3. Crear tabla users si no existe
     await pool.query(`
-      CREATE TABLE IF NOT EXISTS car_config (
-        id INT PRIMARY KEY DEFAULT 1,
+      CREATE TABLE IF NOT EXISTS users (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        password VARCHAR(255) NOT NULL,
+        name VARCHAR(255) DEFAULT '',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    // 4. Crear tabla cars si no existe
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS cars (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        alias VARCHAR(255) NOT NULL,
+        brand VARCHAR(100) DEFAULT 'Volkswagen',
+        model VARCHAR(100) DEFAULT 'Gol Trend',
+        year INT DEFAULT 2015,
         kmActual INT NOT NULL DEFAULT 90000,
         kmAnual INT NOT NULL DEFAULT 12000,
         email VARCHAR(255) DEFAULT '',
@@ -66,17 +80,33 @@ async function initializeDatabase() {
         refrigeranteDate VARCHAR(50) DEFAULT '2024-06-01',
         refrigeranteKm INT DEFAULT 70000,
         lastAlertSentDate VARCHAR(50) DEFAULT NULL,
-        CONSTRAINT single_row CHECK (id = 1)
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
       )
     `);
 
-    // 4. Insertar fila por defecto si está vacía
-    await pool.query('INSERT IGNORE INTO car_config (id) VALUES (1)');
-    console.log("✅ Tabla car_config inicializada en MySQL.");
+    console.log("✅ Tablas users y cars inicializadas en MySQL.");
   } catch (err) {
     console.error("❌ Fallo al inicializar base de datos MySQL:", err);
     process.exit(1);
   }
+}
+
+// Middleware de Autenticación mediante JWT
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  
+  if (!token) {
+    return res.status(401).json({ error: 'Acceso denegado. Se requiere iniciar sesión.' });
+  }
+
+  jwt.verify(token, JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(403).json({ error: 'Sesión expirada o inválida. Vuelve a iniciar sesión.' });
+    }
+    req.user = decoded;
+    next();
+  });
 }
 
 // Matar procesos colgados de Puppeteer/Chrome para este cliente específico
@@ -217,57 +247,200 @@ async function sendViaSendGrid(to, subject, htmlContent) {
   }
 }
 
-// Endpoints de configuración de auto (CRUD sobre MySQL)
-app.get('/api/car-config', async (req, res) => {
+// =======================================================================
+// RUTAS DE AUTENTICACIÓN
+// =======================================================================
+
+app.post('/api/auth/register', async (req, res) => {
+  const { email, password, name } = req.body;
+  if (!email || !password) {
+    return res.status(400).json({ error: 'Se requiere correo electrónico y contraseña.' });
+  }
+
   try {
-    const [rows] = await pool.query('SELECT * FROM car_config WHERE id = 1');
-    if (rows.length === 0) {
-      await pool.query('INSERT IGNORE INTO car_config (id) VALUES (1)');
-      const [newRows] = await pool.query('SELECT * FROM car_config WHERE id = 1');
-      return res.json(newRows[0]);
+    // Verificar si el usuario ya existe
+    const [existing] = await pool.query('SELECT id FROM users WHERE email = ?', [email]);
+    if (existing.length > 0) {
+      return res.status(400).json({ error: 'El correo electrónico ya está registrado.' });
     }
-    // Mapear booleanos numéricos de MySQL a booleanos reales
-    const config = rows[0];
-    config.enableEmail = !!config.enableEmail;
-    config.enableWhatsapp = !!config.enableWhatsapp;
-    res.json(config);
+
+    // Hashear contraseña
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    // Crear usuario
+    const [userResult] = await pool.query(
+      'INSERT INTO users (email, password, name) VALUES (?, ?, ?)',
+      [email, hashedPassword, name || '']
+    );
+
+    const userId = userResult.insertId;
+
+    // Crear auto inicial predeterminado para el nuevo usuario
+    await pool.query(
+      'INSERT INTO cars (user_id, alias) VALUES (?, ?)',
+      [userId, 'Gol Trend (Mi Auto)']
+    );
+
+    // Generar JWT
+    const token = jwt.sign({ userId, email }, JWT_SECRET, { expiresIn: '30d' });
+
+    res.status(201).json({
+      token,
+      user: { id: userId, email, name: name || '' }
+    });
   } catch (err) {
-    console.error("Error al obtener car_config:", err);
-    res.status(500).json({ error: 'Fallo al recuperar la configuración de MySQL.' });
+    console.error("Error en registro:", err);
+    res.status(500).json({ error: 'Fallo al registrar el usuario en la base de datos.' });
   }
 });
 
-app.post('/api/car-config', async (req, res) => {
+app.post('/api/auth/login', async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).json({ error: 'Se requiere correo electrónico y contraseña.' });
+  }
+
+  try {
+    const [rows] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
+    if (rows.length === 0) {
+      return res.status(400).json({ error: 'Credenciales inválidas.' });
+    }
+
+    const user = rows[0];
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(400).json({ error: 'Credenciales inválidas.' });
+    }
+
+    const token = jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET, { expiresIn: '30d' });
+
+    res.json({
+      token,
+      user: { id: user.id, email: user.email, name: user.name }
+    });
+  } catch (err) {
+    console.error("Error en login:", err);
+    res.status(500).json({ error: 'Fallo al iniciar sesión.' });
+  }
+});
+
+// =======================================================================
+// RUTAS DE GESTIÓN DE AUTOS (CRUD AUTENTICADO)
+// =======================================================================
+
+app.get('/api/cars', authenticateToken, async (req, res) => {
+  try {
+    const [rows] = await pool.query('SELECT * FROM cars WHERE user_id = ? ORDER BY id ASC', [req.user.userId]);
+    // Mapear booleanos
+    const carsMapped = rows.map(car => ({
+      ...car,
+      enableEmail: !!car.enableEmail,
+      enableWhatsapp: !!car.enableWhatsapp
+    }));
+    res.json(carsMapped);
+  } catch (err) {
+    console.error("Error al obtener autos:", err);
+    res.status(500).json({ error: 'Fallo al recuperar los autos de la base de datos.' });
+  }
+});
+
+app.post('/api/cars', authenticateToken, async (req, res) => {
+  const { alias, brand, model, year, kmActual, kmAnual, email, whatsapp, enableEmail, enableWhatsapp } = req.body;
+  if (!alias) {
+    return res.status(400).json({ error: 'El alias del auto es requerido.' });
+  }
+
+  try {
+    const [result] = await pool.query(`
+      INSERT INTO cars (
+        user_id, alias, brand, model, year, kmActual, kmAnual, 
+        email, whatsapp, enableEmail, enableWhatsapp
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `, [
+      req.user.userId,
+      alias,
+      brand || 'Volkswagen',
+      model || 'Gol Trend',
+      year || 2015,
+      kmActual || 90000,
+      kmAnual || 12000,
+      email || '',
+      whatsapp || '',
+      enableEmail ? 1 : 0,
+      enableWhatsapp ? 1 : 0
+    ]);
+
+    const [newCarRows] = await pool.query('SELECT * FROM cars WHERE id = ?', [result.insertId]);
+    const newCar = newCarRows[0];
+    newCar.enableEmail = !!newCar.enableEmail;
+    newCar.enableWhatsapp = !!newCar.enableWhatsapp;
+    
+    res.status(201).json(newCar);
+  } catch (err) {
+    console.error("Error al crear auto:", err);
+    res.status(500).json({ error: 'Fallo al registrar el auto.' });
+  }
+});
+
+app.put('/api/cars/:id', authenticateToken, async (req, res) => {
+  const carId = req.params.id;
   const {
-    kmActual, kmAnual, email, whatsapp, enableEmail, enableWhatsapp,
+    alias, brand, model, year, kmActual, kmAnual, email, whatsapp, enableEmail, enableWhatsapp,
     aceiteDate, aceiteKm, bujiasDate, bujiasKm, frenosDate,
     correaDate, correaKm, refrigeranteDate, refrigeranteKm, lastAlertSentDate
   } = req.body;
 
   try {
+    // Validar propiedad del auto
+    const [existing] = await pool.query('SELECT id FROM cars WHERE id = ? AND user_id = ?', [carId, req.user.userId]);
+    if (existing.length === 0) {
+      return res.status(404).json({ error: 'Vehículo no encontrado o acceso denegado.' });
+    }
+
     await pool.query(`
-      UPDATE car_config SET 
-        kmActual = ?, kmAnual = ?, email = ?, whatsapp = ?, 
-        enableEmail = ?, enableWhatsapp = ?, aceiteDate = ?, aceiteKm = ?, 
-        bujiasDate = ?, bujiasKm = ?, frenosDate = ?, correaDate = ?, 
-        correaKm = ?, refrigeranteDate = ?, refrigeranteKm = ?, lastAlertSentDate = ?
-      WHERE id = 1
+      UPDATE cars SET 
+        alias = ?, brand = ?, model = ?, year = ?, kmActual = ?, kmAnual = ?, 
+        email = ?, whatsapp = ?, enableEmail = ?, enableWhatsapp = ?, 
+        aceiteDate = ?, aceiteKm = ?, bujiasDate = ?, bujiasKm = ?, 
+        frenosDate = ?, correaDate = ?, correaKm = ?, refrigeranteDate = ?, 
+        refrigeranteKm = ?, lastAlertSentDate = ?
+      WHERE id = ? AND user_id = ?
     `, [
-      kmActual, kmAnual, email, whatsapp, 
-      enableEmail ? 1 : 0, enableWhatsapp ? 1 : 0, aceiteDate, aceiteKm, 
-      bujiasDate, bujiasKm, frenosDate, correaDate, 
-      correaKm, refrigeranteDate, refrigeranteKm, lastAlertSentDate || null
+      alias, brand, model, year, kmActual, kmAnual, 
+      email, whatsapp, enableEmail ? 1 : 0, enableWhatsapp ? 1 : 0, 
+      aceiteDate, aceiteKm, bujiasDate, bujiasKm, 
+      frenosDate, correaDate, correaKm, refrigeranteDate, 
+      refrigeranteKm, lastAlertSentDate || null,
+      carId, req.user.userId
     ]);
+
     res.json({ success: true });
   } catch (err) {
-    console.error("Error al guardar car_config:", err);
-    res.status(500).json({ error: 'Fallo al guardar la configuración en MySQL.' });
+    console.error("Error al actualizar auto:", err);
+    res.status(500).json({ error: 'Fallo al guardar la configuración del auto.' });
+  }
+});
+
+app.delete('/api/cars/:id', authenticateToken, async (req, res) => {
+  const carId = req.params.id;
+  try {
+    const [existing] = await pool.query('SELECT id FROM cars WHERE id = ? AND user_id = ?', [carId, req.user.userId]);
+    if (existing.length === 0) {
+      return res.status(404).json({ error: 'Vehículo no encontrado o acceso denegado.' });
+    }
+
+    await pool.query('DELETE FROM cars WHERE id = ? AND user_id = ?', [carId, req.user.userId]);
+    res.json({ success: true });
+  } catch (err) {
+    console.error("Error al eliminar auto:", err);
+    res.status(500).json({ error: 'Fallo al eliminar el auto.' });
   }
 });
 
 // Endpoint POST para disparar notificaciones
 app.post('/api/send-alert', async (req, res) => {
-  const { email, whatsapp, title, message, html } = req.body;
+  const { email, whatsapp, title, message, html, carId } = req.body;
   
   if (!email && !whatsapp) {
     return res.status(400).json({ error: 'Se requiere al menos un correo o un número de WhatsApp.' });
@@ -279,10 +452,8 @@ app.post('/api/send-alert', async (req, res) => {
   // 1. Procesar Envío por Email
   if (email) {
     console.log(`Enviando alerta por email a: ${email}`);
-    // Intentar primero con Brevo
     emailSent = await sendViaBrevo(email, title, html || message);
     if (!emailSent) {
-      // Reintentar con SendGrid si falla
       emailSent = await sendViaSendGrid(email, title, html || message);
     }
   }
@@ -305,6 +476,17 @@ app.post('/api/send-alert', async (req, res) => {
     }
   }
 
+  // Si se envió con éxito y se provee carId, actualizar fecha de última alerta en MySQL
+  if ((emailSent || whatsappSent) && carId) {
+    try {
+      const todayStr = new Date().toDateString();
+      await pool.query('UPDATE cars SET lastAlertSentDate = ? WHERE id = ?', [todayStr, carId]);
+      console.log(`Fecha de alerta actualizada en MySQL para el auto ${carId}: ${todayStr}`);
+    } catch (err) {
+      console.error("Error al actualizar la fecha de alerta en MySQL:", err);
+    }
+  }
+
   res.json({
     emailSent,
     whatsappSent
@@ -321,6 +503,6 @@ app.get('/api/health', (req, res) => {
 // Inicializar BD primero, luego levantar servidor HTTP
 initializeDatabase().then(() => {
   app.listen(PORT, () => {
-    console.log(`🚀 Servidor backend de alertas escuchando en http://localhost:${PORT}`);
+    console.log(`🚀 Servidor backend de alertas y usuarios escuchando en http://localhost:${PORT}`);
   });
 });
