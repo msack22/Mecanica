@@ -276,6 +276,27 @@ export const mecanicaData: SystemCategory[] = [
         ]
       },
       {
+        key: 'circuito_combustible',
+        title: 'Circuito de Combustible',
+        subtitle: 'Cómo viaja la nafta desde el tanque hasta los inyectores',
+        widget: 'circuito_combustible',
+        imageUrl: '/images/circuito_combustible_real.png',
+        body: 'El circuito de combustible se encarga de almacenar, filtrar y presurizar la nafta para suministrarla a los inyectores en cantidad y presión correctas. Comienza en el tanque y termina en la flauta de inyectores, con un retorno para el combustible sobrante.',
+        tip: 'Si sentís olor a nafta cruda en el habitáculo, revisá inmediatamente el acople de la manguera de retorno de combustible, que suele resecarse.',
+        warning: 'El circuito trabaja presurizado a ~3 bar. Antes de desconectar cualquier manguera, liberá la presión quitando el fusible de la bomba y dándole arranque al motor hasta que se apague.',
+        recorridos: [
+          {
+            title: 'Recorrido del Combustible',
+            items: [
+              { c: 'verde', t: 'Tanque y Bomba: La bomba eléctrica sumergida envía nafta a presión.' },
+              { c: 'azul', t: 'Filtro de Nafta: Retiene impurezas antes de que lleguen al motor (se cambia cada 15.000 km).' },
+              { c: 'naranja', t: 'Rampa (Flauta) de Inyectores: Distribuye el combustible presurizado a cada inyector.' },
+              { c: 'rojo', t: 'Inyectores y Retorno: Inyectan nafta al cilindro; el regulador de presión devuelve el excedente al tanque.' }
+            ]
+          }
+        ]
+      },
+      {
         key: 'potencia_opciones',
         title: 'Opciones de Potencia',
         subtitle: 'Formas de mejorar el rendimiento del motor',
@@ -372,6 +393,27 @@ export const mecanicaData: SystemCategory[] = [
             ]
           }
         ]
+      },
+      {
+        key: 'caja_cambios',
+        title: 'Caja de Cambios y Diferencial',
+        subtitle: 'Cómo funciona la relación de marchas y la tracción',
+        widget: 'caja_cambios',
+        imageUrl: '/images/caja_cambios_real.png',
+        body: 'La caja de cambios MQ200 del Gol Trend permite adaptar las revoluciones del motor a la velocidad del vehículo mediante diferentes relaciones de engranajes. El diferencial divide la fuerza entre ambas ruedas delanteras, permitiendo que giren a distinta velocidad en las curvas.',
+        tip: 'El aceite de caja (Valvulina 75W90 sintético) no se consume, pero se degrada. Conviene revisarlo o cambiarlo cada 100.000 km.',
+        warning: 'Si al poner reversa hace ruido a raspado ("canta"), asegurate de detener el auto a cero y pisar el embrague a fondo durante 3 segundos antes de acoplar.',
+        recorridos: [
+          {
+            title: 'Componentes de la Transmisión',
+            items: [
+              { c: 'verde', t: 'Eje Primario: Recibe el giro directo del motor a través del embrague.' },
+              { c: 'azul', t: 'Eje Secundario: Contiene los engranajes locos y sincronizadores de cada marcha.' },
+              { c: 'naranja', t: 'Diferencial: Corona y satélites que transmiten la fuerza a los semiejes.' },
+              { c: 'rojo', t: 'Tapón de Vaciado: Ubicado en la parte inferior, requiere llave Allen de 17mm para el drenaje de aceite.' }
+            ]
+          }
+        ]
       }
     ]
   },
@@ -457,7 +499,6 @@ export const mecanicaData: SystemCategory[] = [
         title: 'Diagnóstico por Ruidos',
         subtitle: 'Guía práctica para identificar fallas por sonido',
         widget: 'diagnostico_ruidos',
-        imageUrl: '/images/fuelle_homocinetica_roto.png',
         body: 'Los ruidos extraños en la suspensión o frenos suelen tener causas sumamente específicas. Identificar el momento exacto en el que ocurren permite localizar la pieza defectuosa sin desarmar.',
         tip: 'Zumbido constante que sube con la velocidad (como si tuvieras un avión adentro del auto) indica rulemán o rodamiento de rueda gastado.',
         recorridos: [

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import type { TopicWidget } from '../../types'
 import { HotspotImage, type Hotspot } from './HotspotImage'
 import styles from './widgets.module.css'
@@ -1549,33 +1549,37 @@ function DiagnosticoRuidosWidget({ viewMode }: WidgetProps) {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '8px', marginBottom: '14px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '8px', marginBottom: '14px', minHeight: '190px' }}>
         {list.map((r, idx) => (
           <div
             key={idx}
             className={styles.practiceCard}
-            style={{ borderColor: selectedRuido === idx ? r.color : 'rgba(255,255,255,0.08)' }}
+            style={{
+              borderColor: selectedRuido === idx ? r.color : 'rgba(255,255,255,0.08)',
+              padding: '12px',
+              cursor: 'pointer'
+            }}
             onClick={() => setSelectedRuido(idx)}
           >
-            <span style={{ fontSize: '20px' }}>{r.icon}</span>
+            <span style={{ fontSize: '24px', marginRight: '6px' }}>{r.icon}</span>
             <div>
-              <div style={{ fontSize: '12px', fontWeight: 600, color: r.color }}>{r.name}</div>
-              <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.5)' }}>Momento: {moment}</div>
+              <div style={{ fontSize: '13px', fontWeight: 600, color: r.color }}>{r.name}</div>
+              <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.5)' }}>Momento: {moment}</div>
             </div>
           </div>
         ))}
       </div>
 
       {activeRuido && (
-        <div className={styles.infoBox} style={{ borderLeft: `3px solid ${activeRuido.color}`, background: 'rgba(255, 255, 255, 0.01)' }}>
-          <div className={styles.infoTitle} style={{ color: activeRuido.color }}>{activeRuido.icon} {activeRuido.name}</div>
-          <div className={styles.infoBody} style={{ fontSize: '12px' }}>
+        <div className={styles.infoBox} style={{ borderLeft: `3px solid ${activeRuido.color}`, background: 'rgba(255, 255, 255, 0.01)', padding: '14px' }}>
+          <div className={styles.infoTitle} style={{ color: activeRuido.color, fontSize: '14px' }}>{activeRuido.icon} {activeRuido.name}</div>
+          <div className={styles.infoBody} style={{ fontSize: '13px', marginTop: '6px', lineHeight: '1.4' }}>
             <strong>Causa:</strong> {activeRuido.causa}
           </div>
           {activeRuido.urg && (
-            <div style={{ fontSize: '11px', color: '#e24b4a', marginTop: '6px', fontWeight: 600 }}>{activeRuido.urg}</div>
+            <div style={{ fontSize: '12px', color: '#e24b4a', marginTop: '8px', fontWeight: 600 }}>{activeRuido.urg}</div>
           )}
-          <div style={{ fontSize: '11px', color: '#1d9e75', marginTop: '4px' }}>
+          <div style={{ fontSize: '12px', color: '#1d9e75', marginTop: '6px', lineHeight: '1.4' }}>
             <strong>Diagnóstico/Solución:</strong> {activeRuido.sol}
           </div>
         </div>
@@ -1626,9 +1630,10 @@ function VistaDesdeAbajoWidget({ viewMode }: WidgetProps) {
         src="/images/chasis_coche_elevador.png"
         alt="Chasis del Gol Trend visto desde abajo en elevador"
         hotspots={[
-          { id: '1', x: 50, y: 15, title: 'Chapón Protector y Cárter', desc: 'Protector de cárter de aluminio atornillado en el frente para resguardar el motor.' },
-          { id: '2', x: 50, y: 52, title: 'Tubo de Escape Central', desc: 'Recorrido central del caño de escape, recubierto por escudos térmicos de aluminio.' },
-          { id: '3', x: 50, y: 82, title: 'Tanque de Combustible', desc: 'Depósito de combustible de plástico de alta resistencia, ubicado debajo de las plazas traseras.' }
+          { id: '1', x: 84, y: 88, title: 'Chapón Protector y Cárter', desc: 'Protector de cárter de aluminio y bloque motor, ubicados en el frente del vehículo (abajo en la foto).', placement: 'top' },
+          { id: '2', x: 84, y: 73, title: 'Tubo de Escape Central', desc: 'Recorrido del caño de escape con su protector térmico de aluminio, yendo hacia el motor.', placement: 'left' },
+          { id: '3', x: 84, y: 52, title: 'Tanque de Combustible', desc: 'Depósito de combustible de plástico de alta resistencia, ubicado en la parte media-trasera debajo del asiento.', placement: 'left' },
+          { id: '4', x: 84, y: 25, title: 'Eje Rígido Trasero y Suspensión', desc: 'Eje rígido trasero, resortes helicoidales y bandeja trasera (arriba en la foto).', placement: 'bottom' }
         ]}
       />
     )
@@ -1873,6 +1878,20 @@ function CableadoElectricoWidget({ viewMode }: WidgetProps) {
 // ==========================================
 function MonoMultiWidget({ viewMode }: WidgetProps) {
   const [mode, setMode] = useState<'mono' | 'multi'>('multi')
+
+  if (viewMode === 'real') {
+    return (
+      <HotspotImage
+        src="/images/flauta_inyectores.png"
+        alt="Rampa de inyectores multipunto del Gol"
+        hotspots={[
+          { id: '1', x: 50, y: 35, title: 'Rampa de Combustible (Flauta)', desc: 'Tubo de distribución de aluminio que almacena la nafta presurizada y la reparte a los 4 inyectores.', placement: 'bottom' },
+          { id: '2', x: 28, y: 64, title: 'Inyector Electromagnético', desc: 'Válvula solenoide de precisión comandada por la ECU que pulveriza la nafta en el colector de admisión.', placement: 'top' },
+          { id: '3', x: 82, y: 44, title: 'Regulador de Presión', desc: 'Mantiene la presión de combustible constante en el circuito (normalmente 3.0 bar) y deriva el retorno.', placement: 'left' }
+        ]}
+      />
+    )
+  }
 
   return (
     <div className={styles.widgetWrap}>
@@ -2161,10 +2180,10 @@ function CircuitoRefrigeracionWidget({ viewMode }: WidgetProps) {
         src="/images/circuito_agua_vano.png"
         alt="Circuito de refrigeración del motor real"
         hotspots={[
-          { id: '1', x: 73, y: 55, title: 'Depósito de Expansión', desc: 'Depósito translúcido con líquido rosa refrigerante G13. Posee marcas de nivel MIN/MAX.' },
-          { id: '2', x: 34, y: 52, title: 'Mazo de mangueras y Termostato', desc: 'Mangueras negras que conducen el agua hacia el bloque y el radiador. El termostato regula el paso.' },
-          { id: '3', x: 25, y: 86, title: 'Bomba de Agua (Oculta)', desc: 'Está instalada en el bloque motor (detrás de las tapas de distribución) y es movida por la correa dentada.' },
-          { id: '4', x: 10, y: 75, title: 'Radiador Frontal', desc: 'Ubicado en el frente para intercambiar calor con el aire del exterior impulsado por el electroventilador.' }
+          { id: '1', x: 79, y: 76, title: 'Depósito de Expansión', desc: 'Depósito translúcido con líquido rosa refrigerante G13. Posee marcas de nivel MIN/MAX.', placement: 'left' },
+          { id: '2', x: 51, y: 72, title: 'Termostato en Brida Lateral', desc: 'Regula mecánicamente el paso de refrigerante caliente desde el block hacia el radiador al superar los 87°C.', placement: 'top' },
+          { id: '3', x: 25, y: 86, title: 'Bomba de Agua (Oculta)', desc: 'Está instalada en el bloque motor (detrás de las tapas de distribución) y es movida por la correa dentada.', placement: 'top' },
+          { id: '4', x: 10, y: 75, title: 'Radiador Frontal', desc: 'Ubicado en el frente para intercambiar calor con el aire del exterior impulsado por el electroventilador.', placement: 'right' }
         ]}
       />
     )
@@ -2349,10 +2368,13 @@ function CircuitoLubricacionWidget({ viewMode }: WidgetProps) {
         src="/images/carter_bomba_aceite.png"
         alt="Bomba de aceite y cárter desmontado real"
         hotspots={[
-          { id: '1', x: 50, y: 10, title: 'Engranaje de Distribución del Cigüeñal', desc: 'Engranaje inferior del cigüeñal que impulsa mecánicamente la distribución y la bomba de aceite.' },
-          { id: '2', x: 63, y: 41, title: 'Cuerpo de la Bomba de Aceite', desc: 'Bomba de engranajes instalada en el frente del bloque motor, montada directamente alrededor de la punta del cigüeñal.' },
-          { id: '3', x: 63, y: 60, title: 'Tubo de Succión (Chupador)', desc: 'Tubo de aluminio largo que succiona el aceite desde el fondo del cárter.' },
-          { id: '4', x: 65, y: 87, title: 'Colador del Chupador (Malla)', desc: 'Malla metálica fina en la punta del chupador que retiene partículas grandes e impurezas del fondo del cárter.' }
+          { id: '1', x: 50, y: 10, title: 'Engranaje de Distribución del Cigüeñal', desc: 'Engranaje inferior del cigüeñal que impulsa mecánicamente la distribución y la bomba de aceite.', placement: 'bottom' },
+          { id: '2', x: 63, y: 41, title: 'Cuerpo de la Bomba de Aceite', desc: 'Bomba de engranajes instalada en el frente del bloque motor, montada directamente alrededor de la punta del cigüeñal.', placement: 'left' },
+          { id: '3', x: 63, y: 60, title: 'Tubo de Succión (Chupador)', desc: 'Tubo de aluminio largo que succiona el aceite desde el fondo del cárter.', placement: 'left' },
+          { id: '4', x: 65, y: 87, title: 'Colador del Chupador (Malla)', desc: 'Malla metálica fina en la punta del chupador que retiene partículas grandes e impurezas del fondo del cárter.', placement: 'top' },
+          { id: '5', x: 50, y: 48, title: 'Bancadas del Cigüeñal', desc: 'Soportes de fundición que sujetan el cigüeñal. Alojan los cojinetes principales lubricados a presión.', placement: 'left' },
+          { id: '6', x: 35, y: 70, title: 'Contrapesos del Cigüeñal', desc: 'Masas excéntricas que equilibran las fuerzas alternativas de los pistones al girar.', placement: 'right' },
+          { id: '7', x: 88, y: 30, title: 'Superficie de Junta de Cárter', desc: 'Brida de contacto plana del bloque donde se asienta la junta para evitar fugas de aceite.', placement: 'left' }
         ]}
       />
     )
@@ -3526,7 +3548,252 @@ export function RenderWidget({ widgetKey, viewMode }: { widgetKey: TopicWidget; 
       return <SistemaFrenosWidget viewMode={viewMode} />
     case 'ubicacion_frenos':
       return <UbicacionFrenosWidget viewMode={viewMode} />
+    case 'circuito_combustible':
+      return <CircuitoCombustibleWidget viewMode={viewMode} />
+    case 'caja_cambios':
+      return <CajaCambiosWidget viewMode={viewMode} />
     default:
       return null
   }
+}
+
+// ==========================================
+// 21. WIDGET: Circuito Combustible
+// ==========================================
+function CircuitoCombustibleWidget({ viewMode }: WidgetProps) {
+  const [pumpActive, setPumpActive] = useState(false)
+  const [pressure, setPressure] = useState(0)
+
+  useEffect(() => {
+    let interval: any
+    if (pumpActive) {
+      interval = setInterval(() => {
+        setPressure((prev) => Math.min(3.0, +(prev + 0.5).toFixed(1)))
+      }, 100)
+    } else {
+      interval = setInterval(() => {
+        setPressure((prev) => Math.max(0.0, +(prev - 0.5).toFixed(1)))
+      }, 100)
+    }
+    return () => clearInterval(interval)
+  }, [pumpActive])
+
+  if (viewMode === 'real') {
+    return (
+      <HotspotImage
+        src="/images/circuito_combustible_real.png"
+        alt="Circuito de combustible real desmontado"
+        hotspots={[
+          { id: '1', x: 20, y: 72, title: 'Bomba Eléctrica de Nafta', desc: 'Sumergida en el tanque. Genera el flujo continuo y la presión de 3 bar hacia el motor.', placement: 'top' },
+          { id: '2', x: 45, y: 35, title: 'Filtro de Nafta', desc: 'Retiene micropartículas nocivas. Debe cambiarse periódicamente para no obstruir los inyectores.', placement: 'bottom' },
+          { id: '3', x: 78, y: 55, title: 'Rampa y Conector de Entrada', desc: 'Manguera de alimentación de alta presión que ingresa directamente a la flauta metálica.', placement: 'left' }
+        ]}
+      />
+    )
+  }
+
+  return (
+    <div className={styles.widgetWrap}>
+      <div className={styles.controlRow}>
+        <button
+          className={`${styles.controlBtn} ${pumpActive ? styles.controlBtnActiveGreen : ''}`}
+          onClick={() => setPumpActive(!pumpActive)}
+        >
+          {pumpActive ? '🔌 Apagar Bomba de Nafta' : '🔌 Encender Bomba (Contacto)'}
+        </button>
+      </div>
+
+      <div className={styles.infoBox}>
+        <div className={styles.infoTitle}>
+          Presión del Circuito: <span style={{ color: pressure > 0 ? '#1D9E75' : '#888780', fontWeight: 'bold' }}>{pressure.toFixed(1)} bar</span>
+        </div>
+        <div className={styles.infoBody}>
+          {pressure === 0 && 'Circuito despresurizado. Sin contacto ni señal de arranque.'}
+          {pressure > 0 && pressure < 3.0 && 'La bomba está presurizando las mangueras de alimentación...'}
+          {pressure === 3.0 && 'Circuito presurizado a 3.0 bar de trabajo. Regulador de presión activo y retornando excedente.'}
+        </div>
+      </div>
+
+      <svg className={styles.svg} viewBox="0 0 680 240">
+        <rect x="10" y="10" width="660" height="220" rx="8" fill="rgba(255,255,255,0.01)" stroke="rgba(255,255,255,0.03)" />
+
+        {/* Tanque de Combustible */}
+        <rect x="30" y="90" width="100" height="90" rx="8" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)" />
+        <text x="80" y="165" textAnchor="middle" fontSize="10" fill="rgba(255,255,255,0.5)">Tanque (Plástico)</text>
+        <circle cx="80" cy="115" r="18" fill="rgba(255,255,255,0.06)" stroke="#BA7517" strokeWidth="1.5" />
+        <text x="80" y="118" textAnchor="middle" fontSize="8" fill="#BA7517" fontWeight="bold">BOMBA</text>
+
+        {/* Filtro de Nafta */}
+        <rect x="230" y="100" width="60" height="40" rx="4" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.15)" />
+        <text x="260" y="125" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.7)">Filtro</text>
+
+        {/* Rampa de inyectores */}
+        <rect x="420" y="90" width="160" height="20" rx="3" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.2)" />
+        <text x="500" y="80" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.5)">Rampa (Flauta)</text>
+
+        {/* Inyectores */}
+        {[440, 480, 520, 560].map((x, idx) => (
+          <g key={idx}>
+            <rect x={x} y="110" width="12" height="25" fill="#BA7517" rx="1" />
+            {pumpActive && pressure === 3.0 && (
+              <path d={`M ${x + 6} 135 L ${x + 2} 155 M ${x + 6} 135 L ${x + 10} 155`} stroke="#3b82f6" strokeWidth="1" strokeDasharray="2 2" />
+            )}
+          </g>
+        ))}
+
+        {/* Regulador de presión */}
+        <rect x="580" y="85" width="24" height="30" rx="2" fill="rgba(255,255,255,0.08)" stroke="#BA7517" />
+        <text x="592" y="103" textAnchor="middle" fontSize="7" fill="#BA7517" fontWeight="bold">REG</text>
+
+        {/* Mangueras de Combustible */}
+        <path
+          d="M 98 115 L 230 115"
+          fill="none"
+          stroke={pumpActive ? '#1D9E75' : 'rgba(255,255,255,0.15)'}
+          strokeWidth="2.5"
+          className={pumpActive ? styles.flowing : ''}
+          strokeDasharray={pumpActive ? '6 4' : 'none'}
+        />
+        <path
+          d="M 290 115 L 420 100"
+          fill="none"
+          stroke={pumpActive ? '#1D9E75' : 'rgba(255,255,255,0.15)'}
+          strokeWidth="2.5"
+          className={pumpActive ? styles.flowing : ''}
+          strokeDasharray={pumpActive ? '6 4' : 'none'}
+        />
+
+        {/* Retorno */}
+        <path
+          d="M 592 115 L 592 200 L 80 200 L 80 133"
+          fill="none"
+          stroke={pumpActive && pressure === 3.0 ? '#BA7517' : 'rgba(255,255,255,0.15)'}
+          strokeWidth="2"
+          className={pumpActive && pressure === 3.0 ? styles.flowing : ''}
+          strokeDasharray={pumpActive && pressure === 3.0 ? '6 4' : 'none'}
+        />
+        {pumpActive && pressure === 3.0 && (
+          <text x="340" y="215" textAnchor="middle" fontSize="8" fill="#BA7517">Retorno de Excedente a Presión</text>
+        )}
+      </svg>
+    </div>
+  )
+}
+
+// ==========================================
+// 22. WIDGET: Caja Cambios y Diferencial
+// ==========================================
+function CajaCambiosWidget({ viewMode }: WidgetProps) {
+  const [gear, setGear] = useState<'N' | '1' | '2' | '3' | '4' | '5' | 'R'>('N')
+
+  const speeds: Record<string, { primary: number; secondary: number; desc: string; label: string }> = {
+    N: { primary: 1, secondary: 0, desc: 'Motor desacoplado. Los engranajes locos giran libres sobre el eje secundario.', label: 'Punto Muerto (Neutro)' },
+    '1': { primary: 1.5, secondary: 0.4, desc: 'Fuerza máxima y velocidad mínima. Relación aprox 3.45:1.', label: 'Primera Marcha (Fuerza)' },
+    '2': { primary: 1.5, secondary: 0.7, desc: 'Aceleración intermedia. Relación aprox 1.95:1.', label: 'Segunda Marcha' },
+    '3': { primary: 1.5, secondary: 1.1, desc: 'Transición urbana. Relación aprox 1.28:1.', label: 'Tercera Marcha' },
+    '4': { primary: 1.5, secondary: 1.5, desc: 'Directa urbana/ruta. Relación aprox 0.93:1.', label: 'Cuarta Marcha' },
+    '5': { primary: 1.5, secondary: 2.0, desc: 'Velocidad crucero de autopista. Consumo mínimo. Relación aprox 0.74:1 (Sobremarcha).', label: 'Quinta Marcha' },
+    R: { primary: 1.5, secondary: -0.4, desc: 'Invierte el giro del secundario mediante un piñón intermedio.', label: 'Reversa' }
+  }
+
+  if (viewMode === 'real') {
+    return (
+      <HotspotImage
+        src="/images/caja_cambios_real.png"
+        alt="Despiece y componentes de caja de cambios real"
+        hotspots={[
+          { id: '1', x: 25, y: 35, title: 'Unión con Motor (Carcasa Embrague)', desc: 'Campana del cárter de caja que aloja el volante motor y la prensa/disco de embrague.', placement: 'bottom' },
+          { id: '2', x: 50, y: 48, title: 'Conjunto de Engranajes (Árboles)', desc: 'Árbol primario y secundario con engranajes helicoidales constantemente acoplados.', placement: 'left' },
+          { id: '3', x: 74, y: 30, title: 'Corona del Diferencial', desc: 'Engranaje circular grande que transfiere la fuerza hacia los semiejes de las ruedas delanteras.', placement: 'left' },
+          { id: '4', x: 45, y: 88, title: 'Tapón de Vaciado de Aceite', desc: 'Tapón roscado ubicado en el punto más bajo. Requiere llave Allen de 17mm para drenar la valvulina.', placement: 'top' }
+        ]}
+      />
+    )
+  }
+
+  const current = speeds[gear]
+
+  return (
+    <div className={styles.widgetWrap}>
+      <div className={styles.controlRow} style={{ flexWrap: 'wrap', gap: '6px' }}>
+        {['1', '2', '3', '4', '5', 'N', 'R'].map((g) => (
+          <button
+            key={g}
+            className={`${styles.controlBtn} ${gear === g ? (g === 'N' ? styles.controlBtnActive : g === 'R' ? styles.controlBtnActiveOrange : styles.controlBtnActiveGreen) : ''}`}
+            onClick={() => setGear(g as any)}
+          >
+            {g === 'N' ? 'Neutro' : g === 'R' ? 'Reversa' : `${g}ª`}
+          </button>
+        ))}
+      </div>
+
+      <div className={styles.infoBox}>
+        <div className={styles.infoTitle}>
+          ⚙️ {current.label}
+        </div>
+        <div className={styles.infoBody}>
+          {current.desc}
+        </div>
+      </div>
+
+      <svg className={styles.svg} viewBox="0 0 680 260">
+        <rect x="10" y="10" width="660" height="240" rx="8" fill="rgba(255,255,255,0.01)" stroke="rgba(255,255,255,0.03)" />
+
+        {/* Eje Primario */}
+        <line x1="80" y1="80" x2="380" y2="80" stroke="#888780" strokeWidth="6" />
+        <text x="90" y="70" fontSize="9" fill="rgba(255,255,255,0.5)">Eje Primario (Entrada)</text>
+
+        {/* Eje Secundario */}
+        <line x1="80" y1="160" x2="380" y2="160" stroke="#888780" strokeWidth="6" />
+        <text x="90" y="195" fontSize="9" fill="rgba(255,255,255,0.5)">Eje Secundario (Salida)</text>
+
+        {/* Engranajes */}
+        {/* Primera */}
+        <rect x="130" y="60" width="18" height="40" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.3)" />
+        <rect x="120" y="130" width="38" height="60" fill={gear === '1' ? 'rgba(29, 158, 117, 0.3)' : 'rgba(255,255,255,0.1)'} stroke={gear === '1' ? '#1D9E75' : 'rgba(255,255,255,0.2)'} />
+        <text x="139" y="52" textAnchor="middle" fontSize="7" fill="rgba(255,255,255,0.4)">1ª</text>
+
+        {/* Segunda */}
+        <rect x="180" y="65" width="22" height="30" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.3)" />
+        <rect x="172" y="135" width="38" height="50" fill={gear === '2' ? 'rgba(29, 158, 117, 0.3)' : 'rgba(255,255,255,0.1)'} stroke={gear === '2' ? '#1D9E75' : 'rgba(255,255,255,0.2)'} />
+        <text x="191" y="52" textAnchor="middle" fontSize="7" fill="rgba(255,255,255,0.4)">2ª</text>
+
+        {/* Tercera */}
+        <rect x="230" y="68" width="26" height="24" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.3)" />
+        <rect x="225" y="142" width="36" height="36" fill={gear === '3' ? 'rgba(29, 158, 117, 0.3)' : 'rgba(255,255,255,0.1)'} stroke={gear === '3' ? '#1D9E75' : 'rgba(255,255,255,0.2)'} />
+        <text x="243" y="52" textAnchor="middle" fontSize="7" fill="rgba(255,255,255,0.4)">3ª</text>
+
+        {/* Cuarta */}
+        <rect x="280" y="70" width="30" height="20" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.3)" />
+        <rect x="277" y="145" width="36" height="30" fill={gear === '4' ? 'rgba(29, 158, 117, 0.3)' : 'rgba(255,255,255,0.1)'} stroke={gear === '4' ? '#1D9E75' : 'rgba(255,255,255,0.2)'} />
+        <text x="295" y="52" textAnchor="middle" fontSize="7" fill="rgba(255,255,255,0.4)">4ª</text>
+
+        {/* Quinta */}
+        <rect x="330" y="72" width="34" height="16" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.3)" />
+        <rect x="333" y="148" width="28" height="24" fill={gear === '5' ? 'rgba(29, 158, 117, 0.3)' : 'rgba(255,255,255,0.1)'} stroke={gear === '5' ? '#1D9E75' : 'rgba(255,255,255,0.2)'} />
+        <text x="347" y="52" textAnchor="middle" fontSize="7" fill="rgba(255,255,255,0.4)">5ª</text>
+
+        {/* Diferencial */}
+        <circle cx="480" cy="160" r="38" fill="rgba(255,255,255,0.03)" stroke={gear !== 'N' ? '#1D9E75' : 'rgba(255,255,255,0.15)'} strokeWidth="2.5" />
+        <circle cx="480" cy="160" r="14" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.2)" />
+        <text x="480" y="212" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.5)">Diferencial</text>
+
+        {/* Piñón de ataque */}
+        <rect x="375" y="145" width="20" height="30" fill="rgba(255,255,255,0.2)" stroke="rgba(255,255,255,0.4)" />
+        <line x1="395" y1="160" x2="442" y2="160" stroke="#888780" strokeWidth="4" />
+
+        {/* Sincronizadores */}
+        <rect x="156" y="145" width="10" height="30" fill={gear === '1' || gear === '2' ? '#BA7517' : 'rgba(255,255,255,0.3)'} />
+        <rect x="259" y="147" width="10" height="26" fill={gear === '3' || gear === '4' ? '#BA7517' : 'rgba(255,255,255,0.3)'} />
+
+        {/* Reversa */}
+        {gear === 'R' ? (
+          <g>
+            <rect x="208" y="108" width="14" height="24" fill="rgba(186, 117, 23, 0.4)" stroke="#BA7517" />
+            <text x="215" y="123" textAnchor="middle" fontSize="6" fill="#ffffff" fontWeight="bold">R</text>
+          </g>
+        ) : null}
+      </svg>
+    </div>
+  )
 }

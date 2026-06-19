@@ -45,6 +45,8 @@ export type TopicWidget =
   | 'bujes_cojinetes'
   | 'sistema_frenos'
   | 'ubicacion_frenos'
+  | 'circuito_combustible'
+  | 'caja_cambios'
 
 export type ConceptItem = {
   c: TopicColor
