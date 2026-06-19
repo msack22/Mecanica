@@ -326,41 +326,66 @@ app.post('/api/auth/login', async (req, res) => {
 });
 
 app.post('/api/auth/google-login', async (req, res) => {
-  const { email, name } = req.body;
-  if (!email) {
-    return res.status(400).json({ error: 'Se requiere el correo de Google.' });
+  const { email, name, idToken } = req.body;
+  
+  let targetEmail = email;
+  let targetName = name;
+
+  if (idToken) {
+    try {
+      // Validar token de Google Identity Services llamando al endpoint público de Google
+      const tokenRes = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${idToken}`);
+      if (!tokenRes.ok) {
+        return res.status(400).json({ error: 'El token de Google es inválido o ha expirado.' });
+      }
+      
+      const payload = await tokenRes.json();
+      targetEmail = payload.email;
+      targetName = payload.name || payload.given_name || '';
+
+      if (!targetEmail) {
+        return res.status(400).json({ error: 'El token de Google no contiene un correo electrónico válido.' });
+      }
+    } catch (verifyErr) {
+      console.error("Error validando token con Google:", verifyErr);
+      return res.status(500).json({ error: 'Error interno de comunicación al verificar con Google.' });
+    }
+  }
+
+  if (!targetEmail) {
+    return res.status(400).json({ error: 'Se requiere el correo de Google o un token de identidad válido.' });
   }
 
   try {
-    // 1. Verificar si el usuario ya existe
-    const [rows] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
+    // 1. Verificar si el usuario ya existe en MySQL
+    const [rows] = await pool.query('SELECT * FROM users WHERE email = ?', [targetEmail]);
     
     let user;
     if (rows.length === 0) {
-      // 2. Si no existe, crear un nuevo usuario con una contraseña aleatoria
+      // 2. Si no existe, crear un nuevo usuario con contraseña aleatoria
       const salt = await bcrypt.genSalt(10);
       const randomPassword = Math.random().toString(36).slice(-10);
       const hashedPassword = await bcrypt.hash(randomPassword, salt);
 
       const [userResult] = await pool.query(
         'INSERT INTO users (email, password, name) VALUES (?, ?, ?)',
-        [email, hashedPassword, name || '']
+        [targetEmail, hashedPassword, targetName || '']
       );
 
       const userId = userResult.insertId;
 
-      // Crear auto inicial predeterminado
+      // Crear auto inicial predeterminado para el nuevo usuario
       await pool.query(
         'INSERT INTO cars (user_id, alias) VALUES (?, ?)',
         [userId, 'Gol Trend (Mi Auto)']
       );
 
-      user = { id: userId, email, name: name || '' };
+      user = { id: userId, email: targetEmail, name: targetName || '' };
     } else {
       user = rows[0];
     }
 
-    // 3. Generar token de sesión JWT
+    // 3. Generar token de sesión JWT local de la app
     const token = jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET, { expiresIn: '30d' });
 
     res.json({
