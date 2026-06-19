@@ -231,14 +231,13 @@ function ConexionesInternasWidget({ viewMode }: WidgetProps) {
   if (viewMode === 'real') {
     return (
       <HotspotImage
-        src="/images/tren_delantero.png"
-        alt="Mangueta, semieje y freno real"
+        src="/images/biela_piston_desmontados.png"
+        alt="Pistón, bulón y biela reales desmontados"
         hotspots={[
-          { id: '1', x: 50, y: 18, title: 'Resorte Helicoidal', desc: 'Resorte de alta resistencia que absorbe el peso del vehículo en baches.' },
-          { id: '2', x: 73, y: 68, title: 'Disco de Freno Ventilado', desc: 'Disco de hierro. Las ranuras ayudan a disipar el calor y el agua al frenar.' },
-          { id: '3', x: 88, y: 60, title: 'Caliper de Freno (Brembo)', desc: 'Maza de freno hidráulica que empuja las pastillas contra el disco.' },
-          { id: '4', x: 34, y: 74, title: 'Brazo de Suspensión (Parrilla)', desc: 'Parrilla inferior metálica articulada conectada al chasis.' },
-          { id: '5', x: 24, y: 58, title: 'Fuelle de Homocinética', desc: 'Goma protectora corrugada que retiene la grasa del semieje.' }
+          { id: '1', x: 45, y: 22, title: 'Cabeza de Pistón', desc: 'Soporta la fuerza de la combustión. Posee las ranuras para los aros.' },
+          { id: '2', x: 45, y: 44, title: 'El Bulón (Pasador)', desc: 'Pasador de acero cilíndrico que une el pistón al pie de la biela.' },
+          { id: '3', x: 45, y: 68, title: 'Cuerpo de la Biela', desc: 'Brazo de acero forjado en forma de "H" que transmite la fuerza.' },
+          { id: '4', x: 45, y: 88, title: 'Tapa y Cojinetes de Biela', desc: 'Medias lunas de fricción que abrazan la muñequilla del cigüeñal.' }
         ]}
       />
     )
@@ -464,8 +463,8 @@ function MotorNivelesWidget({ viewMode }: WidgetProps) {
         {/* NIVEL 3: CULATA */}
         <g opacity={level === 1 || level === 5 ? 1 : 0.25}>
           <rect x="180" y="100" width="280" height="60" rx="6" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)" strokeWidth="1" />
-          <text x="320" y="122" text-anchor="middle" fontSize="11" fontWeight="500" fill="#ffffff">Culata (cabeza)</text>
-          <text x="320" y="138" text-anchor="middle" fontSize="8" fill="rgba(255,255,255,0.5)">válvulas · inyectores · cámara</text>
+          <text x="320" y="122" textAnchor="middle" fontSize="11" fontWeight="500" fill="#ffffff">Culata (cabeza)</text>
+          <text x="320" y="138" textAnchor="middle" fontSize="8" fill="rgba(255,255,255,0.5)">válvulas · inyectores · cámara</text>
 
           {/* Junta culata */}
           <rect x="180" y="160" width="280" height="8" fill="rgba(255,255,255,0.3)" />
@@ -475,20 +474,20 @@ function MotorNivelesWidget({ viewMode }: WidgetProps) {
         {/* NIVEL 2: BLOQUE */}
         <g opacity={level === 2 || level === 5 ? 1 : 0.25}>
           <rect x="180" y="168" width="280" height="130" rx="6" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.2)" strokeWidth="1.5" />
-          <text x="320" y="190" text-anchor="middle" fontSize="11" fontWeight="500" fill="#ffffff">Bloque del motor (corazón)</text>
+          <text x="320" y="190" textAnchor="middle" fontSize="11" fontWeight="500" fill="#ffffff">Bloque del motor (corazón)</text>
           {/* Cilindros */}
           <rect x="192" y="205" width="52" height="80" rx="4" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="0.5" />
           <rect x="252" y="205" width="52" height="80" rx="4" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="0.5" />
           <rect x="312" y="205" width="52" height="80" rx="4" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="0.5" />
           <rect x="372" y="205" width="52" height="80" rx="4" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="0.5" />
-          <text x="320" y="246" text-anchor="middle" fontSize="9" fill="rgba(255,255,255,0.3)">4 cilindros + pistones</text>
+          <text x="320" y="246" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.3)">4 cilindros + pistones</text>
         </g>
 
         {/* NIVEL 1: CARTER */}
         <g opacity={level === 3 || level === 5 ? 1 : 0.25}>
           <rect x="180" y="298" width="280" height="50" rx="6" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)" strokeWidth="1" />
-          <text x="320" y="320" text-anchor="middle" fontSize="11" fontWeight="500" fill="#ffffff">Cárter de aceite</text>
-          <text x="320" y="336" text-anchor="middle" fontSize="8" fill="rgba(255,255,255,0.5)">depósito aceite · tapón vaciado</text>
+          <text x="320" y="320" textAnchor="middle" fontSize="11" fontWeight="500" fill="#ffffff">Cárter de aceite</text>
+          <text x="320" y="336" textAnchor="middle" fontSize="8" fill="rgba(255,255,255,0.5)">depósito aceite · tapón vaciado</text>
           <rect x="183" y="318" width="274" height="27" fill="#BA7517" opacity="0.1" />
         </g>
 
@@ -741,12 +740,12 @@ function CiguenalLevasWidget({ viewMode }: WidgetProps) {
   if (viewMode === 'real') {
     return (
       <HotspotImage
-        src="/images/correa_distribucion.png"
-        alt="Distribución real de motor"
+        src="/images/arbol_levas_culata.png"
+        alt="Árbol de levas y culata reales de motor EA111"
         hotspots={[
-          { id: '1', x: 44, y: 50, title: 'Engranaje de Árbol de levas', desc: 'Polea superior de 1x. Sincroniza la apertura de las válvulas.' },
-          { id: '2', x: 63, y: 64, title: 'Correa dentada', desc: 'Hecha de caucho reforzado. Tiene dientes para evitar el deslizamiento.' },
-          { id: '3', x: 58, y: 80, title: 'Polea del tensor', desc: 'Mantiene la correa con la tensión justa para que no salte dientes.' }
+          { id: '1', x: 45, y: 32, title: 'Árbol de levas', desc: 'Eje superior de acero que controla la sincronía de apertura valvular.' },
+          { id: '2', x: 55, y: 46, title: 'Lóbulos de Leva', desc: 'Las crestas o codos excéntricos del eje que empujan los taqués/válvulas.' },
+          { id: '3', x: 32, y: 65, title: 'Guías de Válvulas y Resortes', desc: 'Los resortes helicoidales de alta tensión que cierran herméticamente las válvulas.' }
         ]}
       />
     )
@@ -959,7 +958,7 @@ function SincronizacionCorreaWidget({ viewMode }: WidgetProps) {
               <text x="190" y="186" textAnchor="middle" fontSize="12" fill="#E24B4A" fontWeight="600">Choque mecánico</text>
               <text x="190" y="210" textAnchor="middle" fontSize="10" fill="rgba(255,255,255,0.7)">Pistón sube al PMS</text>
               <text x="190" y="226" textAnchor="middle" fontSize="10" fill="rgba(255,255,255,0.7)">y la válvula abre antes.</text>
-              <text x="190" y="250" text-anchor="middle" font-size="10" fill="#E24B4A">Válvulas dobladas = Culata rota</text>
+              <text x="190" y="250" textAnchor="middle" fontSize="10" fill="#E24B4A">Válvulas dobladas = Culata rota</text>
             </g>
           )}
         </svg>
@@ -977,11 +976,11 @@ function BloqueoPoleasWidget({ viewMode }: WidgetProps) {
   if (viewMode === 'real') {
     return (
       <HotspotImage
-        src="/images/correa_distribucion.png"
-        alt="Distribución motor engranajes"
+        src="/images/bloqueo_engranaje.png"
+        alt="Bloqueador mecánico de poleas de distribución"
         hotspots={[
-          { id: '1', x: 44, y: 50, title: 'Engranaje de Árbol de levas', desc: 'Polea superior de 1x. Sincroniza la apertura de las válvulas.' },
-          { id: '2', x: 63, y: 64, title: 'Correa dentada', desc: 'Hecha de caucho de alta densidad con dientes internos antideslizantes.' }
+          { id: '1', x: 50, y: 46, title: 'Herramienta de traba', desc: 'Pasador/grapa metálica instalada entre los dientes de las poleas para bloquear el movimiento relativo.' },
+          { id: '2', x: 26, y: 35, title: 'Engranaje del Árbol de levas', desc: 'Polea superior de distribución que se mantiene alineada a la marca fija del bloque.' }
         ]}
       />
     )
@@ -1078,11 +1077,11 @@ function ColoresHumoWidget({ viewMode }: WidgetProps) {
   if (viewMode === 'real') {
     return (
       <HotspotImage
-        src="/images/piston_sucio.png"
-        alt="Aros gastados y residuos"
+        src="/images/escape_humo_azul.png"
+        alt="Escape del auto emitiendo humo azulado"
         hotspots={[
-          { id: '1', x: 50, y: 25, title: 'Acumulación de Carbón', desc: 'Residuos gomosos generados al quemar aceite en el cilindro.' },
-          { id: '2', x: 50, y: 37, title: 'Aros flojos', desc: 'Anillos sin tensión que permiten el paso del aceite del cárter hacia arriba.' }
+          { id: '1', x: 48, y: 55, title: 'Cola de Escape', desc: 'Salida final de los gases. El hollín aceitoso indica que el motor está quemando lubricante.' },
+          { id: '2', x: 74, y: 46, title: 'Humo azul / gris denso', desc: 'Color característico provocado por el aceite de motor ingresando a la cámara de combustión (aros o guías rotas).' }
         ]}
       />
     )
@@ -1161,11 +1160,12 @@ function SistemaEscapeWidget({ viewMode }: WidgetProps) {
   if (viewMode === 'real') {
     return (
       <HotspotImage
-        src="/images/tren_delantero.png"
-        alt="Escape y tren delantero real"
+        src="/images/caño_escape_inferior.png"
+        alt="Escape y caño inferior real"
         hotspots={[
-          { id: '1', x: 24, y: 58, title: 'Fuelle del Semieje', desc: 'Retiene la grasa de la junta homocinética. Si se rompe, la grasa se derrama.' },
-          { id: '2', x: 73, y: 68, title: 'Disco de Freno', desc: 'Sometido a alta fricción y temperaturas al frenar.' }
+          { id: '1', x: 25, y: 35, title: 'Manifold de Escape', desc: 'Colector de fundición de hierro que junta los gases calientes de los 4 cilindros.' },
+          { id: '2', x: 50, y: 50, title: 'Catalizador', desc: 'Filtro cerámico que convierte gases nocivos en inocuos (vapor de agua y CO2).' },
+          { id: '3', x: 75, y: 62, title: 'Silenciadores', desc: 'Cajas metálicas con deflectores acústicos que amortiguan el sonido de salida.' }
         ]}
       />
     )
@@ -1625,14 +1625,12 @@ function VistaDesdeAbajoWidget({ viewMode }: WidgetProps) {
   if (viewMode === 'real') {
     return (
       <HotspotImage
-        src="/images/tren_delantero.png"
-        alt="Tren delantero McPherson real"
+        src="/images/chasis_coche_elevador.png"
+        alt="Chasis del Gol Trend visto desde abajo en elevador"
         hotspots={[
-          { id: '1', x: 50, y: 18, title: 'Resorte Helicoidal', desc: 'Resorte de alta resistencia que absorbe el peso del vehículo en baches.' },
-          { id: '2', x: 73, y: 68, title: 'Disco de Freno Ventilado', desc: 'Disco de hierro. Las ranuras ayudan a disipar el calor y el agua al frenar.' },
-          { id: '3', x: 88, y: 60, title: 'Caliper de Freno (Brembo)', desc: 'Maza de freno hidráulica que empuja las pastillas contra el disco.' },
-          { id: '4', x: 34, y: 74, title: 'Brazo de Suspensión (Parrilla)', desc: 'Parrilla inferior metálica articulada conectada al chasis.' },
-          { id: '5', x: 24, y: 58, title: 'Fuelle de Homocinética', desc: 'Goma protectora corrugada que retiene la grasa del semieje.' }
+          { id: '1', x: 50, y: 15, title: 'Chapón Protector y Cárter', desc: 'Protector de cárter de aluminio atornillado en el frente para resguardar el motor.' },
+          { id: '2', x: 50, y: 52, title: 'Tubo de Escape Central', desc: 'Recorrido central del caño de escape, recubierto por escudos térmicos de aluminio.' },
+          { id: '3', x: 50, y: 82, title: 'Tanque de Combustible', desc: 'Depósito de combustible de plástico de alta resistencia, ubicado debajo de las plazas traseras.' }
         ]}
       />
     )
@@ -1984,10 +1982,11 @@ function PotenciaOpcionesWidget({ viewMode }: WidgetProps) {
   if (viewMode === 'real') {
     return (
       <HotspotImage
-        src="/images/motor_completo.png"
-        alt="Motor Gol 1.6 MSI"
+        src="/images/filtro_deportivo.png"
+        alt="Admisión deportiva con filtro cónico"
         hotspots={[
-          { id: '1', x: 48, y: 53, title: 'Admisión / Remap', desc: 'La mariposa y ECU están atornilladas en la culata, listas para la reprogramación.' }
+          { id: '1', x: 45, y: 38, title: 'Filtro cónico de alto flujo', desc: 'Filtro de algodón lavable de baja restricción para que el motor aspire más aire frío.' },
+          { id: '2', x: 72, y: 55, title: 'Múltiple de escape deportivo 4-1', desc: 'Colector de tubos largos e independientes que elimina la contrapresión y facilita la salida de gases.' }
         ]}
       />
     )
@@ -2061,11 +2060,11 @@ function LiftCaminoTierraWidget({ viewMode }: WidgetProps) {
   if (viewMode === 'real') {
     return (
       <HotspotImage
-        src="/images/tren_delantero.png"
-        alt="Suspensión McPherson Gol Trend"
+        src="/images/espiral_elevado.png"
+        alt="Suspensión McPherson elevada con espiral reforzado"
         hotspots={[
-          { id: '1', x: 50, y: 18, title: 'Resorte McPherson', desc: 'Sostiene la altura libre del chasis. Espirales más largos elevan el auto.' },
-          { id: '2', x: 34, y: 74, title: 'Parrilla inferior', desc: 'Define el ángulo de la comba de la rueda al elevar el amortiguador.' }
+          { id: '1', x: 48, y: 35, title: 'Espiral Reforzado Elevado', desc: 'Resorte de mayor altura libre y sección de alambre para elevar el chasis.' },
+          { id: '2', x: 48, y: 65, title: 'Amortiguador Reforzado', desc: 'Amortiguador con vástago extendido que evita golpes al estirar la suspensión.' }
         ]}
       />
     )
@@ -2494,6 +2493,961 @@ function CircuitoLubricacionWidget({ viewMode }: WidgetProps) {
   )
 }
 
+
+// ==========================================
+// 21. WIDGET: Bujes & Cojinetes
+// ==========================================
+function BujesCojinetesWidget({ viewMode }: WidgetProps) {
+  const [activePieza, setActivePieza] = useState(0)
+
+  const piezas = [
+    {
+      key: 'rod-wheel',
+      label: '🔵 Rodamiento de rueda',
+      rect: { x: 122, y: 262, w: 56, h: 56 },
+      title: 'Rodamiento de rueda — dentro de la mangueta',
+      body: 'Permite que la rueda gire libremente alrededor del semieje. Son bolitas de acero dentro de dos anillos de metal bañados en grasa. Hay uno por rueda (4 en total). Cuando se gastan las bolitas pierden su forma esférica perfecta y el rodamiento empieza a tener juego y hacer ruido.',
+      tip: 'Síntoma: zumbido tipo avión que sube con la velocidad. Para confirmar: a 80 km/h hacés una curva suave — si el zumbido baja es el rodamiento del lado que descarga peso. Se cambia con prensa hidráulica.'
+    },
+    {
+      key: 'biela',
+      label: '🔵 Cojinetes de biela',
+      rect: { x: 276, y: 116, w: 116, h: 28 },
+      title: 'Cojinetes de biela — dentro del motor',
+      body: 'Son semicasquillos de metal (como medias lunas) que van entre la biela y la muñequilla del cigüeñal. No tienen bolitas — son superficies planas bañadas en aceite. El aceite a presión forma una película que evita el contacto metal con metal. Cuando el aceite falla o el cojinete se desgasta, aparece el golpe metálico al arrancar.',
+      tip: '⚠ Golpe metálico "tok tok" al arrancar que no desaparece → cojinetes de biela desgastados. Es el sonido más serio que puede hacer un motor. Test de compresión obligatorio.'
+    },
+    {
+      key: 'alt',
+      label: '🔵 Cojinetes alternador',
+      rect: { x: 163, y: 88, w: 24, h: 24 },
+      title: 'Cojinetes del alternador',
+      body: 'El alternador tiene dos cojinetes internos que permiten que el rotor gire dentro de la carcasa. Cuando se gastan aparece un chirrido o zumbido proveniente del alternador. Se puede confirmar sacando la correa auxiliar momentáneamente — si el ruido desaparece era el alternador.',
+      tip: 'Muchas veces conviene cambiar el alternador completo en lugar de los cojinetes — el trabajo de desarmar el alternador es similar al costo del alternador reacondicionado.'
+    },
+    {
+      key: 'silent',
+      label: '🟢 Silent blocks brazo',
+      rect: { x: 114, y: 276, w: 100, h: 26 },
+      title: 'Silent blocks del brazo de suspensión',
+      body: 'Los bujes de goma que unen el brazo de suspensión al chasis. Son silent blocks de goma vulcanizada entre dos metales. La goma permite un movimiento limitado y absorbe las vibraciones sin necesitar lubricación. Con el tiempo la goma se endurece, se agrieta y pierde elasticidad.',
+      tip: 'Síntoma: golpe sordo al pasar badenes, especialmente con el auto frío. Se ven a simple vista desde abajo — goma agrietada o separada del metal = cambio. Son los que más frecuentemente se gastan en el Gol.'
+    },
+    {
+      key: 'barra',
+      label: '🟢 Bujes barra estab.',
+      rect: { x: 188, y: 330, w: 296, h: 26 },
+      title: 'Bujes de la barra estabilizadora',
+      body: 'La barra estabilizadora va fijada al chasis mediante dos bujes de goma. También tiene bujes en los extremos donde se conectan las bieletas. Cuando los bujes se gastan, la barra empieza a moverse más de lo normal y aparece un ruido de golpe o chirrido al doblar o en badenes.',
+      tip: '✓ Son los más baratos de todo el tren delantero. Se cambian con el auto en el aire en menos de una hora. Antes de cambiar bieletas, revisar primero los bujes de la barra — a veces el ruido viene de ahí.'
+    },
+    {
+      key: 'soporte',
+      label: '🟢 Soporte de motor',
+      rect: { x: 216, y: 172, w: 248, h: 20 },
+      title: 'Soportes de motor (cauchos de motor)',
+      body: 'El motor no va atornillado rígido al chasis — va sobre 3-4 soportes de goma que absorben las vibraciones del motor antes de que lleguen a la carrocería. Cuando los soportes se gastan o rompen, el motor empieza a moverse excesivamente y se siente una vibración fuerte dentro del auto, especialmente al arrancar o al acelerar.',
+      tip: 'Síntoma clásico: vibración fuerte en el volante y el habitáculo al acelerar o al ralentí. Para confirmar: con el motor encendido, alguien mira el motor desde afuera mientras otro acelera suavemente — si el motor salta o se mueve mucho → soporte roto.'
+    }
+  ]
+
+  const p = piezas[activePieza]
+
+  if (viewMode === 'real') {
+    return (
+      <HotspotImage
+        src="/images/bujes_cojinetes_real.png"
+        alt="Bujes y rodamientos de chasis reales"
+        hotspots={[
+          { id: '1', x: 25, y: 50, title: 'Silent Block de goma agrietado', desc: 'Buje de suspensión dañado con goma gastada y separada de la camisa de metal.' },
+          { id: '2', x: 70, y: 50, title: 'Rodamiento de Bolas (Rulemán)', desc: 'Rodamiento de bolas SKF con sus anillos y esferas de acero lubricados.' }
+        ]}
+      />
+    )
+  }
+
+  return (
+    <div className={styles.widgetWrap}>
+      <div className={styles.controlRow}>
+        {piezas.map((pieza, idx) => (
+          <button
+            key={pieza.key}
+            className={`${styles.controlBtn} ${activePieza === idx ? styles.controlBtnActive : ''}`}
+            onClick={() => setActivePieza(idx)}
+          >
+            {pieza.label}
+          </button>
+        ))}
+      </div>
+
+      <div className={styles.infoBox}>
+        <div className={styles.infoTitle}>{p.title}</div>
+        <div className={styles.infoBody}>{p.body}</div>
+        <div className={styles.infoTip} style={{ color: p.label.startsWith('🔵') ? '#534AB7' : '#1D9E75' }}>💡 {p.tip}</div>
+      </div>
+
+      <svg className={styles.svg} viewBox="0 0 680 420">
+        <rect x="60" y="140" width="560" height="100" rx="16" fill="rgba(255,255,255,0.01)" stroke="rgba(255,255,255,0.05)" strokeWidth="1" opacity="0.3"/>
+        
+        <circle cx="150" cy="290" r="55" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="2.5"/>
+        <circle cx="150" cy="290" r="18" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.1)" strokeWidth="1.5"/>
+        
+        <circle cx="530" cy="290" r="55" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="2.5"/>
+        <circle cx="530" cy="290" r="18" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.1)" strokeWidth="1.5"/>
+        
+        <rect x="220" y="50" width="240" height="130" rx="8" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
+        <text x="340" y="120" textAnchor="middle" fontSize="11" fill="rgba(255,255,255,0.4)">motor + caja</text>
+
+        {/* 1. Rodamiento rueda */}
+        <g opacity={activePieza === 0 ? 1 : 0.3}>
+          <circle cx="150" cy="290" r="26" fill="none" stroke="#534AB7" strokeWidth="3" opacity="0.8"/>
+          <text x="60" y="265" textAnchor="end" fontSize="9" fill="#534AB7">rodamiento</text>
+          <text x="60" y="277" textAnchor="end" fontSize="9" fill="#534AB7">de rueda</text>
+          <line x1="62" y1="271" x2="124" y2="282" stroke="#534AB7" strokeWidth="0.5" strokeDasharray="3 2" opacity="0.6"/>
+          
+          <circle cx="530" cy="290" r="26" fill="none" stroke="#534AB7" strokeWidth="3" opacity="0.8"/>
+          <text x="620" y="277" fontSize="9" fill="#534AB7">rodamiento</text>
+          <text x="620" y="289" fontSize="9" fill="#534AB7">de rueda</text>
+        </g>
+
+        {/* 2. Cojinetes de biela */}
+        <g opacity={activePieza === 1 ? 1 : 0.3}>
+          <circle cx="290" cy="130" r="12" fill="none" stroke="#534AB7" strokeWidth="2" opacity="0.7"/>
+          <circle cx="320" cy="130" r="12" fill="none" stroke="#534AB7" strokeWidth="2" opacity="0.7"/>
+          <circle cx="350" cy="130" r="12" fill="none" stroke="#534AB7" strokeWidth="2" opacity="0.7"/>
+          <circle cx="380" cy="130" r="12" fill="none" stroke="#534AB7" strokeWidth="2" opacity="0.7"/>
+          <text x="335" y="95" textAnchor="middle" fontSize="9" fill="#534AB7">cojinetes de biela</text>
+          <text x="335" y="107" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.4)">(dentro del motor)</text>
+          <line x1="335" y1="109" x2="335" y2="118" stroke="#534AB7" strokeWidth="0.5" strokeDasharray="3 2" opacity="0.5"/>
+        </g>
+
+        {/* 3. Cojinete alternador */}
+        <g opacity={activePieza === 2 ? 1 : 0.3}>
+          <circle cx="175" cy="100" r="10" fill="none" stroke="#534AB7" strokeWidth="2" opacity="0.7"/>
+          <text x="100" y="88" textAnchor="end" fontSize="9" fill="#534AB7">cojinetes</text>
+          <text x="100" y="100" textAnchor="end" fontSize="9" fill="#534AB7">alternador</text>
+          <line x1="102" y1="94" x2="165" y2="98" stroke="#534AB7" strokeWidth="0.5" strokeDasharray="3 2" opacity="0.5"/>
+        </g>
+
+        {/* 4. Silent block brazo */}
+        <g opacity={activePieza === 3 ? 1 : 0.3}>
+          <rect x="190" y="278" width="20" height="24" rx="6" fill="#1D9E75" opacity="0.8"/>
+          <rect x="116" y="278" width="20" height="24" rx="6" fill="#1D9E75" opacity="0.8"/>
+          <line x1="136" y1="290" x2="190" y2="290" stroke="#1D9E75" strokeWidth="4" strokeLinecap="round" opacity="0.5"/>
+          <text x="62" y="295" textAnchor="end" fontSize="9" fill="#1D9E75">silent blocks</text>
+          <text x="62" y="307" textAnchor="end" fontSize="9" fill="#1D9E75">brazo susp.</text>
+          <line x1="64" y1="299" x2="116" y2="290" stroke="#1D9E75" strokeWidth="0.5" strokeDasharray="3 2" opacity="0.6"/>
+          
+          <rect x="470" y="278" width="20" height="24" rx="6" fill="#1D9E75" opacity="0.8"/>
+          <rect x="544" y="278" width="20" height="24" rx="6" fill="#1D9E75" opacity="0.8"/>
+          <line x1="490" y1="290" x2="544" y2="290" stroke="#1D9E75" strokeWidth="4" strokeLinecap="round" opacity="0.5"/>
+        </g>
+
+        {/* 5. Bujes barra estabilizadora */}
+        <g opacity={activePieza === 4 ? 1 : 0.3}>
+          <ellipse cx="200" cy="340" rx="10" ry="8" fill="#1D9E75" opacity="0.7"/>
+          <ellipse cx="480" cy="340" rx="10" ry="8" fill="#1D9E75" opacity="0.7"/>
+          <line x1="210" y1="340" x2="470" y2="340" stroke="#1D9E75" strokeWidth="4" strokeLinecap="round" opacity="0.35"/>
+          <text x="340" y="357" textAnchor="middle" fontSize="9" fill="#1D9E75">bujes de la barra estabilizadora</text>
+          <text x="340" y="369" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.4)">(gomas que la fijan al chasis)</text>
+        </g>
+
+        {/* 6. Soporte motor */}
+        <g opacity={activePieza === 5 ? 1 : 0.3}>
+          <rect x="218" y="174" width="24" height="16" rx="5" fill="#1D9E75" opacity="0.8"/>
+          <rect x="438" y="174" width="24" height="16" rx="5" fill="#1D9E75" opacity="0.8"/>
+          <text x="165" y="175" textAnchor="end" fontSize="9" fill="#1D9E75">soporte</text>
+          <text x="165" y="187" textAnchor="end" fontSize="9" fill="#1D9E75">motor</text>
+          <line x1="167" y1="181" x2="218" y2="182" stroke="#1D9E75" strokeWidth="0.5" strokeDasharray="3 2" opacity="0.5"/>
+          
+          <text x="515" y="175" fontSize="9" fill="#1D9E75">soporte</text>
+          <text x="515" y="187" fontSize="9" fill="#1D9E75">motor</text>
+        </g>
+
+        {/* Highlight box */}
+        <rect
+          x={p.rect.x - 4}
+          y={p.rect.y - 4}
+          width={p.rect.w + 8}
+          height={p.rect.h + 8}
+          rx="8"
+          fill="none"
+          stroke="#3b82f6"
+          strokeWidth="2.5"
+          opacity="0.85"
+        />
+      </svg>
+    </div>
+  )
+}
+
+// ==========================================
+// 22. WIDGET: OBD2 Scanner
+// ==========================================
+function ObdScannerWidget({ viewMode }: WidgetProps) {
+  const [activeTema, setActiveTema] = useState(0)
+
+  const temas = [
+    {
+      key: 'usar',
+      label: 'Cómo usarlo',
+      rect: { x: 28, y: 118, w: 374, h: 130 },
+      title: 'Cómo usar el ELM327 paso a paso',
+      body: '① Ubicás el puerto OBD2 bajo el volante del lado izquierdo. ② Enchufás el ELM327 con el auto apagado. ③ Prendés el contacto (sin arrancar). ④ Activás el Bluetooth del celular y lo vinculás (clave: 1234). ⑤ Abrís la app Torque. ⑥ En la app vas a Configuración → Adaptador OBD2 → Elegir dispositivo Bluetooth → ELM327. ⑦ En la pantalla principal tocás "Leer códigos de falla".',
+      tip: '✓ La app Torque Lite es gratis y suficiente para leer y borrar códigos. Torque Pro ($3 USD) tiene más funciones de monitoreo en tiempo real.'
+    },
+    {
+      key: 'app',
+      label: 'Qué ves en la app',
+      rect: { x: 318, y: 118, w: 74, h: 122 },
+      title: 'Qué información te muestra la app',
+      body: 'En tiempo real podés ver: RPM del motor, temperatura del refrigerante, voltaje de la batería, posición del acelerador (TPS), presión del múltiple de admisión (MAP), flujo de aire (MAF), correcciones de combustible a corto y largo plazo, velocidad, y los códigos de falla activos y pendientes.',
+      tip: 'La temperatura del refrigerante es especialmente útil — podés ver exactamente cuándo el termostato abre (cuando sube de ~88°C) y verificar que el ventilador eléctrico se prende cuando corresponde.'
+    },
+    {
+      key: 'ecu',
+      label: 'Qué es la ECU',
+      rect: { x: 438, y: 78, w: 114, h: 64 },
+      title: 'La ECU — la memoria del auto',
+      body: 'La ECU recibe señales de todos los sensores constantemente. Cuando una lectura está fuera del rango normal, guarda un código de error en memoria y prende la luz del check engine. El error queda guardado aunque el problema desaparezca — por eso el scanner puede leer fallas intermitentes que ya no están activas.',
+      tip: 'Una falla "pendiente" significa que la ECU la detectó una vez pero no está segura todavía. Una falla "confirmada" se detectó varias veces → check engine prendido.'
+    },
+    {
+      key: 'sensores',
+      label: 'Los sensores',
+      rect: { x: 558, y: 38, w: 104, h: 204 },
+      title: 'Los sensores más comunes en el Gol Trend',
+      body: 'Lambda (sonda O₂): mide el oxígeno en el escape → código P0130-P0141. MAF/MAP: mide el aire que entra al motor → código P0100-P0113. Temperatura refrigerante: controla el ventilador y el mapa de combustible → P0115-P0128. TPS (acelerador): posición del pedal → P0120-P0124. Sensor ABS: velocidad de cada rueda → C0035-C0050.',
+      tip: 'En el Gol Trend los más frecuentes son: P0171 (mezcla pobre → sensor lambda o MAF), P0300 (falla de encendido → bujías o bobina) y C0040/C0050 (sensor ABS).'
+    },
+    {
+      key: 'codigos',
+      label: 'Leer los códigos',
+      rect: { x: 28, y: 308, w: 624, h: 64 },
+      title: 'Cómo leer un código OBD2 — la estructura',
+      body: 'Todo código tiene 5 caracteres. La primera letra dice el sistema: P = powertrain (motor y caja), B = carrocería, C = chasis, U = red. El primer número dice si es genérico (0) o específico del fabricante (1). Los últimos 3 números identifican la falla exacta. Ejemplo: P0300 = motor (P), genérico (0), falla de encendido múltiple (300).',
+      tip: 'Para buscar qué significa un código: googleás el código + "Volkswagen Gol" y encontrás la explicación exacta. Hay bases de datos gratuitas como obd-codes.com.'
+    },
+    {
+      key: 'borrar',
+      label: 'Borrar errores',
+      rect: { x: 318, y: 118, w: 74, h: 122 },
+      title: 'Borrar códigos — cuándo y cómo',
+      body: 'En la app Torque tenés una opción "Borrar códigos de falla". Esto apaga el check engine. PERO: si el problema sigue, el código vuelve en unos km. Borrar el código sin reparar el problema es solo cosmético. Lo correcto es: leer el código → identificar el problema → repararlo → borrar el código → manejar para confirmar que no vuelve.',
+      tip: '⚠ Si borrás los códigos antes de llevar el auto a un taller pierden el historial de fallas. Siempre anotar o fotografiar los códigos antes de borrarlos.'
+    }
+  ]
+
+  const t = temas[activeTema]
+
+  if (viewMode === 'real') {
+    return (
+      <HotspotImage
+        src="/images/obd2_scanner_real.png"
+        alt="Scanner ELM327 conectado al puerto OBD2 real"
+        hotspots={[
+          { id: '1', x: 50, y: 55, title: 'Scanner Bluetooth ELM327', desc: 'Dispositivo azul conectado a la ficha OBD2 del auto. Envía datos al celular.' },
+          { id: '2', x: 50, y: 20, title: 'Puerto OBD2 (bajo tablero)', desc: 'Conector trapezoidal negro de 16 pines del lado del conductor.' }
+        ]}
+      />
+    )
+  }
+
+  return (
+    <div className={styles.widgetWrap}>
+      <div className={styles.controlRow}>
+        {temas.map((tema, idx) => (
+          <button
+            key={tema.key}
+            className={`${styles.controlBtn} ${activeTema === idx ? styles.controlBtnActive : ''}`}
+            onClick={() => setActiveTema(idx)}
+          >
+            {tema.label}
+          </button>
+        ))}
+      </div>
+
+      <div className={styles.infoBox}>
+        <div className={styles.infoTitle}>{t.title}</div>
+        <div className={styles.infoBody}>{t.body}</div>
+        <div className={styles.infoTip}>💡 {t.tip}</div>
+      </div>
+
+      <svg className={styles.svg} viewBox="0 0 680 380">
+        {/* Puerto OBD2 */}
+        <g opacity={activeTema === 0 || activeTema === 4 ? 1 : 0.3}>
+          <rect x="30" y="140" width="120" height="70" rx="8" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5"/>
+          {[0, 1, 2, 3, 4, 5, 6].map(i => (
+            <rect key={`p1-${i}`} x={40 + i * 12} y="154" width="6" height="6" rx="1" fill="rgba(255,255,255,0.4)" />
+          ))}
+          {[0, 1, 4, 5, 6].map(i => (
+            <rect key={`p2-${i}`} x={40 + i * 12} y="168" width="6" height="6" rx="1" fill="rgba(255,255,255,0.4)" />
+          ))}
+          <text x="90" y="200" textAnchor="middle" fontSize="9" fontWeight="500" fill="#ffffff">Puerto OBD2</text>
+          <text x="90" y="212" textAnchor="middle" fontSize="8" fill="rgba(255,255,255,0.5)">bajo el volante</text>
+        </g>
+
+        {/* Ubicación */}
+        <rect x="30" y="240" width="120" height="60" rx="6" fill="rgba(255,255,255,0.01)" stroke="rgba(255,255,255,0.1)" strokeWidth="0.5" opacity={activeTema === 0 ? 1 : 0.3}/>
+        <text x="90" y="262" textAnchor="middle" fontSize="10" fontWeight="500" fill="#ffffff" opacity={activeTema === 0 ? 1 : 0.3}>¿Dónde está?</text>
+        <text x="90" y="278" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.5)" opacity={activeTema === 0 ? 1 : 0.3}>Bajo el volante,</text>
+        <text x="90" y="292" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.5)" opacity={activeTema === 0 ? 1 : 0.3}>lado izquierdo</text>
+
+        {/* Scanner */}
+        <g opacity={activeTema === 0 || activeTema === 1 || activeTema === 5 ? 1 : 0.3}>
+          <rect x="200" y="140" width="80" height="50" rx="8" fill="rgba(255,255,255,0.02)" stroke="#534AB7" strokeWidth="1.5"/>
+          <rect x="208" y="150" width="14" height="10" rx="2" fill="#534AB7" opacity="0.6"/>
+          <circle cx="250" cy="158" r="8" fill="rgba(255,255,255,0.02)" stroke="#534AB7" strokeWidth="1"/>
+          <text x="240" y="203" textAnchor="middle" fontSize="9" fontWeight="500" fill="#534AB7">ELM327</text>
+          <text x="240" y="215" textAnchor="middle" fontSize="8" fill="rgba(255,255,255,0.5)">bluetooth</text>
+          <line x1="150" y1="175" x2="200" y2="165" stroke="#534AB7" strokeWidth="2" strokeLinecap="round" opacity="0.6"/>
+        </g>
+
+        {/* Signals */}
+        <path d="M 285 150 Q 295 158 285 166" fill="none" stroke="#534AB7" strokeWidth="1.5" opacity="0.6"/>
+        <path d="M 290 145 Q 305 158 290 171" fill="none" stroke="#534AB7" strokeWidth="1.5" opacity="0.4"/>
+        <path d="M 295 140 Q 315 158 295 176" fill="none" stroke="#534AB7" strokeWidth="1.5" opacity="0.2"/>
+
+        {/* Celular con app */}
+        <g id="o-celular" opacity={activeTema === 1 || activeTema === 5 ? 1 : 0.3}>
+          <rect x="320" y="120" width="70" height="120" rx="8" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5"/>
+          <rect x="326" y="130" width="58" height="100" rx="4" fill="rgba(255,255,255,0.01)" stroke="rgba(255,255,255,0.08)" strokeWidth="0.5" opacity="0.5"/>
+          <rect x="328" y="132" width="54" height="96" rx="3" fill="#1a1a1a"/>
+          <text x="355" y="152" textAnchor="middle" fontSize="8" fill="#1D9E75">TORQUE</text>
+          <circle cx="345" cy="172" r="14" fill="none" stroke="#1D9E75" strokeWidth="2"/>
+          <text x="345" y="176" textAnchor="middle" fontSize="7" fill="#1D9E75">RPM</text>
+          <circle cx="367" cy="172" r="14" fill="none" stroke="#E24B4A" strokeWidth="2"/>
+          <text x="367" y="176" textAnchor="middle" fontSize="7" fill="#E24B4A">°C</text>
+          <rect x="330" y="193" width="50" height="16" rx="3" fill="#E24B4A" opacity="0.2"/>
+          <text x="355" y="204" textAnchor="middle" fontSize="7" fill="#E24B4A">P0300</text>
+          <text x="355" y="220" textAnchor="middle" fontSize="6" fill="rgba(255,255,255,0.4)">V: 14.2V</text>
+          <text x="355" y="230" textAnchor="middle" fontSize="6" fill="rgba(255,255,255,0.4)">TPS: 12%</text>
+        </g>
+
+        {/* ECU */}
+        <g opacity={activeTema === 2 ? 1 : 0.3}>
+          <rect x="440" y="80" width="110" height="60" rx="8" fill="rgba(255,255,255,0.02)" stroke="#BA7517" strokeWidth="1.5"/>
+          <text x="495" y="106" textAnchor="middle" fontSize="11" fontWeight="500" fill="#BA7517">ECU</text>
+          <text x="495" y="122" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.5)">guarda errores</text>
+          <path d="M 440 110 L 280 110 L 240 165" fill="none" stroke="#BA7517" strokeWidth="1.5" strokeDasharray="5 3" opacity="0.5"/>
+        </g>
+
+        {/* Sensores */}
+        <g opacity={activeTema === 3 ? 1 : 0.3}>
+          {['Sensor lambda', 'Sensor MAF/MAP', 'Sensor temp.', 'Sensor ABS', 'TPS (acelerador)'].map((s, idx) => (
+            <g key={s}>
+              <rect x="560" y={40 + idx * 40} width="100" height="30" rx="6" fill="rgba(255,255,255,0.01)" stroke="rgba(255,255,255,0.08)" strokeWidth="0.5"/>
+              <text x="610" y={59 + idx * 40} textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.6)">{s}</text>
+              <line x1="560" y1={55 + idx * 40} x2="550" y2="110" stroke="rgba(255,255,255,0.2)" strokeWidth="0.5" />
+            </g>
+          ))}
+          <line x1="550" y1="110" x2="440" y2="110" stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
+        </g>
+
+        {/* Código OBD2 */}
+        <g opacity={activeTema === 4 ? 1 : 0.3}>
+          <rect x="30" y="310" width="620" height="60" rx="8" fill="rgba(255,255,255,0.01)" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5"/>
+          <text x="340" y="330" textAnchor="middle" fontSize="11" fontWeight="500" fill="#ffffff">Estructura de un código OBD: P 0 3 0 0</text>
+          <text x="100" y="352" textAnchor="middle" fontSize="10" fill="#534AB7">P = motor/caja</text>
+          <text x="240" y="352" textAnchor="middle" fontSize="10" fill="#1D9E75">0 = genérico</text>
+          <text x="370" y="352" textAnchor="middle" fontSize="10" fill="#BA7517">3 = sistema (combustible)</text>
+          <text x="560" y="352" textAnchor="middle" fontSize="10" fill="#E24B4A">00 = falla específica</text>
+        </g>
+
+        {/* Highlight box */}
+        <rect
+          x={t.rect.x - 4}
+          y={t.rect.y - 4}
+          width={t.rect.w + 8}
+          height={t.rect.h + 8}
+          rx="8"
+          fill="none"
+          stroke="#3b82f6"
+          strokeWidth="2.5"
+          opacity="0.85"
+        />
+      </svg>
+    </div>
+  )
+}
+
+// ==========================================
+// 23. WIDGET: Retenes & Juntas
+// ==========================================
+function RetenesJuntasWidget({ viewMode }: WidgetProps) {
+  const [activePieza, setActivePieza] = useState(0)
+
+  const piezas = [
+    {
+      key: 'cig-del',
+      label: 'Retén cigüeñal delantero',
+      rect: { x: 184, y: 194, w: 22, h: 32 },
+      color: '#E24B4A',
+      title: 'Retén cigüeñal delantero — lado correa de distribución',
+      body: 'Sella el extremo delantero del cigüeñal donde sale la polea de distribución. Está escondido detrás de la tapa de distribución — para cambiarlo hay que sacar la correa. Por eso cuando se cambia la correa de distribución, se cambia este retén también. Si falla, el aceite mancha la correa y la puede dañar.',
+      tip: '⚠ Aceite en la correa de distribución → retén cigüeñal delantero. Cambio URGENTE — el aceite destruye la goma de la correa.'
+    },
+    {
+      key: 'cig-tras',
+      label: 'Retén cigüeñal trasero',
+      rect: { x: 474, y: 194, w: 22, h: 32 },
+      color: '#E24B4A',
+      title: 'Retén cigüeñal trasero — entre motor y caja de cambios',
+      body: 'Sella el extremo trasero del cigüeñal donde se une con el volante motor y el embrague. Para cambiarlo hay que separar la caja de cambios del motor — el mismo proceso que el cambio de disco de embrague. Si falla, el aceite contamina el disco de embrague y lo destruye.',
+      tip: '⚠ Manchas de aceite en el disco de embrague o embrague que patina con olor a aceite quemado → retén trasero. Se cambia junto con el disco de embrague.'
+    },
+    {
+      key: 'levas',
+      label: 'Retén árbol de levas',
+      rect: { x: 184, y: 64, w: 22, h: 20 },
+      color: '#BA7517',
+      title: 'Retén del árbol de levas — delantero, en la culata',
+      body: 'Sella el extremo del árbol de levas donde sale la polea. También está detrás de la tapa de distribución. Si falla, el aceite sale por ahí y puede contaminar la correa de distribución igual que el retén del cigüeñal. Se cambia junto con la correa.',
+      tip: 'Mismo trabajo que el retén cigüeñal delantero — si entrás a cambiar la correa, cambiás los dos retenes de paso. Cuesta muy poco y el trabajo ya está hecho.'
+    },
+    {
+      key: 'semiejes',
+      label: 'Retenes semiejes',
+      rect: { x: 486, y: 158, w: 12, h: 104 },
+      color: '#534AB7',
+      title: 'Retenes de semiejes — en la caja de cambios',
+      body: 'Dos retenes, uno donde cada semieje sale de la caja de cambios. Sellan el aceite de la caja mientras los semiejes giran. Cuando fallan, el aceite de la caja gotea en la zona del semieje. Se detectan fácil desde abajo: mancha de aceite marrón/rojizo en la zona donde el semieje entra a la caja.',
+      tip: '✓ Para cambiarlos hay que sacar el semieje de la caja (se saca haciendo palanca). Trabajo accesible sin separar la caja completa.'
+    },
+    {
+      key: 'j-culata',
+      label: 'Junta de culata',
+      rect: { x: 198, y: 112, w: 284, h: 12 },
+      color: '#1D9E75',
+      title: 'Junta de culata — la más crítica del motor',
+      body: 'Sella la unión entre el bloque y la culata. Tiene que soportar la presión de la explosión, el calor extremo y separar los circuitos de aceite y refrigerante que corren adentro del bloque. Si se quema, los circuitos se mezclan: aceite lechoso, humo blanco por el escape, motor se recalienta.',
+      tip: '⚠ El motor recalentado quema la junta de culata. Es la falla más cara después de fundir el motor — requiere rectificar la culata además de cambiar la junta.'
+    },
+    {
+      key: 'j-carter',
+      label: 'Junta del cárter',
+      rect: { x: 198, y: 294, w: 284, h: 10 },
+      color: '#888780',
+      title: 'Junta del cárter — sella el aceite abajo',
+      body: 'Sella la unión entre el cárter y el bloque del motor. Si falla, el aceite gotea por abajo del motor — la mancha más común que ves en el piso del garaje. La junta puede ser de corcho, goma o papel según el modelo. A veces se puede sellar con sellador de silicona sin cambiar la junta.',
+      tip: '✓ Manchas de aceite negro en el piso, justo debajo del motor → junta de cárter o tapón de drenaje mal apretado. Revisar el tapón primero — es lo más simple.'
+    },
+    {
+      key: 'j-tapa',
+      label: 'Junta tapa de válvulas',
+      rect: { x: 198, y: 54, w: 284, h: 10 },
+      color: '#185FA5',
+      title: 'Junta de la tapa de válvulas — arriba del motor',
+      body: 'Sella la tapa de válvulas contra la culata. Es la falla más común y más visible — si el aceite gotea por arriba del motor quemándose en el escape (huele a aceite quemado) → esta junta. Se detecta fácil: aceite en la parte superior del motor, especialmente en los costados de la tapa.',
+      tip: '✓ Es una de las reparaciones más simples del motor. Sacás la tapa de válvulas (pocos tornillos), cambiás la junta de goma, volvés a poner. Podés hacerlo vos mismo.'
+    }
+  ]
+
+  const p = piezas[activePieza]
+
+  if (viewMode === 'real') {
+    return (
+      <HotspotImage
+        src="/images/retenes_juntas_real.png"
+        alt="Retenes y juntas reales sobre una mesa de taller"
+        hotspots={[
+          { id: '1', x: 70, y: 65, title: 'Retén de Cigüeñal', desc: 'Anillo de goma con resorte metálico interno que sella el aceite del eje giratorio.' },
+          { id: '2', x: 40, y: 55, title: 'Junta de Tapa de Válvulas', desc: 'Junta de elastómero plana que evita fugas en el cierre estático superior de culata.' }
+        ]}
+      />
+    )
+  }
+
+  return (
+    <div className={styles.widgetWrap}>
+      <div className={styles.controlRow}>
+        {piezas.map((pieza, idx) => (
+          <button
+            key={pieza.key}
+            className={`${styles.controlBtn} ${activePieza === idx ? styles.controlBtnActive : ''}`}
+            onClick={() => setActivePieza(idx)}
+          >
+            {pieza.label}
+          </button>
+        ))}
+      </div>
+
+      <div className={styles.infoBox}>
+        <div className={styles.infoTitle}>{p.title}</div>
+        <div className={styles.infoBody}>{p.body}</div>
+        <div className={styles.infoTip} style={{ color: p.color }}>💡 {p.tip}</div>
+      </div>
+
+      <svg className={styles.svg} viewBox="0 0 680 460">
+        {/* BLOQUE MOTOR */}
+        <rect x="200" y="120" width="280" height="180" rx="10" fill="rgba(255,255,255,0.01)" stroke="rgba(255,255,255,0.1)" strokeWidth="1.5"/>
+        <text x="340" y="205" textAnchor="middle" fontSize="12" fill="rgba(255,255,255,0.3)">bloque motor</text>
+
+        {/* CULATA */}
+        <rect x="200" y="60" width="280" height="56" rx="6" fill="rgba(255,255,255,0.01)" stroke="rgba(255,255,255,0.08)" strokeWidth="1"/>
+        <text x="340" y="92" textAnchor="middle" fontSize="11" fill="rgba(255,255,255,0.3)">culata</text>
+
+        {/* CÁRTER */}
+        <rect x="200" y="300" width="280" height="44" rx="6" fill="rgba(255,255,255,0.01)" stroke="rgba(255,255,255,0.08)" strokeWidth="1"/>
+        <text x="340" y="326" textAnchor="middle" fontSize="11" fill="rgba(255,255,255,0.3)">cárter</text>
+
+        {/* CAJA CAMBIOS */}
+        <rect x="490" y="150" width="110" height="120" rx="8" fill="rgba(255,255,255,0.01)" stroke="rgba(255,255,255,0.08)" strokeWidth="1"/>
+        <text x="545" y="210" textAnchor="middle" fontSize="11" fill="rgba(255,255,255,0.3)">caja de</text>
+        <text x="545" y="225" textAnchor="middle" fontSize="11" fill="rgba(255,255,255,0.3)">cambios</text>
+
+        {/* 1. Retén delantero */}
+        <g opacity={activePieza === 0 ? 1 : 0.35}>
+          <rect x="186" y="196" width="18" height="28" rx="3" fill="#E24B4A" opacity="0.85"/>
+          <text x="174" y="190" textAnchor="end" fontSize="10" fontWeight="500" fill="#E24B4A">Retén</text>
+          <text x="174" y="203" textAnchor="end" fontSize="10" fill="#E24B4A">cigüeñal</text>
+          <text x="174" y="216" textAnchor="end" fontSize="10" fill="#E24B4A">delantero</text>
+          <line x1="176" y1="207" x2="186" y2="210" stroke="#E24B4A" strokeWidth="0.5" strokeDasharray="3 2" opacity="0.6"/>
+          <rect x="100" y="206" width="86" height="8" rx="3" fill="rgba(255,255,255,0.1)" />
+        </g>
+
+        {/* 2. Retén trasero */}
+        <g opacity={activePieza === 1 ? 1 : 0.35}>
+          <rect x="476" y="196" width="18" height="28" rx="3" fill="#E24B4A" opacity="0.85"/>
+          <text x="500" y="190" fontSize="10" fontWeight="500" fill="#E24B4A">Retén</text>
+          <text x="500" y="203" fontSize="10" fill="#E24B4A">cigüeñal</text>
+          <text x="500" y="216" fontSize="10" fill="#E24B4A">trasero</text>
+          <line x1="494" y1="207" x2="500" y2="210" stroke="#E24B4A" strokeWidth="0.5" strokeDasharray="3 2" opacity="0.6"/>
+          <rect x="494" y="206" width="6" height="8" rx="2" fill="rgba(255,255,255,0.1)" />
+        </g>
+
+        {/* 3. Retén árbol levas */}
+        <g opacity={activePieza === 2 ? 1 : 0.35}>
+          <rect x="186" y="68" width="18" height="16" rx="3" fill="#BA7517" opacity="0.85"/>
+          <text x="174" y="64" textAnchor="end" fontSize="10" fontWeight="500" fill="#BA7517">Retén</text>
+          <text x="174" y="76" textAnchor="end" fontSize="10" fill="#BA7517">árbol levas</text>
+          <line x1="176" y1="72" x2="186" y2="76" stroke="#BA7517" strokeWidth="0.5" strokeDasharray="3 2" opacity="0.6"/>
+          <rect x="100" y="72" width="86" height="6" rx="2" fill="rgba(255,255,255,0.1)" />
+        </g>
+
+        {/* 4. Retenes semiejes */}
+        <g opacity={activePieza === 3 ? 1 : 0.35}>
+          <rect x="488" y="160" width="8" height="18" rx="3" fill="#534AB7" opacity="0.85"/>
+          <rect x="488" y="242" width="8" height="18" rx="3" fill="#534AB7" opacity="0.85"/>
+          <text x="480" y="155" textAnchor="end" fontSize="10" fontWeight="500" fill="#534AB7">Retenes</text>
+          <text x="480" y="167" textAnchor="end" fontSize="10" fill="#534AB7">semiejes</text>
+          <text x="480" y="179" textAnchor="end" fontSize="10" fill="#534AB7">(caja)</text>
+          <line x1="480" y1="168" x2="488" y2="168" stroke="#534AB7" strokeWidth="0.5" strokeDasharray="3 2" opacity="0.6"/>
+          <line x1="480" y1="168" x2="488" y2="252" stroke="#534AB7" strokeWidth="0.5" strokeDasharray="3 2" opacity="0.6"/>
+        </g>
+
+        {/* 5. Junta de culata */}
+        <g opacity={activePieza === 4 ? 1 : 0.35}>
+          <rect x="200" y="114" width="280" height="8" fill="#1D9E75" opacity="0.6"/>
+          <text x="510" y="122" fontSize="10" fontWeight="500" fill="#1D9E75">Junta de culata</text>
+          <text x="510" y="134" fontSize="9" fill="rgba(255,255,255,0.5)">la más crítica</text>
+          <line x1="508" y1="120" x2="480" y2="120" stroke="#1D9E75" strokeWidth="0.5" strokeDasharray="3 2" opacity="0.6"/>
+        </g>
+
+        {/* 6. Junta cárter */}
+        <g opacity={activePieza === 5 ? 1 : 0.35}>
+          <rect x="200" y="296" width="280" height="6" fill="#888780" opacity="0.7"/>
+          <text x="510" y="302" fontSize="10" fontWeight="500" fill="#888780">Junta cárter</text>
+          <text x="510" y="314" fontSize="9" fill="rgba(255,255,255,0.5)">sella el aceite</text>
+          <line x1="508" y1="300" x2="480" y2="300" stroke="#888780" strokeWidth="0.5" strokeDasharray="3 2" opacity="0.6"/>
+        </g>
+
+        {/* 7. Junta tapa válvulas */}
+        <g opacity={activePieza === 6 ? 1 : 0.35}>
+          <rect x="200" y="56" width="280" height="6" fill="#185FA5" opacity="0.7"/>
+          <text x="100" y="60" textAnchor="end" fontSize="10" fontWeight="500" fill="#185FA5">Junta tapa</text>
+          <text x="100" y="72" textAnchor="end" fontSize="10" fill="#185FA5">de válvulas</text>
+          <line x1="102" y1="63" x2="200" y2="60" stroke="#185FA5" strokeWidth="0.5" strokeDasharray="3 2" opacity="0.6"/>
+        </g>
+
+        {/* Highlight box */}
+        <rect
+          x={p.rect.x - 4}
+          y={p.rect.y - 4}
+          width={p.rect.w + 8}
+          height={p.rect.h + 8}
+          rx="4"
+          fill="none"
+          stroke={p.color}
+          strokeWidth="2.5"
+          opacity="0.85"
+        />
+      </svg>
+    </div>
+  )
+}
+
+// ==========================================
+// 24. WIDGET: Sistema de Frenos
+// ==========================================
+function SistemaFrenosWidget({ viewMode }: WidgetProps) {
+  const [activePart, setActivePart] = useState(0)
+
+  const partes = [
+    {
+      key: 'pedal',
+      label: 'Pedal + Servo',
+      rect: { x: 28, y: 158, w: 164, h: 68 },
+      title: 'Pedal y servo de freno',
+      body: 'Cuando pisás el pedal, el servo (servofreno o bomba de vacío) multiplica tu fuerza usando el vacío que genera el motor. Sin servo tenés que apretar mucho más fuerte para frenar — si el auto se apaga y pisás el freno, el pedal se siente duro porque el servo no tiene vacío. Eso es normal.',
+      tip: 'Si el pedal siempre está duro con el motor en marcha → servo de freno fallando.'
+    },
+    {
+      key: 'bomba',
+      label: 'Bomba maestra',
+      rect: { x: 196, y: 108, w: 84, h: 110 },
+      title: 'Bomba maestra y depósito',
+      body: 'Convierte la fuerza mecánica del pedal en presión hidráulica. Tiene el depósito de líquido de frenos encima con marcas MIN y MAX. Si el nivel baja, puede entrar aire al circuito → pedal blando. El líquido de frenos es higroscópico — absorbe humedad del ambiente con el tiempo, lo que baja su punto de ebullición.',
+      tip: '⚠ El líquido de frenos se cambia cada 2 años aunque no se use. Con humedad absorbida puede hervir en frenadas intensas → pedal blando de golpe.'
+    },
+    {
+      key: 'abs',
+      label: 'ABS',
+      rect: { x: 298, y: 163, w: 84, h: 54 },
+      title: 'Módulo ABS (Anti-lock Braking System)',
+      body: 'El ABS evita que las ruedas se bloqueen al frenar fuerte. Sensores en cada rueda miden la velocidad — si una rueda frena más rápido que las demás (está trabando), el ABS libera y vuelve a aplicar la presión de esa rueda hasta 10-15 veces por segundo. El "pedal que vibra" al frenar fuerte es el ABS trabajando — es normal y correcto.',
+      tip: '✓ Si se prende la luz ABS en el tablero → algún sensor de rueda falló. El auto frena igual pero sin la asistencia del ABS.'
+    },
+    {
+      key: 'disco',
+      label: 'Frenos delanteros (disco)',
+      rect: { x: 122, y: 292, w: 76, h: 76 },
+      title: 'Frenos de disco delanteros',
+      body: 'Una pinza hidráulica aprieta dos pastillas contra el disco (como pinzas de bicicleta). La presión del líquido empuja los pistones de la pinza hacia adentro → las pastillas aprietan el disco → fricción → el auto frena. Los delanteros hacen el 70-80% del trabajo de frenado porque el peso se transfiere hacia adelante.',
+      tip: '⚠ Pastillas: cambiar cuando quedan menos de 3mm. Disco: cambiar si está rayado profundamente o tiene menos del grosor mínimo marcado en el canto.'
+    },
+    {
+      key: 'tambor',
+      label: 'Frenos traseros (tambor)',
+      rect: { x: 122, y: 292, w: 76, h: 76 },
+      title: 'Frenos de tambor traseros',
+      body: 'Funcionan diferente a los discos. Adentro del tambor (cilindro que gira con la rueda) hay zapatas semicirculares cubiertas de material de fricción. Cuando frenás, un pistón hidráulico las abre hacia afuera contra el tambor. Son menos eficientes que los discos pero suficientes para la parte trasera donde hay menos carga.',
+      tip: 'Las zapatas duran más que las pastillas delanteras porque trabajan menos. Se desgastan por el interior — no se ven a simple vista sin desmontar el tambor.'
+    },
+    {
+      key: 'sensor',
+      label: 'Sensor ABS',
+      rect: { x: 188, y: 320, w: 22, h: 22 },
+      title: 'Sensores de velocidad de rueda (ABS)',
+      body: 'Uno por rueda, pegado a la mangueta mirando el anillo dentado del buje. Miden cuántas vueltas por segundo da cada rueda y le mandan esa información al módulo ABS. Si un sensor falla → luz ABS en el tablero. Son fáciles de cambiar y accesibles económicamente.',
+      tip: 'El sensor ABS también es usado por el ESP (control de estabilidad) si el Gol lo tiene. Si se saca el sensor para limpiar, hay que tener cuidado con el conector — son frágiles.'
+    }
+  ]
+
+  const p = partes[activePart]
+
+  if (viewMode === 'real') {
+    return (
+      <HotspotImage
+        src="/images/tren_delantero.png"
+        alt="Conjunto de disco y pinza de freno delanteros"
+        hotspots={[
+          { id: '1', x: 73, y: 68, title: 'Disco de Freno Ventilado', desc: 'Rotor de acero que disipa el calor. Las pastillas muerden esta superficie.' },
+          { id: '2', x: 86, y: 60, title: 'Caliper o Pinza de Freno', desc: 'Contiene el pistón hidráulico que empuja las pastillas contra el disco.' }
+        ]}
+      />
+    )
+  }
+
+  const esTrasero = p.label.includes('trasero')
+
+  return (
+    <div className={styles.widgetWrap}>
+      <div className={styles.controlRow}>
+        {partes.map((parte, idx) => (
+          <button
+            key={parte.key}
+            className={`${styles.controlBtn} ${activePart === idx ? styles.controlBtnActive : ''}`}
+            onClick={() => setActivePart(idx)}
+          >
+            {parte.label}
+          </button>
+        ))}
+      </div>
+
+      <div className={styles.infoBox}>
+        <div className={styles.infoTitle}>{p.title}</div>
+        <div className={styles.infoBody}>{p.body}</div>
+        <div className={styles.infoTip}>💡 {p.tip}</div>
+      </div>
+
+      <svg className={styles.svg} viewBox="0 0 680 420">
+        {/* Pedal */}
+        <g opacity={activePart === 0 ? 1 : 0.3}>
+          <rect x="30" y="160" width="70" height="100" rx="8" fill="rgba(255,255,255,0.01)" stroke="rgba(255,255,255,0.08)" strokeWidth="1"/>
+          <rect x="45" y="220" width="40" height="30" rx="4" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5"/>
+          <text x="65" y="185" textAnchor="middle" fontSize="10" fontWeight="500" fill="#ffffff">Pedal</text>
+          <text x="65" y="200" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.5)">freno</text>
+        </g>
+
+        {/* Servo */}
+        <g opacity={activePart === 0 ? 1 : 0.3}>
+          <circle cx="155" cy="190" r="34" fill="rgba(255,255,255,0.01)" stroke="rgba(255,255,255,0.1)" strokeWidth="1.5"/>
+          <text x="155" y="187" textAnchor="middle" fontSize="10" fontWeight="500" fill="#ffffff">Servo</text>
+          <text x="155" y="200" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.5)">multiplica</text>
+          <text x="155" y="212" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.5)">la fuerza</text>
+          <line x1="100" y1="210" x2="121" y2="200" stroke="rgba(255,255,255,0.1)" strokeWidth="2" strokeLinecap="round" opacity="0.5"/>
+        </g>
+
+        {/* Bomba maestra */}
+        <g opacity={activePart === 1 ? 1 : 0.3}>
+          <rect x="198" y="165" width="80" height="50" rx="8" fill="rgba(255,255,255,0.01)" stroke="rgba(255,255,255,0.1)" strokeWidth="1.5"/>
+          <text x="238" y="186" textAnchor="middle" fontSize="10" fontWeight="500" fill="#ffffff">Bomba</text>
+          <text x="238" y="200" textAnchor="middle" fontSize="10" fontWeight="500" fill="#ffffff">maestra</text>
+          <text x="238" y="214" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.5)">genera presión</text>
+          <line x1="189" y1="190" x2="198" y2="190" stroke="rgba(255,255,255,0.1)" strokeWidth="2" strokeLinecap="round" opacity="0.5"/>
+        </g>
+
+        {/* Depósito */}
+        <g opacity={activePart === 1 ? 1 : 0.3}>
+          <rect x="205" y="110" width="66" height="50" rx="6" fill="rgba(255,255,255,0.01)" stroke="rgba(255,255,255,0.08)" strokeWidth="1"/>
+          <rect x="208" y="128" width="60" height="18" fill="#E24B4A" opacity="0.15"/>
+          <text x="238" y="126" textAnchor="middle" fontSize="9" fontWeight="500" fill="#ffffff">Depósito</text>
+          <text x="238" y="140" textAnchor="middle" fontSize="8" fill="rgba(255,255,255,0.5)">líquido frenos</text>
+          <text x="238" y="152" textAnchor="middle" fontSize="8" fill="rgba(255,255,255,0.5)">MIN / MAX</text>
+        </g>
+
+        {/* ABS */}
+        <g opacity={activePart === 2 ? 1 : 0.3}>
+          <rect x="300" y="165" width="80" height="50" rx="8" fill="rgba(255,255,255,0.01)" stroke="rgba(255,255,255,0.1)" strokeWidth="1.5"/>
+          <text x="340" y="186" textAnchor="middle" fontSize="11" fontWeight="500" fill="#ffffff">ABS</text>
+          <text x="340" y="200" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.5)">módulo</text>
+          <text x="340" y="214" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.5)">hidráulico</text>
+        </g>
+
+        {/* Tuberías */}
+        <path d="M 278 190 L 300 190" fill="none" stroke="#185FA5" strokeWidth="3" strokeLinecap="round" opacity="0.5"/>
+        <path d="M 340 165 L 340 100 L 160 100 L 160 310" fill="none" stroke="#185FA5" strokeWidth="2.5" strokeLinecap="round" opacity="0.4"/>
+        <path d="M 380 190 L 540 190 L 540 310" fill="none" stroke="#185FA5" strokeWidth="2.5" strokeLinecap="round" opacity="0.4"/>
+
+        {/* Discos delanteros */}
+        <g opacity={!esTrasero ? 1 : 0.2}>
+          <circle cx="160" cy="330" r="38" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="2"/>
+          <circle cx="160" cy="330" r="30" fill="none" stroke="#E24B4A" strokeWidth="3" opacity="0.5"/>
+          <rect x="140" y="310" width="40" height="40" rx="4" fill="rgba(255,255,255,0.01)" stroke="#E24B4A" strokeWidth="2"/>
+          <rect x="143" y="313" width="8" height="34" rx="2" fill="#E24B4A" opacity="0.7"/>
+          <rect x="169" y="313" width="8" height="34" rx="2" fill="#E24B4A" opacity="0.7"/>
+          <text x="160" y="385" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.5)">disco del. izq.</text>
+          
+          <circle cx="540" cy="330" r="38" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="2"/>
+          <circle cx="540" cy="330" r="30" fill="none" stroke="#E24B4A" strokeWidth="3" opacity="0.5"/>
+          <rect x="520" y="310" width="40" height="40" rx="4" fill="rgba(255,255,255,0.01)" stroke="#E24B4A" strokeWidth="2"/>
+          <rect x="523" y="313" width="8" height="34" rx="2" fill="#E24B4A" opacity="0.7"/>
+          <rect x="549" y="313" width="8" height="34" rx="2" fill="#E24B4A" opacity="0.7"/>
+          <text x="540" y="385" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.5)">disco del. der.</text>
+        </g>
+
+        {/* Tambores traseros (sólo si esTrasero) */}
+        <g opacity={esTrasero ? 1 : 0.05}>
+          <circle cx="160" cy="330" r="34" fill="none" stroke="#888780" strokeWidth="2"/>
+          <rect x="145" y="315" width="30" height="30" rx="15" fill="rgba(255,255,255,0.01)" stroke="#888780" strokeWidth="1.5"/>
+          <text x="160" y="385" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.5)">tambor tras. izq.</text>
+
+          <circle cx="540" cy="330" r="34" fill="none" stroke="#888780" strokeWidth="2"/>
+          <rect x="525" y="315" width="30" height="30" rx="15" fill="rgba(255,255,255,0.01)" stroke="#888780" strokeWidth="1.5"/>
+          <text x="540" y="385" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.5)">tambor tras. der.</text>
+        </g>
+
+        {/* Sensores ABS */}
+        <g opacity={activePart === 5 ? 1 : 0.3}>
+          <circle cx="198" cy="330" r="8" fill="#534AB7" opacity="0.7"/>
+          <circle cx="502" cy="330" r="8" fill="#534AB7" opacity="0.7"/>
+          <text x="198" y="312" textAnchor="middle" fontSize="8" fill="#534AB7">sensor ABS</text>
+          <text x="502" y="312" textAnchor="middle" fontSize="8" fill="#534AB7">sensor ABS</text>
+        </g>
+
+        {/* Highlight box */}
+        <rect
+          x={p.rect.x - 4}
+          y={p.rect.y - 4}
+          width={p.rect.w + 8}
+          height={p.rect.h + 8}
+          rx="8"
+          fill="none"
+          stroke="#3b82f6"
+          strokeWidth="2.5"
+          opacity="0.85"
+        />
+      </svg>
+    </div>
+  )
+}
+
+// ==========================================
+// 25. WIDGET: Ubicación de Frenos
+// ==========================================
+function UbicacionFrenosWidget({ viewMode }: WidgetProps) {
+  const [activePieza, setActivePieza] = useState(0)
+
+  const piezas = [
+    {
+      key: 'servo',
+      label: 'Servo',
+      rect: { x: 137, y: 92, w: 76, h: 76 },
+      title: 'Servo de freno — lado izquierdo del tabique',
+      body: 'Es la pieza más grande y fácil de encontrar. Abrís el capó y mirás hacia la izquierda, pegado al tabique que separa el motor del habitáculo. Es ese disco grande negro o gris de unos 20-25cm de diámetro. Inconfundible. Del servo sale la bomba maestra hacia adentro del compartimento.',
+      tip: 'No tiene mantenimiento propio — solo se cambia si falla. Falla poco frecuente.'
+    },
+    {
+      key: 'bomba',
+      label: 'Bomba maestra',
+      rect: { x: 205, y: 92, w: 80, h: 60 },
+      title: 'Bomba maestra + depósito — sale del servo',
+      body: 'Está pegada al servo, del mismo lado izquierdo. Del servo sale un cilindro metálico (la bomba) y encima tiene un depósito de plástico semitransparente donde podés ver el nivel del líquido de frenos. Es lo que revisás cuando chequeás el líquido de frenos — tiene marcas MIN y MAX visibles.',
+      tip: '✓ Para revisar el nivel: mirar el depósito desde arriba sin abrirlo. Si está bajo MIN → agregar líquido DOT 4 (el tipo específico que usa el Gol Trend).'
+    },
+    {
+      key: 'abs',
+      label: 'Módulo ABS',
+      rect: { x: 418, y: 68, w: 84, h: 54 },
+      title: 'Módulo ABS — lado derecho del compartimento motor',
+      body: 'Está del otro lado del motor, lado derecho. Es una caja metálica de unos 10x10cm con varias tuberías metálicas de freno conectadas (son las líneas de freno que van a cada rueda). Tiene un conector eléctrico grande. En el Gol Trend está cerca de la batería o del filtro de aire.',
+      tip: 'Si la luz ABS se prende en el tablero → primero revisar los sensores de rueda (más baratos y comunes) antes de culpar al módulo.'
+    },
+    {
+      key: 'disco',
+      label: 'Disco + pinza (del.)',
+      rect: { x: 116, y: 298, w: 88, h: 88 },
+      title: 'Disco y pinza delantera — dentro de la rueda',
+      body: 'Se ve desde afuera de la rueda sin sacarla — mirás por los rayos de la llanta y ves el disco (anillo metálico plateado) y la pinza (pieza metálica que lo abraza). Para ver las pastillas hay que mirar por la abertura de la pinza. Si las pastillas tienen menos de 3mm de grosor → cambio urgente.',
+      tip: 'Para revisar el disco: con la rueda sacada, lo girás con la mano y mirás. Sin rayas profundas y sin variaciones de grosor = OK.'
+    },
+    {
+      key: 'sensor',
+      label: 'Sensor ABS (rueda)',
+      rect: { x: 194, y: 344, w: 18, h: 30 },
+      title: 'Sensor ABS — en la mangueta, junto a la rueda',
+      body: 'Pequeño cilindro negro de unos 2cm de diámetro, atornillado a la mangueta apuntando hacia el anillo dentado del rodamiento. Desde abajo del auto se ve claramente en la zona de cada rueda. Tiene un cable que sube hacia el chasis. Se ensucia con barro y agua — es el fallo más común del sistema ABS.',
+      tip: '✓ Si la luz ABS se prende → limpiar primero el sensor con un trapo. Muchas veces es solo suciedad acumulada.'
+    },
+    {
+      key: 'tambor',
+      label: 'Tambor trasero',
+      rect: { x: 268, y: 328, w: 144, h: 64 },
+      title: 'Tambores traseros — desde abajo, atrás del auto',
+      body: 'Son los cilindros metálicos que cubren los frenos traseros. Se ven desde abajo mirando hacia atrás del auto, uno en cada lado. Para ver las zapatas hay que sacar el tambor (se saca simplemente tirando hacia afuera con la rueda sacada). Las zapatas van por adentro y no son visibles a simple vista.',
+      tip: 'Para saber si las zapatas están bien sin desmontar: medir el grosor del tambor en el canto — tiene un valor mínimo grabado. Si está cerca del mínimo → cambio.'
+    }
+  ]
+
+  const p = piezas[activePieza]
+
+  if (viewMode === 'real') {
+    return (
+      <HotspotImage
+        src="/images/motor_completo.png"
+        alt="Vano motor del Volkswagen Gol Trend"
+        hotspots={[
+          { id: '1', x: 20, y: 45, title: 'Servo y depósito de freno', desc: 'Ubicados contra el panel parallamas trasero del lado del conductor.' },
+          { id: '2', x: 70, y: 35, title: 'Ubicación Módulo ABS', desc: 'Caja de válvulas de freno acoplada del lado del acompañante en el motor.' }
+        ]}
+      />
+    )
+  }
+
+  return (
+    <div className={styles.widgetWrap}>
+      <div className={styles.controlRow}>
+        {piezas.map((pieza, idx) => (
+          <button
+            key={pieza.key}
+            className={`${styles.controlBtn} ${activePieza === idx ? styles.controlBtnActive : ''}`}
+            onClick={() => setActivePieza(idx)}
+          >
+            {pieza.label}
+          </button>
+        ))}
+      </div>
+
+      <div className={styles.infoBox}>
+        <div className={styles.infoTitle}>{p.title}</div>
+        <div className={styles.infoBody}>{p.body}</div>
+        <div className={styles.infoTip}>💡 {p.tip}</div>
+      </div>
+
+      <svg className={styles.svg} viewBox="0 0 680 460">
+        <text x="340" y="16" textAnchor="middle" fontSize="10" fill="rgba(255,255,255,0.4)">Vista desde arriba — compartimento del motor y debajo del auto</text>
+
+        {/* Compartimento motor */}
+        <rect x="150" y="24" width="380" height="200" rx="12" fill="rgba(255,255,255,0.01)" stroke="rgba(255,255,255,0.1)" strokeWidth="1" opacity="0.4"/>
+        <rect x="210" y="60" width="200" height="130" rx="8" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
+        <text x="310" y="130" textAnchor="middle" fontSize="11" fill="rgba(255,255,255,0.4)">motor</text>
+
+        {/* Servo */}
+        <g opacity={activePieza === 0 ? 1 : 0.3}>
+          <circle cx="175" cy="130" r="36" fill="rgba(255,255,255,0.01)" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5"/>
+          <text x="175" y="126" textAnchor="middle" fontSize="10" fontWeight="500" fill="#ffffff">Servo</text>
+          <text x="175" y="140" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.5)">freno</text>
+          <rect x="150" y="88" width="50" height="16" rx="4" fill="#1D9E75" opacity="0.85"/>
+          <text x="175" y="99" textAnchor="middle" fontSize="9" fill="#fff">visible</text>
+        </g>
+
+        {/* Bomba maestra */}
+        <g opacity={activePieza === 1 ? 1 : 0.3}>
+          <rect x="207" y="118" width="55" height="28" rx="6" fill="rgba(255,255,255,0.01)" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5"/>
+          <text x="234" y="132" textAnchor="middle" fontSize="9" fontWeight="500" fill="#ffffff">B. maestra</text>
+          <rect x="212" y="96" width="45" height="22" rx="4" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
+          <rect x="214" y="100" width="41" height="8" fill="#E24B4A" opacity="0.2"/>
+        </g>
+
+        {/* ABS */}
+        <g opacity={activePieza === 2 ? 1 : 0.3}>
+          <rect x="420" y="70" width="80" height="50" rx="8" fill="rgba(255,255,255,0.01)" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5"/>
+          <text x="460" y="92" textAnchor="middle" fontSize="10" fontWeight="500" fill="#ffffff">Módulo</text>
+          <text x="460" y="106" textAnchor="middle" fontSize="10" fontWeight="500" fill="#ffffff">ABS</text>
+          <rect x="455" y="74" width="44" height="16" rx="4" fill="#1D9E75" opacity="0.85"/>
+          <text x="477" y="85" textAnchor="middle" fontSize="9" fill="#fff">visible</text>
+        </g>
+
+        <line x1="150" y1="224" x2="530" y2="224" stroke="rgba(255,255,255,0.15)" strokeWidth="2" opacity="0.5"/>
+
+        {/* Ruedas */}
+        <circle cx="160" cy="360" r="55" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="2.5"/>
+        <circle cx="160" cy="360" r="18" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.1)" strokeWidth="1.5"/>
+        
+        <circle cx="520" cy="360" r="55" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="2.5"/>
+        <circle cx="520" cy="360" r="18" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.1)" strokeWidth="1.5"/>
+
+        {/* Disco */}
+        <g opacity={activePieza === 3 ? 1 : 0.3}>
+          <circle cx="160" cy="360" r="44" fill="none" stroke="#E24B4A" strokeWidth="3" opacity="0.6"/>
+          <rect x="138" y="340" width="44" height="40" rx="5" fill="rgba(255,255,255,0.01)" stroke="#E24B4A" strokeWidth="2"/>
+          <text x="160" y="358" textAnchor="middle" fontSize="8" fill="#E24B4A">pinza</text>
+          <text x="160" y="370" textAnchor="middle" fontSize="8" fill="#E24B4A">+ past.</text>
+        </g>
+
+        {/* Sensor ABS */}
+        <g opacity={activePieza === 4 ? 1 : 0.3}>
+          <rect x="196" y="350" width="14" height="20" rx="3" fill="#534AB7" opacity="0.85"/>
+          <text x="215" y="350" fontSize="8" fill="#534AB7">sensor ABS</text>
+          <line x1="210" y1="352" x2="200" y2="358" stroke="#534AB7" strokeWidth="0.5" strokeDasharray="2 2" opacity="0.6"/>
+        </g>
+
+        {/* Tambor trasero */}
+        <g opacity={activePieza === 5 ? 1 : 0.3}>
+          <rect x="270" y="330" width="140" height="60" rx="8" fill="rgba(255,255,255,0.01)" stroke="#888780" strokeWidth="1.5"/>
+          <text x="340" y="356" textAnchor="middle" fontSize="10" fontWeight="500" fill="#ffffff">Tambores traseros</text>
+          <text x="340" y="372" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.5)">se ven desde abajo</text>
+        </g>
+
+        {/* Highlight box */}
+        <rect
+          x={p.rect.x - 4}
+          y={p.rect.y - 4}
+          width={p.rect.w + 8}
+          height={p.rect.h + 8}
+          rx="8"
+          fill="none"
+          stroke="#3b82f6"
+          strokeWidth="2.5"
+          opacity="0.85"
+        />
+      </svg>
+    </div>
+  )
+}
+
+
 // ==========================================
 // CENTRAL DISPATCHER COMPONENT
 // ==========================================
@@ -2539,6 +3493,16 @@ export function RenderWidget({ widgetKey, viewMode }: { widgetKey: TopicWidget; 
       return <PotenciaOpcionesWidget viewMode={viewMode} />
     case 'lift_camino_tierra':
       return <LiftCaminoTierraWidget viewMode={viewMode} />
+    case 'obd2_scanner':
+      return <ObdScannerWidget viewMode={viewMode} />
+    case 'retenes_juntas':
+      return <RetenesJuntasWidget viewMode={viewMode} />
+    case 'bujes_cojinetes':
+      return <BujesCojinetesWidget viewMode={viewMode} />
+    case 'sistema_frenos':
+      return <SistemaFrenosWidget viewMode={viewMode} />
+    case 'ubicacion_frenos':
+      return <UbicacionFrenosWidget viewMode={viewMode} />
     default:
       return null
   }

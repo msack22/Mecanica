@@ -198,6 +198,26 @@ export const mecanicaData: SystemCategory[] = [
             ]
           }
         ]
+      },
+      {
+        key: 'retenes_juntas',
+        title: 'Retenes & Juntas',
+        subtitle: 'Sellar pérdidas de aceite y fluidos del motor',
+        widget: 'retenes_juntas',
+        imageUrl: '/images/retenes_juntas_real.png',
+        body: 'El motor y la caja de velocidades contienen múltiples piezas de caucho y silicona que evitan las fugas de lubricantes. Los retenes sellan los ejes giratorios (cigüeñal, levas, semiejes) mientras que las juntas sellan superficies estáticas unidas por tornillos (tapa de válvulas, culata, cárter).',
+        tip: 'La junta de la tapa de válvulas es muy accesible y propensa a perder aceite que gotea sobre el escape caliente, generando olor a quemado.',
+        warning: 'Una junta de culata quemada es la falla más costosa: mezcla el aceite con el refrigerante (creando una pasta tipo mayonesa) y recalienta el motor.',
+        recorridos: [
+          {
+            title: 'Puntos Críticos de Fuga',
+            items: [
+              { c: 'rojo', t: 'Retén de cigüeñal trasero: Exige separar la caja del motor. Se suele cambiar junto al embrague.' },
+              { c: 'naranja', t: 'Junta de cárter: Ubicada abajo del motor, causa el goteo constante en el piso de la cochera.' },
+              { c: 'azul', t: 'Retenes de semiejes: Sellan el aceite de la transmisión donde encastran los palieres en la caja.' }
+            ]
+          }
+        ]
       }
     ]
   },
@@ -299,7 +319,27 @@ export const mecanicaData: SystemCategory[] = [
             items: [
               { c: 'verde', t: 'Circuito de encendido: Batería → ECU → Bobina (12V a 25.000V) → Bujías para la chispa.' },
               { c: 'azul', t: 'Circuito de carga: Motor gira → Alternador genera electricidad → Carga batería.' },
-              { c: 'naranja', t: 'Fichas: Poseen trabas físicas únicas para que nunca las conectes en el sensor equivocado.' }
+            ]
+          }
+        ]
+      },
+      {
+        key: 'obd2_scanner',
+        title: 'Scanner OBD2 ELM327',
+        subtitle: 'Cómo diagnosticar fallas con el puerto OBD2',
+        widget: 'obd2_scanner',
+        imageUrl: '/images/obd2_scanner_real.png',
+        body: 'El puerto OBD2 (On-Board Diagnostics) permite conectar un scanner Bluetooth ELM327 para leer los códigos de error almacenados en la ECU. Es la forma más rápida y precisa de diagnosticar fallas en sensores, emisiones y encendido sin desarmar nada del motor.',
+        tip: 'La app Torque Lite es gratis y suficiente para leer y borrar códigos de falla. Siempre anotá el código antes de borrarlo para no perder el historial.',
+        warning: 'Borrar los códigos apaga el Check Engine pero NO repara la falla. Si el sensor sigue roto, el error volverá a aparecer en pocos kilómetros.',
+        recorridos: [
+          {
+            title: 'Procedimiento de Conexión',
+            items: [
+              { c: 'verde', t: '1. Enchufar el ELM327 en el puerto OBD2 de 16 pines debajo del volante (lado izquierdo).' },
+              { c: 'azul', t: '2. Poner el auto en contacto (llave en ACC) pero sin darle arranque.' },
+              { c: 'naranja', t: '3. Activar Bluetooth, emparejar con el scanner (código 1234 o 0000) y abrir la app Torque.' },
+              { c: 'rojo', t: '4. Leer los códigos y buscar el significado de los errores (ej: P0300 = Falla de encendido).' }
             ]
           }
         ]
@@ -467,6 +507,66 @@ export const mecanicaData: SystemCategory[] = [
               { c: 'naranja', t: 'Frente: Motor, caja de velocidades, dirección hidráulica y palieres (semiejes).' },
               { c: 'gris', t: 'Medio: Caño de escape, escudo térmico y freno de mano (cables).' },
               { c: 'azul', t: 'Atrás: Tanque de combustible, eje rígido trasero y amortiguadores.' }
+            ]
+          }
+        ]
+      },
+      {
+        key: 'bujes_cojinetes',
+        title: 'Bujes & Cojinetes',
+        subtitle: 'Rodamientos y silent blocks del chasis',
+        widget: 'bujes_cojinetes',
+        imageUrl: '/images/bujes_cojinetes_real.png',
+        body: 'El chasis utiliza dos tipos de piezas de unión: los rodamientos/cojinetes (que tienen bolas de acero para permitir que las ruedas o ejes giren rápido) y los bujes/silent blocks (que son casquillos de goma vulcanizada para absorber las vibraciones sin necesidad de lubricación).',
+        tip: 'Los silent blocks del brazo de suspensión (parrilla) son los que más fallan en el Gol Trend. Su desgaste produce golpes sordos en badenes.',
+        warning: 'Un rodamiento de rueda (rulemán) desgastado genera un zumbido progresivo como un avión. Si se engrana o traba en velocidad, puede clavar la rueda.',
+        recorridos: [
+          {
+            title: 'Diferencias de Componentes',
+            items: [
+              { c: 'azul', t: 'Rodamiento de rueda: Rodillos de acero lubricados que permiten el giro de la maza de rueda.' },
+              { c: 'verde', t: 'Silent block: Aislamiento elástico de goma que une las parrillas de suspensión al chasis.' },
+              { c: 'naranja', t: 'Soportes de motor: Bujes de goma reforzada que absorben las vibraciones del bloque motor.' }
+            ]
+          }
+        ]
+      },
+      {
+        key: 'sistema_frenos',
+        title: 'Sistema de Frenos',
+        subtitle: 'Funcionamiento del circuito hidráulico de frenado',
+        widget: 'sistema_frenos',
+        imageUrl: '/images/tren_delantero.png',
+        body: 'El sistema de frenos hidráulico multiplica la fuerza aplicada al pedal usando la bomba maestra y el vacío del motor (servofreno). La presión del líquido de frenos empuja los pistones en las pinzas delanteras para apretar las pastillas contra el disco, y expande las zapatas dentro de los tambores traseros.',
+        tip: 'El líquido de frenos absorbe humedad del aire. Se debe cambiar por completo cada 2 años para evitar que hierva ante frenadas intensas.',
+        warning: 'Si al frenar fuerte el pedal vibra notablemente, es el módulo ABS actuando para evitar que las ruedas se bloqueen. Nunca dejes de pisar el pedal.',
+        recorridos: [
+          {
+            title: 'Componentes Hidráulicos',
+            items: [
+              { c: 'rojo', t: 'Servofreno (Servo): Multiplica por 4 la fuerza del pie aprovechando la succión de admisión.' },
+              { c: 'azul', t: 'Bomba maestra: Cilindro con pistones hidráulicos que presuriza todo el circuito de tuberías.' },
+              { c: 'verde', t: 'Módulo ABS: Regula y libera intermitentemente la presión en la rueda que tiende a bloquearse.' }
+            ]
+          }
+        ]
+      },
+      {
+        key: 'ubicacion_frenos',
+        title: 'Ubicación de Frenos',
+        subtitle: 'Dónde encontrar cada pieza en el auto',
+        widget: 'ubicacion_frenos',
+        imageUrl: '/images/motor_completo.png',
+        body: 'Saber ubicar las piezas de freno es clave para el mantenimiento básico. El servofreno y la bomba maestra se encuentran en el vano motor del lado del conductor, pegados al firewall. Los discos y pinzas están en las ruedas delanteras, y los tambores en el eje rígido trasero.',
+        tip: 'El depósito de líquido de frenos es de plástico semitransparente. Podés verificar el nivel MIN/MAX a simple vista sin destaparlo.',
+        warning: 'Los sensores ABS de rueda miden la velocidad de giro. Están expuestos al barro y agua en la mangueta; limpiarlos suele apagar la luz de falla en el tablero.',
+        recorridos: [
+          {
+            title: 'Guía de Inspección Rápida',
+            items: [
+              { c: 'verde', t: 'Vano motor (izq): Depósito de líquido, bomba maestra y servo negro redondo grande.' },
+              { c: 'naranja', t: 'Ruedas delanteras: Pinzas rojas/grises y pastillas de freno (cambiar si miden menos de 3mm).' },
+              { c: 'gris', t: 'Ruedas traseras: Campanas o tambores (campana de fundición visible detrás de la llanta).' }
             ]
           }
         ]

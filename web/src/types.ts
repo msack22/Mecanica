@@ -40,6 +40,11 @@ export type TopicWidget =
   | 'lift_camino_tierra'
   | 'circuito_refrigeracion'
   | 'circuito_lubricacion'
+  | 'obd2_scanner'
+  | 'retenes_juntas'
+  | 'bujes_cojinetes'
+  | 'sistema_frenos'
+  | 'ubicacion_frenos'
 
 export type ConceptItem = {
   c: TopicColor
