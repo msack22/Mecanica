@@ -25,6 +25,7 @@ export function RepasoPage() {
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [viewMode, setViewMode] = useState<'diagram' | 'real'>('diagram')
   const [hoveredSystem, setHoveredSystem] = useState<string | null>(null)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
 
   const searchRef = useRef<HTMLDivElement>(null)
 
@@ -152,6 +153,7 @@ export function RepasoPage() {
     const sys = mecanicaData.find((s) => s.key === systemKey)
     setActiveTopicKey(sys?.topics[0]?.key ?? null)
     setViewMode('diagram')
+    setSidebarCollapsed(false)
   }
 
   // Seleccionar tema
@@ -277,20 +279,29 @@ export function RepasoPage() {
 
       {/* Migas de Pan (Breadcrumbs) - Solo visible en Repaso de Sistemas */}
       {activeTab === 'repaso' && activeSystem && (
-        <nav className={styles.breadcrumbs}>
-          <span className={styles.breadcrumbLink} onClick={handleGoHome}>
-            Inicio
-          </span>
-          <span className={styles.breadcrumbSeparator}>/</span>
-          <span className={styles.breadcrumbActive}>
-            {activeSystem.icon} {activeSystem.label}
-          </span>
-          {activeTopic && (
-            <>
-              <span className={styles.breadcrumbSeparator}>/</span>
-              <span className={styles.breadcrumbActive}>{activeTopic.title}</span>
-            </>
-          )}
+        <nav className={styles.breadcrumbs} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <span className={styles.breadcrumbLink} onClick={handleGoHome}>
+              Inicio
+            </span>
+            <span className={styles.breadcrumbSeparator}>/</span>
+            <span className={styles.breadcrumbActive}>
+              {activeSystem.icon} {activeSystem.label}
+            </span>
+            {activeTopic && (
+              <>
+                <span className={styles.breadcrumbSeparator}>/</span>
+                <span className={styles.breadcrumbActive}>{activeTopic.title}</span>
+              </>
+            )}
+          </div>
+          <button
+            className={styles.toggleSidebarBtn}
+            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+            title={sidebarCollapsed ? "Mostrar barra de temas" : "Contraer barra de temas"}
+          >
+            {sidebarCollapsed ? '📂 Temas' : '📁 Ocultar'}
+          </button>
         </nav>
       )}
 
@@ -328,9 +339,10 @@ export function RepasoPage() {
           />
         ) : (
           // Nivel 2 y 3: Vista Micro (Sistema + Sandbox de Temas)
-          <div className={styles.layout}>
+          <div className={`${styles.layout} ${sidebarCollapsed ? styles.layoutCollapsed : ''}`}>
             {/* Barra Lateral Izquierda (Listado de Temas del Sistema) */}
-            <aside className={styles.sidebar}>
+            {!sidebarCollapsed && (
+              <aside className={styles.sidebar}>
               <div className={styles.sidebarHeader}>
                 <button onClick={handleGoHome} className={styles.backBtn}>
                   ← Volver al Mapa
@@ -376,6 +388,7 @@ export function RepasoPage() {
                 )}
               </nav>
             </aside>
+          )}
 
             {/* Área Principal (Detalle del tema seleccionado) */}
             <main className={styles.sandbox}>

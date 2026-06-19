@@ -245,6 +245,11 @@
   gap: 24px;
   align-items: start;
   flex-grow: 1;
+  transition: grid-template-columns 0.3s ease;
+}
+
+.layoutCollapsed {
+  grid-template-columns: 1fr;
 }
 
 /* Sidebar de Temas y Filtros */
@@ -451,16 +456,18 @@
 
 /* Contenedor del Widget */
 .widgetBox {
-  background: rgba(7, 10, 18, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  background: rgba(7, 10, 18, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 380px;
+  align-items: stretch;
+  justify-content: flex-start;
+  min-height: 480px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* Títulos de sección */
@@ -749,3 +756,25 @@
     justify-content: center;
   }
 }
+
+.toggleSidebarBtn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--color-text-secondary);
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.toggleSidebarBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-text-primary);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
