@@ -1718,9 +1718,12 @@ function CableadoElectricoWidget({ viewMode }: WidgetProps) {
         src="/images/fusiblera_electrica.png"
         alt="Fusiblera y componentes eléctricos reales"
         hotspots={[
-          { id: '1', x: 41, y: 44, title: 'Fusiblera principal', desc: 'Ubicada en el vano motor. Aloja los fusibles de protección de alta corriente (bomba de agua, electroventilador, inyección).' },
-          { id: '2', x: 45, y: 91, title: 'Batería 12V Varta', desc: 'Fuente de corriente continua del Gol. Almacena la energía para el arranque inicial.' },
-          { id: '3', x: 86, y: 56, title: 'Alternador (Oculto abajo)', desc: 'Generador movido por correa que recarga la batería y provee corriente con el motor en marcha.' }
+          { id: '1', x: 41, y: 44, title: 'Fusiblera principal (Sobre Batería)', desc: 'Aloja los fusibles aéreos de alta potencia del Gol (alternador, electroventilador, dirección asistida).', placement: 'bottom' },
+          { id: '2', x: 45, y: 91, title: 'Batería 12V Varta', desc: 'Almacena la energía química. Entrega el pico de corriente para el motor de arranque y estabiliza el voltaje.', placement: 'top' },
+          { id: '3', x: 86, y: 56, title: 'Alternador (Abajo)', desc: 'Movido por la correa auxiliar. Genera corriente trifásica, la rectifica a continua y recarga la batería con el motor en marcha.', placement: 'left' },
+          { id: '4', x: 75, y: 35, title: 'Bobina de Encendido (DIS)', desc: 'Transformador elevador de tensión. Toma 12V de la batería y los convierte en ~25.000V para las bujías.', placement: 'left' },
+          { id: '5', x: 65, y: 22, title: 'Cables de Bujía', desc: 'Cables de silicona aislados para alta tensión que llevan el pulso eléctrico desde la bobina hacia las bujías.', placement: 'bottom' },
+          { id: '6', x: 18, y: 15, title: 'Ubicación de ECU (Vano de lluvia)', desc: 'Unidad de Control del Motor (computadora). Ubicada detrás del parallamas, protegida del calor del motor.', placement: 'right' }
         ]}
       />
     )
