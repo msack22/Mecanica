@@ -5,7 +5,41 @@ import { RenderWidget } from '../../components/widgets/Widgets'
 import { TagPills } from './components/TagPills'
 import { OverviewMap } from '../../components/OverviewMap'
 import { MantenimientoPreventivo } from './components/MantenimientoPreventivo'
+import { CargarAuto } from './components/CargarAuto'
 import styles from './repasoPage.module.css'
+
+function getTopicIcon(key: string): string {
+  const mappings: Record<string, string> = {
+    'ciclo_4_tiempos': '🔄',
+    'conexiones_internas': '🔩',
+    'motor_niveles': '🥞',
+    'ciguenal_arbol_levas': '⚙️',
+    'sincronizacion_correa': '🎗️',
+    'bloqueo_poleas': '🔒',
+    'aros_piston_detalle': '⭕',
+    'aros_piston_separacion': '⚠️',
+    'circuito_lubricacion': '🔄',
+    'retenes_juntas': '🦭',
+    'circuito_refrigeracion': '❄️',
+    'mono_vs_multipunto': '🔌',
+    'circuito_combustible': '⛽',
+    'potencia_opciones': '🚀',
+    'cableado_electrico': '⚡',
+    'obd2_scanner': '📱',
+    'transmision_embrague': '⚙️',
+    'caja_cambios': '🕹️',
+    'sistema_escape': '💨',
+    'colores_humo': '🌫️',
+    'tren_delantero': '🛞',
+    'diagnostico_ruidos': '🔊',
+    'lift_camino_tierra': '🛣️',
+    'vista_desde_abajo': '🔍',
+    'bujes_cojinetes': '🔩',
+    'sistema_frenos': '🛑',
+    'ubicacion_frenos': '🛑'
+  }
+  return mappings[key] || '📄'
+}
 
 type SearchResult = {
   type: 'system' | 'topic' | 'concept' | 'procedure'
@@ -18,7 +52,7 @@ type SearchResult = {
 }
 
 export function RepasoPage() {
-  const [activeTab, setActiveTab] = useState<'repaso' | 'mantenimiento' | 'procedimientos'>('repaso')
+  const [activeTab, setActiveTab] = useState<'repaso' | 'mantenimiento' | 'procedimientos' | 'mi-auto'>('repaso')
   const [activeSystemKey, setActiveSystemKey] = useState<string | null>(null)
   const [activeTopicKey, setActiveTopicKey] = useState<string | null>(null)
   const [procFilterSystem, setProcFilterSystem] = useState<string | null>('mec') // default mecánico
@@ -229,6 +263,12 @@ export function RepasoPage() {
           >
             Procedimientos de Taller
           </button>
+          <button
+            className={`${styles.navTab} ${activeTab === 'mi-auto' ? styles.navTabActive : ''}`}
+            onClick={() => setActiveTab('mi-auto')}
+          >
+            Mi Auto (Alertas)
+          </button>
         </div>
 
         {/* Buscador Global con sugerencias flotantes */}
@@ -302,15 +342,6 @@ export function RepasoPage() {
               </>
             )}
           </div>
-          {sidebarCollapsed && (
-            <button
-              className={styles.toggleSidebarBtn}
-              onClick={() => setSidebarCollapsed(false)}
-              title="Mostrar barra de temas"
-            >
-              📂 Mostrar Temas
-            </button>
-          )}
         </nav>
       )}
 
@@ -350,9 +381,22 @@ export function RepasoPage() {
           // Nivel 2 y 3: Vista Micro (Sistema + Sandbox de Temas)
           <div className={`${styles.layout} ${sidebarCollapsed ? styles.layoutCollapsed : ''}`}>
             {/* Barra Lateral Izquierda (Listado de Temas del Sistema) */}
-            {!sidebarCollapsed && (
-              <aside className={styles.sidebar}>
-                <div className={styles.sidebarHeader}>
+            <aside className={`${styles.sidebar} ${sidebarCollapsed ? styles.sidebarCollapsed : ''}`}>
+              <div className={styles.sidebarHeader}>
+                {sidebarCollapsed ? (
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
+                    <button
+                      onClick={() => setSidebarCollapsed(false)}
+                      className={styles.sidebarExpandBtn}
+                      title="Mostrar barra de temas"
+                    >
+                      ▶
+                    </button>
+                    <button onClick={handleGoHome} className={styles.backBtnCollapsed} title="Volver al Mapa">
+                      🏠
+                    </button>
+                  </div>
+                ) : (
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <button onClick={handleGoHome} className={styles.backBtn}>
                       ← Volver al Mapa
@@ -365,23 +409,29 @@ export function RepasoPage() {
                       ◀ Ocultar
                     </button>
                   </div>
+                )}
+                {!sidebarCollapsed && (
                   <h2 className={styles.sidebarTitle}>
                     {activeSystem.icon} {activeSystem.label}
                   </h2>
-                </div>
+                )}
+              </div>
 
               <nav className={styles.topicList}>
                 {/* Grupo Flujos */}
-                <div className={styles.sidebarGroupLabel}>Flujos</div>
+                {!sidebarCollapsed && <div className={styles.sidebarGroupLabel}>Flujos</div>}
                 {flowTopics.map((topic) => {
                   const isActive = activeTopic?.key === topic.key && viewMode === 'diagram'
+                  const topicIcon = getTopicIcon(topic.key)
                   return (
                     <button
                       key={`flow-${topic.key}`}
                       onClick={() => handleSelectTopic(topic.key, 'diagram')}
                       className={`${styles.topicItem} ${isActive ? styles.topicItemActive : ''}`}
+                      title={sidebarCollapsed ? topic.title : undefined}
                     >
-                      <span>{topic.title}</span>
+                      <span className={styles.topicIconSpan}>{topicIcon}</span>
+                      {!sidebarCollapsed && <span>{topic.title}</span>}
                     </button>
                   )
                 })}
@@ -389,7 +439,7 @@ export function RepasoPage() {
                 {/* Grupo Fotos (solo si hay fotos reales) */}
                 {photoTopics.length > 0 && (
                   <>
-                    <div className={styles.sidebarGroupLabel} style={{ marginTop: '16px' }}>Fotos</div>
+                    {!sidebarCollapsed && <div className={styles.sidebarGroupLabel} style={{ marginTop: '16px' }}>Fotos</div>}
                     {photoTopics.map((topic) => {
                       const isActive = activeTopic?.key === topic.key && viewMode === 'real'
                       return (
@@ -397,8 +447,10 @@ export function RepasoPage() {
                           key={`photo-${topic.key}`}
                           onClick={() => handleSelectTopic(topic.key, 'real')}
                           className={`${styles.topicItem} ${isActive ? (styles.topicItemActivePhoto ?? styles.topicItemActive) : ''}`}
+                          title={sidebarCollapsed ? `${topic.title} (Foto)` : undefined}
                         >
-                          <span>{topic.title}</span>
+                          <span className={styles.topicIconSpan}>📸</span>
+                          {!sidebarCollapsed && <span>{topic.title}</span>}
                         </button>
                       )
                     })}
@@ -406,7 +458,6 @@ export function RepasoPage() {
                 )}
               </nav>
             </aside>
-          )}
 
             {/* Área Principal (Detalle del tema seleccionado) */}
             <main className={styles.sandbox}>
@@ -528,6 +579,11 @@ export function RepasoPage() {
             </div>
           </div>
         </div>
+      ) : activeTab === 'mi-auto' ? (
+        // ==========================================
+        // SECCIÓN EXTRA: MI AUTO Y ALERTAS PERSONALIZADAS
+        // ==========================================
+        <CargarAuto />
       ) : (
         // ==========================================
         // SECCIÓN 3: PROCEDIMIENTOS DE TALLER (VIDEOS)
