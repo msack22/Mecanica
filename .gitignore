@@ -24,3 +24,6 @@ build/
 *.swp
 *.bak
 
+
+# Configuración local de Claude Code
+.claude/
